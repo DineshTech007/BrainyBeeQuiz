@@ -40,7 +40,19 @@ os.makedirs(SAVED_TESTS_DIR, exist_ok=True)
 
 import tempfile
 
-def extract_text_from_pdf(pdf_file) -> str:
+def clean_extracted_text(text: str) -> str:
+    """
+    Cleans extracted PDF text by removing non-alphanumeric/garbage wingdings
+    that confuse the LLM and break JSON output.
+    Keeps English, basic punctuation, newlines, and Devanagari (Marathi/Hindi).
+    """
+    # Keep alphanumeric, whitespace, basic punctuation, and Devanagari (\u0900-\u097F)
+    cleaned = re.sub(r'[^\w\s\.,;:\'\"\-\(\)\?!\u0900-\u097F]', ' ', text)
+    cleaned = re.sub(r' +', ' ', cleaned)
+    cleaned = re.sub(r'\n+', '\n', cleaned)
+    return cleaned
+
+def extract_text_from_pdf(pdf_file, start_page: int = None, end_page: int = None) -> str:
     """Extract text from a PDF file."""
     try:
         if isinstance(pdf_file, str):
@@ -49,12 +61,17 @@ def extract_text_from_pdf(pdf_file) -> str:
             reader = PyPDF2.PdfReader(pdf_file)
         
         text = ""
-        for page in reader.pages:
-            extracted = page.extract_text()
+        total_pages = len(reader.pages)
+        
+        start_idx = max(0, start_page - 1) if start_page is not None else 0
+        end_idx = min(total_pages, end_page) if end_page is not None else total_pages
+        
+        for i in range(start_idx, end_idx):
+            extracted = reader.pages[i].extract_text()
             if extracted:
                 text += extracted + "\n"
                 
-        return text
+        return clean_extracted_text(text)
     except Exception as e:
         print(f"Error extracting PDF: {e}")
         return ""

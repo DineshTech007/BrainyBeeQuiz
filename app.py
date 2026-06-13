@@ -1221,57 +1221,49 @@ def display_10th_exam():
                 # Pre-calculated chapter page ranges based on NCERT TOCs
                 sst_chapters = {
                     "NCERT-Class-10-History.pdf": {
-                        "Chapter 1: The Rise of Nationalism in Europe": (3, 24),
-                        "Chapter 2: The Nationalist Movement in Indo-China": (25, 48),
-                        "Chapter 3: Nationalism in India": (49, 76),
-                        "Chapter 4: The Making of a Global World": (77, 96),
-                        "Chapter 5: The Age of Industrialisation": (97, 116),
-                        "Chapter 6: Work, Life and Leisure": (117, 140),
-                        "Chapter 7: Print Culture and the Modern World": (141, 158),
-                        "Chapter 8: Novels, Society and History": (159, 180)
+                        "Chapter 1: The Rise of Nationalism in Europe": {"index": (3, 24), "pdf": (3, 28)},
+                        "Chapter 2: The Nationalist Movement in Indo-China": {"index": (25, 48), "pdf": (29, 52)},
+                        "Chapter 3: Nationalism in India": {"index": (49, 76), "pdf": (53, 74)},
+                        "Chapter 4: The Making of a Global World": {"index": (77, 96), "pdf": (75, 100)},
+                        "Chapter 5: The Age of Industrialisation": {"index": (97, 116), "pdf": (101, 124)},
+                        "Chapter 6: Work, Life and Leisure": {"index": (117, 140), "pdf": (125, 148)},
+                        "Chapter 7: Print Culture and the Modern World": {"index": (141, 158), "pdf": (149, 172)},
+                        "Chapter 8: Novels, Society and History": {"index": (159, 180), "pdf": (173, 196)}
                     },
                     "NCERT-Class-10-Political-Science.pdf": {
-                        "Chapter 1: Power Sharing": (1, 12),
-                        "Chapter 2: Federalism": (13, 28),
-                        "Chapter 3: Democracy and Diversity": (29, 38),
-                        "Chapter 4: Gender, Religion and Caste": (39, 56),
-                        "Chapter 5: Popular Struggles and Movements": (57, 70),
-                        "Chapter 6: Political Parties": (71, 88),
-                        "Chapter 7: Outcomes of Democracy": (89, 98),
-                        "Chapter 8: Challenges to Democracy": (99, 112)
+                        "Chapter 1: Power Sharing": {"index": (1, 12), "pdf": (3, 14)},
+                        "Chapter 2: Federalism": {"index": (13, 28), "pdf": (15, 30)},
+                        "Chapter 3: Democracy and Diversity": {"index": (29, 38), "pdf": (31, 40)},
+                        "Chapter 4: Gender, Religion and Caste": {"index": (39, 56), "pdf": (41, 58)},
+                        "Chapter 5: Popular Struggles and Movements": {"index": (57, 70), "pdf": (59, 72)},
+                        "Chapter 6: Political Parties": {"index": (71, 88), "pdf": (73, 90)},
+                        "Chapter 7: Outcomes of Democracy": {"index": (89, 98), "pdf": (91, 100)},
+                        "Chapter 8: Challenges to Democracy": {"index": (99, 112), "pdf": (101, 114)}
                     },
                     "NCERT-Class-10-Economics.pdf": {
-                        "Chapter 1: Development": (2, 17),
-                        "Chapter 2: Sectors of the Indian Economy": (18, 37),
-                        "Chapter 3: Money and Credit": (38, 53),
-                        "Chapter 4: Globalisation and the Indian Economy": (54, 73),
-                        "Chapter 5: Consumer Rights": (74, 94)
+                        "Chapter 1: Development": {"index": (2, 17), "pdf": (23, 37)},
+                        "Chapter 2: Sectors of the Indian Economy": {"index": (18, 37), "pdf": (38, 57)},
+                        "Chapter 3: Money and Credit": {"index": (38, 53), "pdf": (58, 73)},
+                        "Chapter 4: Globalisation and the Indian Economy": {"index": (54, 73), "pdf": (74, 93)},
+                        "Chapter 5: Consumer Rights": {"index": (74, 94), "pdf": (4, 22)}
                     },
                     "NCERT-Class-10-Geography.pdf": {
-                        "Chapter 1: Resources and Development": (1, 13),
-                        "Chapter 2: Forest and Wildlife Resources": (14, 22),
-                        "Chapter 3: Water Resources": (23, 33),
-                        "Chapter 4: Agriculture": (34, 49),
-                        "Chapter 5: Minerals and Energy Resources": (50, 63),
-                        "Chapter 6: Manufacturing Industries": (64, 79),
-                        "Chapter 7: Lifelines of National Economy": (80, 95)
+                        "Chapter 1: Resources and Development": {"index": (1, 13), "pdf": (3, 15)},
+                        "Chapter 2: Forest and Wildlife Resources": {"index": (14, 22), "pdf": (16, 24)},
+                        "Chapter 3: Water Resources": {"index": (23, 33), "pdf": (25, 35)},
+                        "Chapter 4: Agriculture": {"index": (34, 49), "pdf": (36, 51)},
+                        "Chapter 5: Minerals and Energy Resources": {"index": (50, 63), "pdf": (52, 65)},
+                        "Chapter 6: Manufacturing Industries": {"index": (64, 79), "pdf": (66, 81)},
+                        "Chapter 7: Lifelines of National Economy": {"index": (80, 95), "pdf": (82, 97)}
                     }
-                }
-                
-                book_offsets = {
-                    "NCERT-Class-10-History.pdf": 0,
-                    "NCERT-Class-10-Political-Science.pdf": 2,
-                    "NCERT-Class-10-Economics.pdf": 2,
-                    "NCERT-Class-10-Geography.pdf": 2
                 }
                 
                 st.markdown("<h3>Select Chapter</h3>", unsafe_allow_html=True)
                 available_chapters = list(sst_chapters[selected_pdf_filename].keys())
                 selected_chapter = st.selectbox("Chapter:", available_chapters)
                 
-                index_start, index_end = sst_chapters[selected_pdf_filename][selected_chapter]
-                pdf_start = index_start + book_offsets.get(selected_pdf_filename, 0)
-                pdf_end = index_end + book_offsets.get(selected_pdf_filename, 0)
+                index_start, index_end = sst_chapters[selected_pdf_filename][selected_chapter]["index"]
+                pdf_start, pdf_end = sst_chapters[selected_pdf_filename][selected_chapter]["pdf"]
                 
                 st.info(f"**Index Pages:** {index_start} to {index_end}  \n**Mapped PDF Pages:** {pdf_start} to {pdf_end}")
                 

@@ -1294,7 +1294,7 @@ def display_10th_exam():
                             else:
                                 difficulty_context = "Subject: Social Studies (SST) for 10th Grade CBSE/NCERT. The questions should match the difficulty level of a standard 10th Grade Board Exam."
                                 level = "10th Grade Student / High School Student"
-                                final_topic = f"SST 10th Grade - {book_name} (Pages {start_page}-{end_page})"
+                                final_topic = f"SST 10th Grade - {book_name} (Pages {index_start}-{index_end})"
                                 
                                 mcqs_result = generate_full_quiz(
                                     pdf_text=pdf_text,

@@ -462,6 +462,12 @@ def display_header():
     <script>
         const iconUrl = "{icon_url}";
         const parentDoc = window.parent.document;
+        const parentWin = window.parent;
+
+        // Register BrainyBee service worker to intercept manifest at network level
+        if ('serviceWorker' in parentWin.navigator) {{
+            parentWin.navigator.serviceWorker.register('/app/static/sw.js', {{scope: '/'}}).catch(function(){{}});
+        }}
 
         // Replace Streamlit's manifest with our custom BrainyBee manifest
         const existingManifest = parentDoc.querySelector("link[rel='manifest']");

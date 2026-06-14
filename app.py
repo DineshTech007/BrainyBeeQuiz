@@ -459,16 +459,17 @@ def display_header():
         <button style="width:100%; padding:10px; margin-top:10px; border-radius:8px; border:none; background:#ff4b4b; color:white; font-weight:bold; cursor:pointer;" onclick="document.getElementById('inst-mod').style.display='none'; document.getElementById('inst-over').style.display='none';">Got it!</button>
     </div>
     
-    <script>
-        // Check if app is NOT installed and we haven't shown popup in this session
-        if (!window.matchMedia('(display-mode: standalone)').matches && !sessionStorage.getItem('installPopupShown')) {{
-            // Show popup
-            document.getElementById('inst-mod').style.display='block';
-            document.getElementById('inst-over').style.display='block';
-            // Mark as shown for this browser session
-            sessionStorage.setItem('installPopupShown', 'true');
-        }}
-    </script>
+    <img src="dummy" style="display:none;" onerror="
+        if (!window.matchMedia('(display-mode: standalone)').matches && !sessionStorage.getItem('installPopupShown')) {
+            const mod = document.getElementById('inst-mod');
+            const over = document.getElementById('inst-over');
+            if (mod && over) {
+                mod.style.display='block';
+                over.style.display='block';
+                sessionStorage.setItem('installPopupShown', 'true');
+            }
+        }
+    ">
     """
     st.markdown(install_html, unsafe_allow_html=True)
 

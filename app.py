@@ -1513,34 +1513,23 @@ def display_10th_exam():
 
     with sub_tab_saved:
         display_saved_tests(exam_type="10th")
-        
-    st.divider()
     
-    @st.dialog("📱 Get BrainyBee!")
-    def install_popup():
-        st.markdown("""
-        **Get BrainyBee on your home screen for the best experience!**
-        
-        **📱 iPhone/iPad (Safari)**
-        1. Tap the **Share** square with an arrow at the bottom.
-        2. Scroll down and tap **Add to Home Screen**.
-        
-        **🤖 Android (Chrome)**
-        1. Tap the **Menu** (three dots) at the top right.
-        2. Tap **Add to Home screen** or **Install app**.
-        """)
-        if st.button("Got it!", use_container_width=True):
-            st.session_state.show_install_popup = False
-            st.rerun()
-
-    if getattr(st.session_state, 'show_install_popup', False):
-        install_popup()
-
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("🐝 Install App to Home Screen", use_container_width=True):
-            st.session_state.show_install_popup = True
-            st.rerun()
+@st.dialog("📱 Get BrainyBee!")
+def install_popup():
+    st.markdown("""
+    **Get BrainyBee on your home screen for the best experience!**
+    
+    **📱 iPhone/iPad (Safari)**
+    1. Tap the **Share** square with an arrow at the bottom.
+    2. Scroll down and tap **Add to Home Screen**.
+    
+    **🤖 Android (Chrome)**
+    1. Tap the **Menu** (three dots) at the top right.
+    2. Tap **Add to Home screen** or **Install app**.
+    """)
+    if st.button("Got it!", use_container_width=True):
+        st.session_state.show_install_popup = False
+        st.rerun()
 
 def main():
     """Main application logic"""
@@ -2036,6 +2025,16 @@ def main():
         st.markdown("<p style='text-align:center;color:white;opacity:0.9;font-size:1.1em;'>Practice your math skills by popping the balloons with correct answers!</p>", unsafe_allow_html=True)
         from maths_games import display_maths_games
         display_maths_games()
+
+    st.divider()
+    if getattr(st.session_state, 'show_install_popup', False):
+        install_popup()
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🐝 Install App to Home Screen", use_container_width=True):
+            st.session_state.show_install_popup = True
+            st.rerun()
 
 if __name__ == "__main__":
     main()

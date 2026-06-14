@@ -1233,12 +1233,9 @@ def display_10th_exam():
                     "NCERT-Class-10-Political-Science.pdf": {
                         "Chapter 1: Power Sharing": {"index": (1, 12), "pdf": (15, 26)},
                         "Chapter 2: Federalism": {"index": (13, 28), "pdf": (27, 42)},
-                        "Chapter 3: Democracy and Diversity": {"index": (29, 38), "pdf": (43, 52)},
-                        "Chapter 4: Gender, Religion and Caste": {"index": (39, 56), "pdf": (53, 70)},
-                        "Chapter 5: Popular Struggles and Movements": {"index": (57, 70), "pdf": (71, 84)},
-                        "Chapter 6: Political Parties": {"index": (71, 88), "pdf": (85, 102)},
-                        "Chapter 7: Outcomes of Democracy": {"index": (89, 98), "pdf": (103, 112)},
-                        "Chapter 8: Challenges to Democracy": {"index": (99, 112), "pdf": (113, 126)}
+                        "Chapter 3: Gender, Religion and Caste": {"index": (29, 45), "pdf": (43, 59)},
+                        "Chapter 4: Political Parties": {"index": (46, 62), "pdf": (60, 76)},
+                        "Chapter 5: Outcomes of Democracy": {"index": (63, 75), "pdf": (77, 89)}
                     },
                     "NCERT-Class-10-Economics.pdf": {
                         "Chapter 1: Development": {"index": (2, 17), "pdf": (23, 37)},
@@ -1248,13 +1245,13 @@ def display_10th_exam():
                         "Chapter 5: Consumer Rights": {"index": (74, 94), "pdf": (4, 22)}
                     },
                     "NCERT-Class-10-Geography.pdf": {
-                        "Chapter 1: Resources and Development": {"index": (1, 13), "pdf": (13, 25)},
-                        "Chapter 2: Forest and Wildlife Resources": {"index": (14, 22), "pdf": (26, 34)},
-                        "Chapter 3: Water Resources": {"index": (23, 33), "pdf": (35, 45)},
-                        "Chapter 4: Agriculture": {"index": (34, 49), "pdf": (46, 61)},
-                        "Chapter 5: Minerals and Energy Resources": {"index": (50, 63), "pdf": (62, 75)},
-                        "Chapter 6: Manufacturing Industries": {"index": (64, 79), "pdf": (76, 91)},
-                        "Chapter 7: Lifelines of National Economy": {"index": (80, 95), "pdf": (92, 107)}
+                        "Chapter 1: Resources and Development": {"index": (1, 12), "pdf": (13, 24)},
+                        "Chapter 2: Forest and Wildlife Resources": {"index": (13, 18), "pdf": (25, 30)},
+                        "Chapter 3: Water Resources": {"index": (19, 29), "pdf": (31, 41)},
+                        "Chapter 4: Agriculture": {"index": (30, 41), "pdf": (42, 53)},
+                        "Chapter 5: Minerals and Energy Resources": {"index": (42, 57), "pdf": (54, 69)},
+                        "Chapter 6: Manufacturing Industries": {"index": (58, 70), "pdf": (70, 82)},
+                        "Chapter 7: Lifelines of National Economy": {"index": (71, 83), "pdf": (83, 95)}
                     }
                 }
                 

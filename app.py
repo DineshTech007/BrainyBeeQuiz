@@ -44,6 +44,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Override Streamlit's manifest and icons immediately in the main document
+st.markdown("""
+    <link rel="manifest" href="/app/static/manifest.json">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/smiling_pointing_bee_transparent.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="BrainyBee">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <script>
+        // Remove Streamlit's built-in manifest and replace with ours
+        document.querySelectorAll("link[rel='manifest']").forEach(function(el, i) {
+            if (i === 0) { el.href = '/app/static/manifest.json'; }
+            else { el.remove(); }
+        });
+    </script>
+""", unsafe_allow_html=True)
+
 # Custom CSS for kid-friendly styling
 st.markdown("""
     <style>

@@ -5,6 +5,7 @@ Generates 25 questions: 15 from PDF + 10 from Internet
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 from streamlit_option_menu import option_menu
 import json
 import os

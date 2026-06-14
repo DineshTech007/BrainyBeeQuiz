@@ -412,15 +412,15 @@ def display_header():
     """Display the app header with title and total stars"""
     import base64
     try:
-        with open("assets/cartoon_transparent.png", "rb") as f:
+        with open("assets/cartoon_small.png", "rb") as f:
             img_b64 = base64.b64encode(f.read()).decode()
-        img_html = f'<img class="flying-bee" src="data:image/png;base64,{img_b64}" width="120" style="margin-left: 20px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));">'
+        img_html = '<img class="buzzing-bee" src="data:image/png;base64,' + img_b64 + '" width="100">'
     except:
         img_html = ""
 
-    st.markdown(f"""
+    html_code = """
         <style>
-        .header-wrapper {{
+        .header-wrapper {
             position: relative;
             display: flex;
             justify-content: center;
@@ -428,9 +428,9 @@ def display_header():
             height: 120px;
             margin-bottom: 2rem;
             margin-top: 1rem;
-        }}
+        }
         
-        .logo-text-container {{
+        .logo-text-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -441,32 +441,33 @@ def display_header():
             padding: 10px 30px;
             border-radius: 20px;
             backdrop-filter: blur(5px);
-        }}
+        }
 
-        @keyframes orbitFly {{
-            0%   {{ transform: translate(-180px, 0px) rotate(15deg) scaleX(-1); z-index: 10; }}
-            25%  {{ transform: translate(0px, -60px) rotate(5deg) scaleX(-1); z-index: 10; }}
-            49.9%{{ transform: translate(180px, 0px) rotate(-15deg) scaleX(-1); z-index: 10; }}
-            50%  {{ transform: translate(180px, 0px) rotate(-15deg) scaleX(1); z-index: 1; }}
-            75%  {{ transform: translate(0px, 40px) rotate(-5deg) scaleX(1); z-index: 1; }}
-            99.9%{{ transform: translate(-180px, 0px) rotate(15deg) scaleX(1); z-index: 1; }}
-            100% {{ transform: translate(-180px, 0px) rotate(15deg) scaleX(-1); z-index: 10; }}
-        }}
+        @keyframes orbitFly {
+            0%   { transform: translate(-180px, 0px) rotate(15deg) scaleX(-1); z-index: 10; }
+            25%  { transform: translate(0px, -60px) rotate(5deg) scaleX(-1); z-index: 10; }
+            49.9%{ transform: translate(180px, 0px) rotate(-15deg) scaleX(-1); z-index: 10; }
+            50%  { transform: translate(180px, 0px) rotate(-15deg) scaleX(1); z-index: 1; }
+            75%  { transform: translate(0px, 40px) rotate(-5deg) scaleX(1); z-index: 1; }
+            99.9%{ transform: translate(-180px, 0px) rotate(15deg) scaleX(1); z-index: 1; }
+            100% { transform: translate(-180px, 0px) rotate(15deg) scaleX(-1); z-index: 10; }
+        }
         
-        @keyframes buzzFlap {{
-            0% {{ transform: rotate(-3deg) translateY(-2px); }}
-            50% {{ transform: rotate(3deg) translateY(2px); }}
-            100% {{ transform: rotate(-3deg) translateY(-2px); }}
-        }}
+        @keyframes buzzFlap {
+            0% { transform: rotate(-3deg) translateY(-2px); }
+            50% { transform: rotate(3deg) translateY(2px); }
+            100% { transform: rotate(-3deg) translateY(-2px); }
+        }
 
-        .orbiting-bee-container {{
+        .orbiting-bee-container {
             position: absolute;
             animation: orbitFly 5s linear infinite;
-        }}
+        }
         
-        .buzzing-bee {{
+        .buzzing-bee {
             animation: buzzFlap 0.1s ease-in-out infinite;
-        }}
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+        }
         </style>
         
         <div class="header-wrapper">
@@ -476,10 +477,12 @@ def display_header():
             </div>
             
             <div class="orbiting-bee-container">
-                {img_html.replace('class="flying-bee"', 'class="buzzing-bee"').replace('width="120"', 'width="100"').replace('margin-left: 20px;', '')}
+                """ + img_html + """
             </div>
         </div>
-    """, unsafe_allow_html=True)
+    """
+    st.markdown(html_code, unsafe_allow_html=True)
+
     
     if st.session_state.user:
         col1, col2, col3 = st.columns([1,3,1])

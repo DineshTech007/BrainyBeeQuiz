@@ -1501,24 +1501,23 @@ def main():
 
     display_header()
     
-    # Sidebar for API key check and info
-    with st.sidebar:
-        st.markdown("### 📱 App Installation")
-        with st.expander("Install BrainyBee App", expanded=False):
-            st.markdown("""
-            **Get the app on your home screen!**
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("📱 Install App to Home Screen", use_container_width=True):
+            st.info("""
+            **How to install BrainyBee:**
             
             **📱 iPhone/iPad (Safari)**
-            1. Tap the **Share** button at the bottom.
+            1. Tap the **Share** square with an arrow at the bottom.
             2. Scroll down and tap **Add to Home Screen**.
             
             **🤖 Android (Chrome)**
             1. Tap the **Menu** (three dots) at the top right.
             2. Tap **Add to Home screen** or **Install app**.
             """)
-            
-        st.divider()
-            
+    
+    # Sidebar for API key check and info
+    with st.sidebar:
         if not os.getenv("GROQ_API_KEY"):
             st.error("Groq API key not found!")
             st.info("Please add your API key to the .env file")

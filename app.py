@@ -410,26 +410,51 @@ if "default_tab_index" not in st.session_state:
 
 def display_header():
     """Display the app header with title and total stars"""
+    import streamlit.components.v1 as components
     
-    install_html = """
+    icon_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/smiling_pointing_bee_transparent.png"
+    
+    # Inject JS to override Streamlit's native PWA icons for Mobile Add to Home Screen
+    js_code = f"""
+    <script>
+        const iconUrl = "{icon_url}";
+        const parentDoc = window.parent.document;
+        
+        const manifest = parentDoc.querySelector("link[rel='manifest']");
+        if (manifest) {{ manifest.remove(); }}
+        
+        const links = parentDoc.querySelectorAll("link[rel*='icon'], link[rel='apple-touch-icon']");
+        links.forEach(link => {{ link.href = iconUrl; }});
+        
+        if (!parentDoc.querySelector("link[rel='apple-touch-icon']")) {{
+            const appleIcon = parentDoc.createElement("link");
+            appleIcon.rel = "apple-touch-icon";
+            appleIcon.href = iconUrl;
+            parentDoc.head.appendChild(appleIcon);
+        }}
+    </script>
+    """
+    components.html(js_code, height=0, width=0)
+    
+    install_html = f"""
     <style>
-    @media all and (display-mode: standalone) {
-        .install-wrapper { display: none !important; }
-    }
-    .install-btn {
+    @media all and (display-mode: standalone) {{
+        .install-wrapper {{ display: none !important; }}
+    }}
+    .install-btn {{
         background: #f0f2f6; border: 1px solid #e0e0e0; color: #31333F; padding: 4px 12px; border-radius: 20px; 
         cursor: pointer; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: background 0.2s;
-    }
-    .install-btn:hover { background: #e0e2e6; }
-    .install-modal {
+    }}
+    .install-btn:hover {{ background: #e0e2e6; }}
+    .install-modal {{
         display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
         background: white; padding: 20px; border-radius: 15px; z-index: 9999999;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 85%; max-width: 320px; font-family: 'Outfit', sans-serif;
-    }
-    .install-overlay {
+    }}
+    .install-overlay {{
         display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(0,0,0,0.5); z-index: 9999998; backdrop-filter: blur(2px);
-    }
+    }}
     </style>
     
     <div class="install-wrapper" style="display:flex; justify-content:flex-start; margin-bottom:-20px; position:relative; z-index:10;">

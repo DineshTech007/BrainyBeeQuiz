@@ -474,7 +474,7 @@ filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
         margin-bottom: 0px;
     }
     .hovering-bee {
-        width: 90px; /* Small enough to fit next to title on mobile */
+        width: 130px; /* Medium size on mobile */
     }
     .logo-text-container {
         padding: 10px 15px;

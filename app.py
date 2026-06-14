@@ -1501,20 +1501,28 @@ def main():
 
     display_header()
     
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("📱 Install App to Home Screen", use_container_width=True):
-            st.info("""
-            **How to install BrainyBee:**
-            
-            **📱 iPhone/iPad (Safari)**
-            1. Tap the **Share** square with an arrow at the bottom.
-            2. Scroll down and tap **Add to Home Screen**.
-            
-            **🤖 Android (Chrome)**
-            1. Tap the **Menu** (three dots) at the top right.
-            2. Tap **Add to Home screen** or **Install app**.
-            """)
+    @st.dialog("📱 Install BrainyBee App")
+    def install_popup():
+        st.markdown("""
+        **Get BrainyBee on your home screen for the best experience!**
+        
+        **📱 iPhone/iPad (Safari)**
+        1. Tap the **Share** square with an arrow at the bottom.
+        2. Scroll down and tap **Add to Home Screen**.
+        
+        **🤖 Android (Chrome)**
+        1. Tap the **Menu** (three dots) at the top right.
+        2. Tap **Add to Home screen** or **Install app**.
+        """)
+        if st.button("Close", use_container_width=True):
+            st.session_state.show_install_popup = False
+            st.rerun()
+
+    if 'show_install_popup' not in st.session_state:
+        st.session_state.show_install_popup = True
+
+    if st.session_state.show_install_popup:
+        install_popup()
     
     # Sidebar for API key check and info
     with st.sidebar:

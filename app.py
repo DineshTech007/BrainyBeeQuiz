@@ -1076,12 +1076,7 @@ def display_auth_page():
                 else:
                     st.error("Invalid username or password.")
             
-            st.markdown("<p style='text-align:center;'>OR</p>", unsafe_allow_html=True)
-            if st.button("Log in with Google ┤", use_container_width=True):
-                st.info("Google OAuth implies redirect setup. In this mockup, imagine you are logged in!")
-            if st.button("Log in with Phone ▒", use_container_width=True):
-                st.info("OTP verification implies Twilio/Firebase setup. Mockup action!")
-
+            # Removed Google and Phone mock logins
     with auth_tabs[1]:
         st.markdown("<h3 style='text-align:center;'>Join BrainyBee!</h3>", unsafe_allow_html=True)
         new_username = st.text_input("Choose Username", key="reg_user")
@@ -1498,6 +1493,11 @@ def main():
     if "user" not in st.session_state or not st.session_state.user:
         display_auth_page()
         return
+    top_col1, top_col2, top_col3 = st.columns([5, 1, 1.5])
+    with top_col3:
+        if st.button("📱 Install App", use_container_width=True):
+            st.session_state.show_install_popup = True
+            st.rerun()
 
     display_header()
     

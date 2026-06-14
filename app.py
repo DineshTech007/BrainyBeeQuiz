@@ -412,9 +412,9 @@ def display_header():
     """Display the app header with title and total stars"""
     import base64
     try:
-        with open("assets/cartoon.png", "rb") as f:
+        with open("assets/cartoon_transparent.png", "rb") as f:
             img_b64 = base64.b64encode(f.read()).decode()
-        img_html = f'<img class="flying-bee" src="data:image/png;base64,{img_b64}" width="110" style="margin-right: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">'
+        img_html = f'<img class="flying-bee" src="data:image/png;base64,{img_b64}" width="120" style="margin-left: 20px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));">'
     except:
         img_html = ""
 
@@ -429,11 +429,11 @@ def display_header():
         }}
         </style>
         <div class="logo-container" style="justify-content: center; align-items: center; display: flex; margin-bottom: 1rem;">
-            {img_html}
-            <div style="display: flex; flex-direction: column; justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; text-align: right;">
                 <div class="logo-text" style="line-height: 1.1;">BrainyBee</div>
                 <div class="logo-subtext" style="margin-top: 0;">Kids Learning</div>
             </div>
+            {img_html}
         </div>
     """, unsafe_allow_html=True)
     

@@ -436,8 +436,23 @@ def display_header():
     """
     components.html(js_code, height=0, width=0)
     
+    top_col1, top_col2 = st.columns([5, 2])
+    
     install_html = f"""
     <style>
+    @media all and (display-mode: standalone) {{
+        .install-btn-wrapper {{ display: none !important; }}
+    }}
+    .install-btn {{
+        display: flex; align-items: center; justify-content: center; width: 100%;
+        background: #ffffff; border: 1px solid #e0e0e0; border-radius: 20px; 
+        padding: 6px 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: background 0.2s;
+        font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; color: #333;
+    }}
+    .install-btn:hover {{ background: #f0f2f6; }}
+    .install-btn img {{
+        height: 24px; margin-right: 8px;
+    }}
     .install-modal {{
         display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
         background: white; padding: 20px; border-radius: 15px; z-index: 9999999;
@@ -458,20 +473,20 @@ def display_header():
         <p style="margin-top:0; font-size:14px;">1. Tap Menu (three dots).<br>2. Tap 'Install app'.</p>
         <button style="width:100%; padding:10px; margin-top:10px; border-radius:8px; border:none; background:#ff4b4b; color:white; font-weight:bold; cursor:pointer;" onclick="document.getElementById('inst-mod').style.display='none'; document.getElementById('inst-over').style.display='none';">Got it!</button>
     </div>
-    
-    <img src="dummy" style="display:none;" onerror="
-        if (!window.matchMedia('(display-mode: standalone)').matches && !sessionStorage.getItem('installPopupShown')) {{
-            const mod = document.getElementById('inst-mod');
-            const over = document.getElementById('inst-over');
-            if (mod && over) {{
-                mod.style.display='block';
-                over.style.display='block';
-                sessionStorage.setItem('installPopupShown', 'true');
-            }}
-        }}
-    ">
     """
+    
+    btn_html = f"""
+    <div class="install-btn-wrapper">
+        <button class="install-btn" onclick="document.getElementById('inst-mod').style.display='block'; document.getElementById('inst-over').style.display='block';">
+            <img src="{icon_url}"> 
+            Install App
+        </button>
+    </div>
+    """
+    
     st.markdown(install_html, unsafe_allow_html=True)
+    with top_col2:
+        st.markdown(btn_html, unsafe_allow_html=True)
 
     # Use GitHub Raw URL to absolutely guarantee it loads correctly on Streamlit Cloud
     img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/smiling_pointing_bee_transparent.png"

@@ -460,15 +460,15 @@ def display_header():
     </div>
     
     <img src="dummy" style="display:none;" onerror="
-        if (!window.matchMedia('(display-mode: standalone)').matches && !sessionStorage.getItem('installPopupShown')) {
+        if (!window.matchMedia('(display-mode: standalone)').matches && !sessionStorage.getItem('installPopupShown')) {{
             const mod = document.getElementById('inst-mod');
             const over = document.getElementById('inst-over');
-            if (mod && over) {
+            if (mod && over) {{
                 mod.style.display='block';
                 over.style.display='block';
                 sessionStorage.setItem('installPopupShown', 'true');
-            }
-        }
+            }}
+        }}
     ">
     """
     st.markdown(install_html, unsafe_allow_html=True)

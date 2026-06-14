@@ -412,7 +412,7 @@ def display_header():
     """Display the app header with title and total stars"""
     
     # Use GitHub Raw URL to absolutely guarantee it loads correctly on Streamlit Cloud
-    img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/flying_pointing_bee_transparent.png"
+    img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/smiling_pointing_bee_transparent.png"
     img_html = f'<img class="hovering-bee" src="{img_url}" width="200">'
 
     html_code = """<style>
@@ -438,20 +438,20 @@ border-radius: 20px;
 backdrop-filter: blur(5px);
 }
 @keyframes flyInRight {
-0% { transform: translate(100vw, -100px) rotate(-15deg) scale(0.8); opacity: 0; }
-100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+0% { transform: translate(100vw, 0px) scale(0.8); opacity: 0; }
+100% { transform: translate(0, 0) scale(1); opacity: 1; }
 }
 @keyframes hoverSmooth {
-0% { transform: translateY(-5px); }
-50% { transform: translateY(5px); }
-100% { transform: translateY(-5px); }
+0% { transform: translateY(-12px); }
+50% { transform: translateY(12px); }
+100% { transform: translateY(-12px); }
 }
 .flying-in-container {
-animation: flyInRight 4.5s ease-out forwards;
+animation: flyInRight 4s ease-out forwards;
 margin-left: 20px;
 }
 .hovering-bee {
-animation: hoverSmooth 3.5s ease-in-out infinite;
+animation: hoverSmooth 2.5s ease-in-out infinite;
 filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
 }
 </style>

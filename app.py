@@ -1974,21 +1974,31 @@ def main():
 
     display_header()
     
-    # Sidebar for API key check and info
+    # Check API key outside sidebar to prevent blank screens on mobile
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        try:
+            api_key = st.secrets["GEMINI_API_KEY"]
+        except Exception:
+            pass
+            
+    if not api_key:
+        st.markdown("""
+            <div style="background-color: rgba(255, 75, 75, 0.1); border-left: 5px solid #ff4b4b; padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                <h3 style="color: #ff4b4b; margin-top: 0;">⚠️ Gemini API Key Required</h3>
+                <p>To use BrainyBee, you need a Gemini API key configuration to power the AI quiz generator.</p>
+                <strong style="color: #ff4b4b;">How to configure it:</strong>
+                <ul style="margin-top: 5px; padding-left: 20px;">
+                    <li><strong>For Streamlit Cloud:</strong> Go to your app settings, click on <strong>Secrets</strong>, and add: <br><code>GEMINI_API_KEY = "your_real_api_key"</code></li>
+                    <li><strong>For Local Development:</strong> Add <code>GEMINI_API_KEY=your_real_api_key</code> to your local <code>.env</code> file.</li>
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
+        return
+
+    # Sidebar for quiz info
     with st.sidebar:
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            try:
-                api_key = st.secrets["GEMINI_API_KEY"]
-            except Exception:
-                pass
-                
-        if not api_key:
-            st.error("Gemini API key not found!")
-            st.info("Please add your API key to the .env file or Streamlit Secrets")
-            return
-        else:
-            st.success("API Key loaded")
+        st.success("API Key loaded")
         
         if st.session_state.quiz_generated:
             st.markdown(f"- **Total:** {len(st.session_state.mcqs)} Questions")

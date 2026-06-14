@@ -413,47 +413,42 @@ def display_header():
     
     # Use GitHub Raw URL to absolutely guarantee it loads correctly on Streamlit Cloud
     img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/cartoon_transparent.png"
-    img_html = f'<img class="buzzing-bee" src="{img_url}" width="100">'
+    img_html = f'<img class="buzzing-bee" src="{img_url}" width="150">'
 
     html_code = """<style>
 .header-wrapper {
-position: relative;
 display: flex;
+flex-direction: row;
 justify-content: center;
 align-items: center;
-height: 120px;
+height: 150px;
 margin-bottom: 2rem;
 margin-top: 1rem;
+overflow: visible;
 }
 .logo-text-container {
 display: flex;
 flex-direction: column;
 justify-content: center;
-text-align: center;
+text-align: right;
 z-index: 5;
-position: relative;
 background: rgba(102, 126, 234, 0.1);
 padding: 10px 30px;
 border-radius: 20px;
 backdrop-filter: blur(5px);
 }
-@keyframes orbitFly {
-0%   { transform: translate(-180px, 0px) rotate(15deg) scaleX(-1); z-index: 10; }
-25%  { transform: translate(0px, -60px) rotate(5deg) scaleX(-1); z-index: 10; }
-49.9%{ transform: translate(180px, 0px) rotate(-15deg) scaleX(-1); z-index: 10; }
-50%  { transform: translate(180px, 0px) rotate(-15deg) scaleX(1); z-index: 1; }
-75%  { transform: translate(0px, 40px) rotate(-5deg) scaleX(1); z-index: 1; }
-99.9%{ transform: translate(-180px, 0px) rotate(15deg) scaleX(1); z-index: 1; }
-100% { transform: translate(-180px, 0px) rotate(15deg) scaleX(-1); z-index: 10; }
+@keyframes flyInRight {
+0% { transform: translate(100vw, -150px) rotate(-35deg) scale(0.5); opacity: 0; }
+100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
 }
 @keyframes buzzFlap {
 0% { transform: rotate(-3deg) translateY(-2px); }
 50% { transform: rotate(3deg) translateY(2px); }
 100% { transform: rotate(-3deg) translateY(-2px); }
 }
-.orbiting-bee-container {
-position: absolute;
-animation: orbitFly 5s linear infinite;
+.flying-in-container {
+animation: flyInRight 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+margin-left: 20px;
 }
 .buzzing-bee {
 animation: buzzFlap 0.1s ease-in-out infinite;
@@ -465,7 +460,7 @@ filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
 <div class="logo-text" style="line-height: 1.1; margin:0;">BrainyBee</div>
 <div class="logo-subtext" style="margin-top: 0;">Kids Learning</div>
 </div>
-<div class="orbiting-bee-container">
+<div class="flying-in-container">
 """ + img_html + """
 </div>
 </div>

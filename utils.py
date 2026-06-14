@@ -955,8 +955,9 @@ def generate_english_comprehension_mcqs(num_passages: int = 2, questions_per_pas
             
             # Format questions to include the passage for reference in the UI
             for mcq in mcqs:
-                mcq["question"] = f"**[Reading Passage {i+1}]**\n\n{passage}\n\n**Question:** {mcq['question']}"
-                mcq["source"] = "pdf"  # Render as standard PDF source question
+                mcq["passage"] = passage
+                mcq["passage_id"] = i + 1
+                mcq["source"] = "english_comprehension"
                 all_mcqs.append(mcq)
         except Exception as e:
             print(f"Error generating comprehension passage {i+1}: {e}")

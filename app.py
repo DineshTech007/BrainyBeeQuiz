@@ -178,6 +178,11 @@ st.markdown("""
         color: white;
     }
     
+    .source-english_comprehension {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        color: white;
+    }
+    
     /* Button styling */
     button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -705,11 +710,24 @@ def display_quiz_questions():
         label = " From PDF"
     elif source == "internet":
         label = " From Internet"
+    elif source == "english_comprehension":
+        label = " Reading Comprehension"
     else:
         label = " From Topic"
     
     source_badge = f"<span class='source-badge source-{source}'>{label}</span>"
     
+    # Display the reading comprehension passage if present
+    if "passage" in current_mcq:
+        st.markdown(f"""
+            <div style='background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); 
+                        padding: 1.5rem; border-radius: 12px; border-left: 5px solid #38ef7d; margin-bottom: 1.2rem;
+                        line-height: 1.6; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); color: #fff;'>
+                 <strong>📖 Reading Passage {current_mcq.get('passage_id', '')}:</strong><br><br>
+                 {current_mcq['passage']}
+            </div>
+        """, unsafe_allow_html=True)
+        
     st.markdown(f"""
         <div class='question-card'>
             <h3> {current_mcq['question']}</h3>
@@ -826,17 +844,33 @@ def display_quiz_list_format():
     """, unsafe_allow_html=True)
     
     # Display all questions
+    last_rendered_passage_id = None
     for q_index, mcq in enumerate(st.session_state.mcqs):
         source = mcq.get("source", "unknown")
         if source == "pdf":
             label = " PDF"
         elif source == "internet":
             label = " Internet"
+        elif source == "english_comprehension":
+            label = " Reading Comprehension"
         else:
             label = " Prompt"
         
         source_badge = f"<span class='source-badge source-{source}'>{label}</span>"
         
+        # Display reading comprehension passage once per unique passage in list view
+        passage_id = mcq.get("passage_id")
+        if passage_id and passage_id != last_rendered_passage_id:
+            st.markdown(f"""
+                <div style='background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%); 
+                            padding: 1.5rem; border-radius: 12px; border-left: 5px solid #38ef7d; margin-bottom: 1.2rem;
+                            margin-top: 1.5rem; line-height: 1.6; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); color: #fff;'>
+                     <strong>📖 Reading Passage {passage_id}:</strong><br><br>
+                     {mcq['passage']}
+                </div>
+            """, unsafe_allow_html=True)
+            last_rendered_passage_id = passage_id
+            
         already_answered = q_index in st.session_state.answered_questions
         
         st.markdown(f"""

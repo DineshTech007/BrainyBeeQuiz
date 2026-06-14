@@ -1124,49 +1124,56 @@ def display_auth_page():
 
     st.divider()
     st.markdown("<p style='text-align:center; color:white; opacity:0.7; font-size:13px;'>Add BrainyBee to your home screen for the best experience!</p>", unsafe_allow_html=True)
-    install_btn_html = """
-    <div id="auth-install-wrapper" style="display:flex; justify-content:center; margin-bottom:20px;">
-        <button id="auth-install-btn" style="background:#ff4b4b; color:white; border:none; border-radius:8px; padding:12px 32px; font-size:15px; font-weight:bold; cursor:pointer;">
+    components.html("""
+    <html>
+    <body style="margin:0; padding:0; background:transparent;">
+    <div style="display:flex; justify-content:center; padding:10px 0 20px 0;">
+        <button id="install-btn" onclick="handleInstall()" style="
+            background:#ff4b4b; color:white; border:none; border-radius:8px;
+            padding:12px 32px; font-size:15px; font-weight:bold; cursor:pointer;
+            font-family:sans-serif;">
             &#x1F41D; Install App
         </button>
     </div>
-    <img src="x" style="display:none;" onerror="
-        (function() {
-            var topWin = window.top || window.parent || window;
-            if (!topWin._brainybeeInstallReady) {
-                topWin._brainybeeInstallReady = true;
-                topWin._deferredInstall = null;
-                topWin.addEventListener('beforeinstallprompt', function(e) {
-                    e.preventDefault();
-                    topWin._deferredInstall = e;
-                });
+    <div id="msg" style="text-align:center; font-family:sans-serif; font-size:13px; color:#333; padding:0 10px;"></div>
+    <script>
+        var deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('msg').innerText = 'Tap the button to install!';
+        });
+
+        window.addEventListener('appinstalled', function() {
+            document.getElementById('install-btn').style.display = 'none';
+            document.getElementById('msg').innerText = 'App installed successfully!';
+        });
+
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            document.getElementById('install-btn').style.display = 'none';
+            document.getElementById('msg').innerText = 'App already installed!';
+        }
+
+        async function handleInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                var result = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                var ua = navigator.userAgent || '';
+                var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                if (isIOS) {
+                    document.getElementById('msg').innerHTML = '<b>iPhone/iPad:</b><br>1. Tap the <b>Share</b> icon at bottom of Safari.<br>2. Tap <b>Add to Home Screen</b>.';
+                } else {
+                    document.getElementById('msg').innerHTML = '<b>Android Chrome:</b><br>1. Tap the <b>3-dot menu</b> at top right.<br>2. Tap <b>Install app</b> or <b>Add to Home screen</b>.';
+                }
             }
-            var btn = document.getElementById('auth-install-btn');
-            var wrapper = document.getElementById('auth-install-wrapper');
-            if (topWin.matchMedia('(display-mode: standalone)').matches && wrapper) {
-                wrapper.style.display = 'none';
-            }
-            if (btn) {
-                btn.onclick = async function() {
-                    if (topWin._deferredInstall) {
-                        topWin._deferredInstall.prompt();
-                        await topWin._deferredInstall.userChoice;
-                        topWin._deferredInstall = null;
-                    } else {
-                        var ua = navigator.userAgent;
-                        var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-                        if (isIOS) {
-                            alert('On iPhone/iPad (Safari):\n1. Tap the Share icon at the bottom.\n2. Tap Add to Home Screen.');
-                        } else {
-                            alert('On Android (Chrome):\n1. Tap the 3-dot Menu at top right.\n2. Tap Install app or Add to Home screen.');
-                        }
-                    }
-                };
-            }
-        })();
-    ">
-    """
-    st.markdown(install_btn_html, unsafe_allow_html=True)
+        }
+    </script>
+    </body>
+    </html>
+    """, height=120)
 
 def display_10th_exam():
     st.markdown("<p style='text-align:center;color:white;opacity:0.9;font-size:1.1em;'>Subject-wise 10th Grade Exams</p>", unsafe_allow_html=True)

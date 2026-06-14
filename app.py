@@ -411,6 +411,12 @@ if "default_tab_index" not in st.session_state:
 def display_header():
     """Display the app header with title and total stars"""
     
+    top_col1, top_col2, top_col3 = st.columns([5, 1, 1.5])
+    with top_col3:
+        if st.button("📱 Install App", use_container_width=True):
+            st.session_state.show_install_popup = True
+            st.rerun()
+
     # Use GitHub Raw URL to absolutely guarantee it loads correctly on Streamlit Cloud
     img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/smiling_pointing_bee_transparent.png"
     img_html = f'<img class="hovering-bee" src="{img_url}">'
@@ -1493,11 +1499,6 @@ def main():
     if "user" not in st.session_state or not st.session_state.user:
         display_auth_page()
         return
-    top_col1, top_col2, top_col3 = st.columns([5, 1, 1.5])
-    with top_col3:
-        if st.button("📱 Install App", use_container_width=True):
-            st.session_state.show_install_popup = True
-            st.rerun()
 
     display_header()
     

@@ -466,18 +466,25 @@ filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
         height: 120px;
         padding-top: 10px;
         padding-bottom: 10px;
+        flex-wrap: nowrap;
     }
     .flying-in-container {
         position: relative;
         left: auto;
-        margin-left: 10px;
+        margin-left: -5px;
         margin-bottom: 0px;
     }
     .hovering-bee {
-        width: 130px; /* Medium size on mobile */
+        width: 160px; /* Much larger bee on mobile */
     }
     .logo-text-container {
-        padding: 10px 15px;
+        padding: 5px 10px;
+    }
+    .logo-text {
+        font-size: 26px !important; /* Shrink title to fit huge bee */
+    }
+    .logo-subtext {
+        font-size: 14px !important;
     }
 }
 </style>

@@ -412,8 +412,8 @@ def display_header():
     """Display the app header with title and total stars"""
     
     # Use GitHub Raw URL to absolutely guarantee it loads correctly on Streamlit Cloud
-    img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/cartoon_transparent.png"
-    img_html = f'<img class="buzzing-bee" src="{img_url}" width="150">'
+    img_url = "https://raw.githubusercontent.com/DineshTech007/BrainyBeeQuiz/main/assets/pointing_bee_transparent.png"
+    img_html = f'<img class="hovering-bee" src="{img_url}" width="200">'
 
     html_code = """<style>
 .header-wrapper {
@@ -421,7 +421,7 @@ display: flex;
 flex-direction: row;
 justify-content: center;
 align-items: center;
-height: 150px;
+height: 180px;
 margin-bottom: 2rem;
 margin-top: 1rem;
 overflow: visible;
@@ -441,17 +441,17 @@ backdrop-filter: blur(5px);
 0% { transform: translate(100vw, -150px) rotate(-35deg) scale(0.5); opacity: 0; }
 100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
 }
-@keyframes buzzFlap {
-0% { transform: rotate(-3deg) translateY(-2px); }
-50% { transform: rotate(3deg) translateY(2px); }
-100% { transform: rotate(-3deg) translateY(-2px); }
+@keyframes hoverSmooth {
+0% { transform: translateY(-5px); }
+50% { transform: translateY(5px); }
+100% { transform: translateY(-5px); }
 }
 .flying-in-container {
-animation: flyInRight 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+animation: flyInRight 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 margin-left: 20px;
 }
-.buzzing-bee {
-animation: buzzFlap 0.1s ease-in-out infinite;
+.hovering-bee {
+animation: hoverSmooth 3.5s ease-in-out infinite;
 filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
 }
 </style>

@@ -414,11 +414,20 @@ def display_header():
     try:
         with open("assets/cartoon.png", "rb") as f:
             img_b64 = base64.b64encode(f.read()).decode()
-        img_html = f'<img src="data:image/png;base64,{img_b64}" width="110" style="margin-right: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">'
+        img_html = f'<img class="flying-bee" src="data:image/png;base64,{img_b64}" width="110" style="margin-right: 15px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">'
     except:
         img_html = ""
 
     st.markdown(f"""
+        <style>
+        @keyframes flyBounce {{
+            0%, 100% {{ transform: translateY(0); }}
+            50% {{ transform: translateY(-12px); }}
+        }}
+        .flying-bee {{
+            animation: flyBounce 2.5s ease-in-out infinite;
+        }}
+        </style>
         <div class="logo-container" style="justify-content: center; align-items: center; display: flex; margin-bottom: 1rem;">
             {img_html}
             <div style="display: flex; flex-direction: column; justify-content: center;">

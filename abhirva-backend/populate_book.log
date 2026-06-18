@@ -1,0 +1,130 @@
+[2026-06-17 02:36:45] === Starting Chess Book Population Orchestration ===
+[2026-06-17 02:36:45] Successfully opened PDF. Total pages: 303
+[2026-06-17 02:36:45] Configuration: Range=15-19, ChunkSize=5, Sleep=20s
+[2026-06-17 02:36:45] 
+--- Processing Chunk: Pages 15 to 19 ---
+[2026-06-17 02:36:46] Warning: No variations extracted/saved for pages 15-19.
+[2026-06-17 02:36:46] 
+=== Orchestration Job Finished ===
+[2026-06-17 02:36:46] All pages have been processed or skipped.
+[2026-06-17 02:47:23] === Starting Chess Book Population Orchestration ===
+[2026-06-17 02:47:23] Successfully opened PDF. Total pages: 303
+[2026-06-17 02:47:23] Configuration: Range=15-303, ChunkSize=10, Sleep=20s
+[2026-06-17 02:47:23] 
+--- Processing Chunk: Pages 15 to 24 ---
+[2026-06-17 02:47:24] Warning: No variations extracted/saved for pages 15-24.
+[2026-06-17 02:47:24] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:47:44] 
+--- Processing Chunk: Pages 25 to 34 ---
+[2026-06-17 02:47:45] Warning: No variations extracted/saved for pages 25-34.
+[2026-06-17 02:47:45] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:48:05] 
+--- Processing Chunk: Pages 35 to 44 ---
+[2026-06-17 02:48:05] Warning: No variations extracted/saved for pages 35-44.
+[2026-06-17 02:48:05] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:48:25] 
+--- Processing Chunk: Pages 45 to 54 ---
+[2026-06-17 02:48:26] Warning: No variations extracted/saved for pages 45-54.
+[2026-06-17 02:48:26] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:48:46] 
+--- Processing Chunk: Pages 55 to 64 ---
+[2026-06-17 02:48:47] Warning: No variations extracted/saved for pages 55-64.
+[2026-06-17 02:48:47] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:49:07] 
+--- Processing Chunk: Pages 65 to 74 ---
+[2026-06-17 02:49:08] Warning: No variations extracted/saved for pages 65-74.
+[2026-06-17 02:49:08] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:49:28] 
+--- Processing Chunk: Pages 75 to 84 ---
+[2026-06-17 02:49:29] Warning: No variations extracted/saved for pages 75-84.
+[2026-06-17 02:49:29] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:49:49] 
+--- Processing Chunk: Pages 85 to 94 ---
+[2026-06-17 02:49:50] Warning: No variations extracted/saved for pages 85-94.
+[2026-06-17 02:49:50] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:50:10] 
+--- Processing Chunk: Pages 95 to 104 ---
+[2026-06-17 02:50:11] Warning: No variations extracted/saved for pages 95-104.
+[2026-06-17 02:50:11] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:50:31] 
+--- Processing Chunk: Pages 105 to 114 ---
+[2026-06-17 02:50:32] Warning: No variations extracted/saved for pages 105-114.
+[2026-06-17 02:50:32] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:50:52] 
+--- Processing Chunk: Pages 115 to 124 ---
+[2026-06-17 02:50:53] Warning: No variations extracted/saved for pages 115-124.
+[2026-06-17 02:50:53] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:51:13] 
+--- Processing Chunk: Pages 125 to 134 ---
+[2026-06-17 02:51:13] Warning: No variations extracted/saved for pages 125-134.
+[2026-06-17 02:51:13] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:51:33] 
+--- Processing Chunk: Pages 135 to 144 ---
+[2026-06-17 02:51:34] Warning: No variations extracted/saved for pages 135-144.
+[2026-06-17 02:51:34] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:51:54] 
+--- Processing Chunk: Pages 145 to 154 ---
+[2026-06-17 02:51:55] Warning: No variations extracted/saved for pages 145-154.
+[2026-06-17 02:51:55] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:52:15] 
+--- Processing Chunk: Pages 155 to 164 ---
+[2026-06-17 02:52:16] Warning: No variations extracted/saved for pages 155-164.
+[2026-06-17 02:52:16] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:52:36] 
+--- Processing Chunk: Pages 165 to 174 ---
+[2026-06-17 02:52:37] Warning: No variations extracted/saved for pages 165-174.
+[2026-06-17 02:52:37] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:52:57] 
+--- Processing Chunk: Pages 175 to 184 ---
+[2026-06-17 02:52:58] Warning: No variations extracted/saved for pages 175-184.
+[2026-06-17 02:52:58] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:53:18] 
+--- Processing Chunk: Pages 185 to 194 ---
+[2026-06-17 02:53:19] Warning: No variations extracted/saved for pages 185-194.
+[2026-06-17 02:53:19] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:53:39] 
+--- Processing Chunk: Pages 195 to 204 ---
+[2026-06-17 02:53:40] Warning: No variations extracted/saved for pages 195-204.
+[2026-06-17 02:53:40] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:54:00] 
+--- Processing Chunk: Pages 205 to 214 ---
+[2026-06-17 02:54:01] Warning: No variations extracted/saved for pages 205-214.
+[2026-06-17 02:54:01] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:54:21] 
+--- Processing Chunk: Pages 215 to 224 ---
+[2026-06-17 02:54:21] Warning: No variations extracted/saved for pages 215-224.
+[2026-06-17 02:54:21] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:54:41] 
+--- Processing Chunk: Pages 225 to 234 ---
+[2026-06-17 02:54:42] Warning: No variations extracted/saved for pages 225-234.
+[2026-06-17 02:54:42] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:55:02] 
+--- Processing Chunk: Pages 235 to 244 ---
+[2026-06-17 02:55:03] Warning: No variations extracted/saved for pages 235-244.
+[2026-06-17 02:55:03] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:55:23] 
+--- Processing Chunk: Pages 245 to 254 ---
+[2026-06-17 02:55:24] Warning: No variations extracted/saved for pages 245-254.
+[2026-06-17 02:55:24] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:55:44] 
+--- Processing Chunk: Pages 255 to 264 ---
+[2026-06-17 02:55:45] Warning: No variations extracted/saved for pages 255-264.
+[2026-06-17 02:55:45] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:56:05] 
+--- Processing Chunk: Pages 265 to 274 ---
+[2026-06-17 02:56:06] Warning: No variations extracted/saved for pages 265-274.
+[2026-06-17 02:56:06] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:56:26] 
+--- Processing Chunk: Pages 275 to 284 ---
+[2026-06-17 02:56:27] Warning: No variations extracted/saved for pages 275-284.
+[2026-06-17 02:56:27] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:56:47] 
+--- Processing Chunk: Pages 285 to 294 ---
+[2026-06-17 02:56:48] Warning: No variations extracted/saved for pages 285-294.
+[2026-06-17 02:56:48] Respecting rate limit: Sleeping for 20 seconds...
+[2026-06-17 02:57:08] 
+--- Processing Chunk: Pages 295 to 303 ---
+[2026-06-17 02:57:09] Warning: No variations extracted/saved for pages 295-303.
+[2026-06-17 02:57:09] 
+=== Orchestration Job Finished ===
+[2026-06-17 02:57:09] All pages have been processed or skipped.

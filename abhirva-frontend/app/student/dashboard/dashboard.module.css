@@ -1,0 +1,264 @@
+.dashboardContainer {
+  padding: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.welcomeText h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcomeText p {
+  color: var(--text-secondary);
+}
+
+.pointsBadge {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(244, 63, 94, 0.05));
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.2);
+}
+
+.pointsValue {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--accent-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Main Grid Layout */
+/* ------------------------------------------------------------------ */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.section {
+  padding: 2rem;
+}
+
+/* Full-width zone for subjects */
+.section[style*="gridColumn"] {
+  grid-column: 1 / -1;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Subjects Grid (inside the 10th Grade zone) */
+/* ------------------------------------------------------------------ */
+.subjectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.subjectCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.subjectCard:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.subjectEmoji {
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.startBtn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.startBtn:hover {
+  background: var(--secondary-color);
+  box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Locked Feature Card */
+/* ------------------------------------------------------------------ */
+.lockedCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  border: 2px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.15);
+  min-height: 200px;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.lockedCard:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.lockedEmoji {
+  font-size: 2.5rem;
+  filter: grayscale(1) opacity(0.6);
+  margin-bottom: 0.25rem;
+}
+
+.lockedTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.lockedDesc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(244, 63, 94, 0.08);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  color: rgba(244, 63, 94, 0.8);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Loading Pulse */
+/* ------------------------------------------------------------------ */
+.loadingPulse {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 2rem;
+  text-align: center;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Leaderboard */
+/* ------------------------------------------------------------------ */
+.leaderboardList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.leaderboardItem {
+  display: flex;
+  align-items: center;
+  padding: 0.9rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+.leaderboardItem:last-child {
+  border-bottom: none;
+}
+
+.leaderboardItem:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.rank {
+  font-size: 1.3rem;
+  font-weight: 800;
+  width: 44px;
+  color: var(--text-secondary);
+}
+
+.rank1 { color: #fbbf24; }
+.rank2 { color: #94a3b8; }
+.rank3 { color: #b45309; }
+
+.name {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.score {
+  font-weight: 800;
+  color: var(--success-color);
+  font-size: 0.95rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive */
+/* ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+  .dashboardContainer {
+    padding: 1.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .welcomeText h1 {
+    font-size: 1.8rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .subjectsGrid {
+    grid-template-columns: 1fr;
+  }
+}

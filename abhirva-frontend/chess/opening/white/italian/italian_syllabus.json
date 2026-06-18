@@ -1,0 +1,3137 @@
+{
+  "opening_name_mr": "इटालियन गेम (The Italian Game)",
+  "opening_name_en": "The Italian Game",
+  "opening_name_hi": "इटालियन गेम (The Italian Game)",
+  "difficulty": "Advanced",
+  "recommended_age": "10-18 Years",
+  "variations": [
+    {
+      "id": "slow_main",
+      "name_en": "Slow Italian Main Line",
+      "name_mr": "Slow Italian (मुख्य पद्धत)",
+      "name_hi": "धीमा इटालियन (मुख्य रेखा)",
+      "description_en": "The recommended quiet way to play the Italian Game.",
+      "description_mr": "हे या पुस्तकाचे मुख्य शिफारस केलेले वेरिएशन आहे. White शांतपणे सुरुवातीला पॉन्स पुढे नेतो आणि नंतर हल्ला करतो.",
+      "description_hi": "यह एक शांत लेकिन खतरनाक तरीका है। सफेद धीरे-धीरे हमला करता है।",
+      "moves": [
+        {
+          "step": 0,
+          "notation": "सुरुवात",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "highlight_squares": [],
+          "coach_text_en": "Today we will learn the Giuoco Pianissimo, a slow and venomous setup in the Italian Game.",
+          "coach_text_mr": "आज आपण इटालियन गेमची सर्वात खतरनाक आणि स्लो (Slow) पद्धत बघणार आहोत.",
+          "coach_text_hi": "आज हम इटालियन गेम का सबसे खतरनाक और धीमा (Slow) तरीका सीखेंगे।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 1,
+          "notation": "e4",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+          "highlight_squares": [
+            "e2",
+            "e4"
+          ],
+          "coach_text_en": "We start with e4, controlling the center.",
+          "coach_text_mr": "e4 खेळून मध्यभागावर नियंत्रण मिळवले आहे.",
+          "coach_text_hi": "e4 खेलकर मध्य भाग पर नियंत्रण किया है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 2,
+          "notation": "e5",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+          "highlight_squares": [
+            "e7",
+            "e5"
+          ],
+          "coach_text_en": "Black replies symmetrically with e5.",
+          "coach_text_mr": "काळ्याने e5 खेळून तसेच उत्तर दिले.",
+          "coach_text_hi": "काले ने e5 खेलकर वैसा ही जवाब दिया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 3,
+          "notation": "Nf3",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+          "highlight_squares": [
+            "g1",
+            "f3"
+          ],
+          "coach_text_en": "Nf3 develops a knight and attacks the e5 pawn.",
+          "coach_text_mr": "Nf3 खेळून घोड्याला पुढे आणले आणि e5 प्याद्यावर हल्ला केला.",
+          "coach_text_hi": "Nf3 खेलकर घोड़े को आगे निकाला और e5 मोहरे पर हमला किया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 4,
+          "notation": "Nc6",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+          "highlight_squares": [
+            "b8",
+            "c6"
+          ],
+          "coach_text_en": "Black defends with Nc6.",
+          "coach_text_mr": "काळ्याने Nc6 खेळून बचाव केला.",
+          "coach_text_hi": "काले ने Nc6 खेलकर बचाव किया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 5,
+          "notation": "Bc4",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+          "highlight_squares": [
+            "f1",
+            "c4"
+          ],
+          "coach_text_en": "Bc4 is the Italian Game! The bishop eyes the weak f7 square.",
+          "coach_text_mr": "Bc4 म्हणजे इटालियन गेम! उंट f7 च्या कमकुवत घरावर नजर ठेवून आहे.",
+          "coach_text_hi": "Bc4 का मतलब है इटालियन गेम! ऊंट f7 के कमज़ोर घर पर नज़र रखे हुए है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 6,
+          "notation": "Bc5",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "b",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+          "highlight_squares": [
+            "f8",
+            "c5"
+          ],
+          "coach_text_en": "Black develops their bishop to c5. This is the Giuoco Piano.",
+          "coach_text_mr": "काळ्याने आपला उंट c5 वर आणला. याला 'गिउको पियानो' म्हणतात.",
+          "coach_text_hi": "काले ने अपना ऊंट c5 पर निकाला। इसे 'गिउको पियानो' कहते हैं।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 7,
+          "notation": "c3",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "b",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "P",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4",
+          "highlight_squares": [
+            "c2",
+            "c3"
+          ],
+          "coach_text_en": "White plays c3, preparing to build a strong center with d4 or playing slowly.",
+          "coach_text_mr": "पांढऱ्याने c3 खेळले आहे. आपण घाई न करता d3 खेळणार आहोत.",
+          "coach_text_hi": "सफेद ने c3 खेला है। यह एक धीमी शुरुआत है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 8,
+          "notation": "Nf6",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "n",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "b",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "P",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R w KQkq - 1 5",
+          "highlight_squares": [
+            "g8",
+            "f6"
+          ],
+          "coach_text_en": "Black develops the knight to f6, attacking e4.",
+          "coach_text_mr": "काळ्याने घोडा f6 वर आणून e4 वर हल्ला केला आहे.",
+          "coach_text_hi": "काले ने घोड़ा f6 पर निकालकर e4 पर हमला किया है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 9,
+          "notation": "d3",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "n",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "b",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "P",
+              "P",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "",
+              "",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2PP1N2/PP3PPP/RNBQK2R b KQkq - 0 5",
+          "highlight_squares": [
+            "d2",
+            "d3"
+          ],
+          "coach_text_en": "White defends with d3. This is the Giuoco Pianissimo (Very Quiet Game).",
+          "coach_text_mr": "पांढऱ्याने d3 खेळून बचाव केला. याला 'गिउको पियानिसिमो' म्हणतात.",
+          "coach_text_hi": "सफेद ने d3 खेलकर बचाव किया। इसे 'गिउको पियानिसिमो' कहते हैं।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        }
+      ]
+    },
+    {
+      "id": "evans_gambit",
+      "name_en": "Evans Gambit",
+      "name_mr": "इव्हान्स गॅम्बिट",
+      "name_hi": "इवांस गैम्बिट",
+      "description_en": "An aggressive gambit line sacrificing a wing pawn for rapid development.",
+      "description_mr": "एक आक्रमक गॅम्बिट ज्यात प्यादे बळी देऊन जलद विकास साधला जातो.",
+      "description_hi": "एक आक्रामक गैम्बिट जिसमें मोहरा बलिदान करके तेज़ विकास किया जाता है।",
+      "moves": [
+        {
+          "step": 0,
+          "notation": "सुरुवात",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "highlight_squares": [],
+          "coach_text_en": "Let's explore the Evans Gambit, an aggressive and tactical masterpiece.",
+          "coach_text_mr": "चला इव्हान्स गॅम्बिट शिकूया, एक आक्रमक आणि रणनीतिक चाल.",
+          "coach_text_hi": "आइए इवांस गैम्बिट सीखते हैं, जो एक आक्रामक और रणनीतिक चाल है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 1,
+          "notation": "e4",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+          "highlight_squares": [
+            "e2",
+            "e4"
+          ],
+          "coach_text_en": "Standard e4 opening.",
+          "coach_text_mr": "सामान्य e4 सुरुवात.",
+          "coach_text_hi": "सामान्य e4 शुरुआत।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 2,
+          "notation": "e5",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+          "highlight_squares": [
+            "e7",
+            "e5"
+          ],
+          "coach_text_en": "Black replies e5.",
+          "coach_text_mr": "काळ्याचे e5 उत्तर.",
+          "coach_text_hi": "काले का e5 जवाब।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 3,
+          "notation": "Nf3",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+          "highlight_squares": [
+            "g1",
+            "f3"
+          ],
+          "coach_text_en": "Knight to f3.",
+          "coach_text_mr": "घोडा f3 वर.",
+          "coach_text_hi": "घोड़ा f3 पर।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 4,
+          "notation": "Nc6",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+          "highlight_squares": [
+            "b8",
+            "c6"
+          ],
+          "coach_text_en": "Knight to c6.",
+          "coach_text_mr": "घोडा c6 वर.",
+          "coach_text_hi": "घोड़ा c6 पर।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 5,
+          "notation": "Bc4",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+          "highlight_squares": [
+            "f1",
+            "c4"
+          ],
+          "coach_text_en": "Italian Game.",
+          "coach_text_mr": "इटालियन गेम.",
+          "coach_text_hi": "इटालियन गेम।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 6,
+          "notation": "Bc5",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "b",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+          "highlight_squares": [
+            "f8",
+            "c5"
+          ],
+          "coach_text_en": "Giuoco Piano.",
+          "coach_text_mr": "गिउको पियानो.",
+          "coach_text_hi": "गिउको पियानो।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 7,
+          "notation": "b4",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "b",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "P",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/1PB1P3/5N2/P1PP1PPP/RNBQK2R b KQkq - 0 4",
+          "highlight_squares": [
+            "b2",
+            "b4"
+          ],
+          "coach_text_en": "b4! The Evans Gambit! White sacrifices a pawn to build a rapid attack.",
+          "coach_text_mr": "b4! इव्हान्स गॅम्बिट! पांढरा एक प्यादे बळी देऊन जलद आक्रमण करतो.",
+          "coach_text_hi": "b4! इवांस गैम्बिट! सफेद एक मोहरा बलिदान करके तेज़ हमला करता है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 8,
+          "notation": "Bxb4",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "b",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk1nr/pppp1ppp/2n5/4p3/1bB1P3/5N2/P1PP1PPP/RNBQK2R w KQkq - 0 5",
+          "highlight_squares": [
+            "c5",
+            "b4"
+          ],
+          "coach_text_en": "Black accepts the gambit.",
+          "coach_text_mr": "काळ्याने प्यादे मारले.",
+          "coach_text_hi": "काले ने मोहरे को मार लिया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 9,
+          "notation": "c3",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "b",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "P",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "",
+              "",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqk1nr/pppp1ppp/2n5/4p3/1bB1P3/2P2N2/P2P1PPP/RNBQK2R b KQkq - 0 5",
+          "highlight_squares": [
+            "c2",
+            "c3"
+          ],
+          "coach_text_en": "White plays c3, attacking the bishop and preparing d4.",
+          "coach_text_mr": "पांढऱ्याने c3 खेळून उंटावर हल्ला केला आणि d4 ची तयारी केली.",
+          "coach_text_hi": "सफेद ने c3 खेलकर ऊंट पर हमला किया और d4 की तैयारी की।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        }
+      ]
+    },
+    {
+      "id": "fried_liver",
+      "name_en": "Fried Liver Attack",
+      "name_mr": "फ्राईड लिव्हर अटॅक",
+      "name_hi": "फ्राइड लिवर अटैक",
+      "description_en": "A sharp, sacrificial attack against the Two Knights defense.",
+      "description_mr": "टू नाइट्स डिफेन्स विरुद्ध एक तीव्र आणि आक्रमक हल्ला.",
+      "description_hi": "टू नाइट्स डिफेंस के खिलाफ एक बहुत ही आक्रामक और खतरनाक हमला।",
+      "moves": [
+        {
+          "step": 0,
+          "notation": "सुरुवात",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+          "highlight_squares": [],
+          "coach_text_en": "Let's look at the Fried Liver Attack, a terrifying weapon against the Two Knights Defense.",
+          "coach_text_mr": "चला फ्राईड लिव्हर अटॅक बघूया, जो टू नाइट्स डिफेन्स विरुद्ध एक भयानक शस्त्र आहे.",
+          "coach_text_hi": "आइए फ्राइड लिवर अटैक देखते हैं, जो टू नाइट्स डिफेंस के खिलाफ एक खतरनाक चाल है।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 1,
+          "notation": "e4",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+          "highlight_squares": [
+            "e2",
+            "e4"
+          ],
+          "coach_text_en": "Standard e4 opening.",
+          "coach_text_mr": "सामान्य e4 सुरुवात.",
+          "coach_text_hi": "सामान्य e4 शुरुआत।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 2,
+          "notation": "e5",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "N",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+          "highlight_squares": [
+            "e7",
+            "e5"
+          ],
+          "coach_text_en": "Black replies e5.",
+          "coach_text_mr": "काळ्याचे e5 उत्तर.",
+          "coach_text_hi": "काले का e5 जवाब।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 3,
+          "notation": "Nf3",
+          "board": [
+            [
+              "r",
+              "n",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+          "highlight_squares": [
+            "g1",
+            "f3"
+          ],
+          "coach_text_en": "Knight to f3.",
+          "coach_text_mr": "घोडा f3 वर.",
+          "coach_text_hi": "घोड़ा f3 पर।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 4,
+          "notation": "Nc6",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "B",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+          "highlight_squares": [
+            "b8",
+            "c6"
+          ],
+          "coach_text_en": "Knight to c6.",
+          "coach_text_mr": "घोडा c6 वर.",
+          "coach_text_hi": "घोड़ा c6 पर।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 5,
+          "notation": "Bc4",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "n",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+          "highlight_squares": [
+            "f1",
+            "c4"
+          ],
+          "coach_text_en": "Italian Game.",
+          "coach_text_mr": "इटालियन गेम.",
+          "coach_text_hi": "इटालियन गेम।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 6,
+          "notation": "Nf6",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "n",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "N",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+          "highlight_squares": [
+            "g8",
+            "f6"
+          ],
+          "coach_text_en": "Two Knights Defense. Black attacks the e4 pawn.",
+          "coach_text_mr": "टू नाइट्स डिफेन्स. काळ्याने e4 प्याद्यावर हल्ला केला.",
+          "coach_text_hi": "टू नाइट्स डिफेंस। काले ने e4 मोहरे पर हमला किया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 7,
+          "notation": "Ng5",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "p",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "n",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "p",
+              "",
+              "N",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p1N1/2B1P3/8/PPPP1PPP/RNBQK2R b KQkq - 5 4",
+          "highlight_squares": [
+            "f3",
+            "g5"
+          ],
+          "coach_text_en": "Ng5! White immediately attacks the f7 pawn with the knight and bishop.",
+          "coach_text_mr": "Ng5! पांढऱ्याने लगेचच f7 प्याद्यावर घोडा आणि उंटाने हल्ला केला.",
+          "coach_text_hi": "Ng5! सफेद ने तुरंत f7 मोहरे पर घोड़े और ऊंट से हमला किया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 8,
+          "notation": "d5",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "n",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "p",
+              "p",
+              "",
+              "N",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "P",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkb1r/ppp2ppp/2n2n2/3pp1N1/2B1P3/8/PPPP1PPP/RNBQK2R w KQkq - 0 5",
+          "highlight_squares": [
+            "d7",
+            "d5"
+          ],
+          "coach_text_en": "Black must play d5 to block the bishop.",
+          "coach_text_mr": "काळ्याला उंटाला रोखण्यासाठी d5 खेळावेच लागेल.",
+          "coach_text_hi": "काले को ऊंट को रोकने के लिए d5 खेलना ही होगा।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 9,
+          "notation": "exd5",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "n",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "P",
+              "p",
+              "",
+              "N",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkb1r/ppp2ppp/2n2n2/3Pp1N1/2B5/8/PPPP1PPP/RNBQK2R b KQkq - 0 5",
+          "highlight_squares": [
+            "e4",
+            "d5"
+          ],
+          "coach_text_en": "White captures the pawn.",
+          "coach_text_mr": "पांढऱ्याने प्यादे मारले.",
+          "coach_text_hi": "सफेद ने मोहरा मार लिया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 10,
+          "notation": "Nxd5",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "",
+              "",
+              "p",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "n",
+              "p",
+              "",
+              "N",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkb1r/ppp2ppp/2n5/3np1N1/2B5/8/PPPP1PPP/RNBQK2R w KQkq - 0 6",
+          "highlight_squares": [
+            "f6",
+            "d5"
+          ],
+          "coach_text_en": "Black recaptures with the knight, stepping into the trap!",
+          "coach_text_mr": "काळ्याने घोड्याने परत मारले, आणि जाळ्यात अडकला!",
+          "coach_text_hi": "काले ने घोड़े से वापस मारा, और जाल में फंस गया!",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        },
+        {
+          "step": 11,
+          "notation": "Nxf7",
+          "board": [
+            [
+              "r",
+              "",
+              "b",
+              "q",
+              "k",
+              "b",
+              "",
+              "r"
+            ],
+            [
+              "p",
+              "p",
+              "p",
+              "",
+              "",
+              "N",
+              "p",
+              "p"
+            ],
+            [
+              "",
+              "",
+              "n",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "n",
+              "p",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "B",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "P",
+              "P",
+              "P",
+              "P",
+              "",
+              "P",
+              "P",
+              "P"
+            ],
+            [
+              "R",
+              "N",
+              "B",
+              "Q",
+              "K",
+              "",
+              "",
+              "R"
+            ]
+          ],
+          "fen": "r1bqkb1r/ppp2Npp/2n5/3np3/2B5/8/PPPP1PPP/RNBQK2R b KQkq - 0 6",
+          "highlight_squares": [
+            "g5",
+            "f7"
+          ],
+          "coach_text_en": "Nxf7! The Fried Liver Attack sacrifice! White forks the queen and rook.",
+          "coach_text_mr": "Nxf7! फ्राईड लिव्हर अटॅकचा बळी! पांढऱ्याने वजीर आणि हत्तीवर दुहेरी हल्ला केला.",
+          "coach_text_hi": "Nxf7! फ्राइड लिवर अटैक का बलिदान! सफेद ने वज़ीर और हाथी पर दोहरा हमला किया।",
+          "tips_en": "",
+          "tips_mr": "",
+          "tips_hi": ""
+        }
+      ]
+    }
+  ]
+}

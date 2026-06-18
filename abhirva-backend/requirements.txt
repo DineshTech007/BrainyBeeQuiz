@@ -6,4 +6,3 @@ google-generativeai==0.8.6
 pydantic==2.13.4
 python-multipart==0.0.32
 chess==1.11.2
-requests==2.31.0

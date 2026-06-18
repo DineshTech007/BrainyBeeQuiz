@@ -22,10 +22,10 @@ class SignupRequest(BaseModel):
     role: str = "STUDENT"  # STUDENT, PARENT, ADMIN
 
 
-import requests
+import httpx
 
-# Use a global requests session to maintain connection pools
-auth_sync_client = requests.Session()
+# Use a global httpx client to maintain connection pools
+auth_sync_client = httpx.Client()
 
 @router.post("/login")
 def login(request: LoginRequest):
@@ -37,7 +37,7 @@ def login(request: LoginRequest):
         import time
         t_start = time.time()
         
-        # Use sync requests in a threadpool to avoid asyncio bugs on Windows
+        # Use sync httpx in a threadpool to avoid asyncio bugs on Windows
         resp = auth_sync_client.post(
             f"{SUPABASE_URL}/auth/v1/token?grant_type=password",
             headers={"apikey": SUPABASE_KEY, "Content-Type": "application/json"},
@@ -131,7 +131,7 @@ async def signup(request: SignupRequest):
         if not profile_resp.data:
             # Cleanup: delete the auth user if profile creation failed
             try:
-                auth_client.auth.admin.delete_user(auth_user.id)
+                supabase_db.auth.admin.delete_user(auth_user.id)
             except Exception:
                 pass
             raise HTTPException(status_code=500, detail="Failed to create user profile.")

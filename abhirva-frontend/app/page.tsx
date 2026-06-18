@@ -8,7 +8,7 @@ import { useAuth } from "../lib/auth-context";
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 export default function Home() {
-  const { profile, loading: authLoading } = useAuth();
+  const { profile, isLoading: authLoading } = useAuth();
   const [quizLeaderboard, setQuizLeaderboard] = useState<any[]>([]);
   const [bookLeaderboard, setBookLeaderboard] = useState<any[]>([]);
 

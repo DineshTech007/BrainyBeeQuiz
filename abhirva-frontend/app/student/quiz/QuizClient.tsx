@@ -5,6 +5,8 @@ import Link from "next/link";
 import styles from "./quiz.module.css";
 import { useAuth, AuthGuard } from "../../../lib/auth-context";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+
 function QuizContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -36,7 +38,7 @@ function QuizContent() {
     const studentId = profile.id;
 
     // Fetch Quiz from Backend
-    fetch("http://localhost:8000/api/student/quiz/start", {
+    fetch(`${BACKEND_URL}/api/student/quiz/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -109,8 +111,8 @@ function QuizContent() {
       const studentId = profile?.id;
       try {
         const endpoint = board === "Library" 
-          ? "http://localhost:8000/api/library/quiz/submit"
-          : "http://localhost:8000/api/student/gamification/quiz/submit";
+          ? `${BACKEND_URL}/api/library/quiz/submit`
+          : `${BACKEND_URL}/api/student/gamification/quiz/submit`;
           
         const res = await fetch(endpoint, {
           method: "POST",
@@ -179,6 +181,20 @@ function QuizContent() {
           <div className={styles.rewardPoints}>+{pointsEarned} pts! 🏆</div>
           <Link href="/student/dashboard" className={styles.nextBtn} style={{display: 'inline-block', textDecoration: 'none'}}>
             Return to Dashboard
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+    return (
+      <div className={styles.rewardOverlay}>
+        <div className={styles.rewardCard}>
+          <h1 style={{color: 'var(--accent-color)', fontSize: '2.5rem', marginBottom: '1rem'}}>No Quiz Data</h1>
+          <p style={{fontSize: '1.2rem', marginBottom: '2rem'}}>The quiz content is currently unavailable. Please try again later.</p>
+          <Link href="/student/dashboard" className={styles.nextBtn} style={{display: 'inline-block', textDecoration: 'none'}}>
+            Back to Dashboard
           </Link>
         </div>
       </div>

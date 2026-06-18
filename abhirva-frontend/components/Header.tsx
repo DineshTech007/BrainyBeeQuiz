@@ -21,6 +21,8 @@ export default function Header() {
   return (
     <header style={{
       display: "flex",
+      flexWrap: "wrap",
+      gap: "1rem",
       alignItems: "center",
       justifyContent: "space-between",
       padding: "1rem 2rem",

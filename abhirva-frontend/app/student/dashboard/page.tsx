@@ -88,7 +88,7 @@ function StudentDashboardContent() {
           <p>10th Board Prep — Ready to ace your next exam? 🎯</p>
         </div>
 
-        <div className={styles.pointsBadge} style={{display: 'flex', gap: '1rem', alignItems: 'center', background: 'transparent', boxShadow: 'none'}}>
+        <div className={styles.pointsBadge} style={{display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', background: 'transparent', boxShadow: 'none'}}>
           <div style={{background: 'rgba(255,255,255,0.1)', padding: '0.5rem 1rem', borderRadius: '50px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)'}}>
             <span>🏆 Points:</span>
             <span className={styles.pointsValue} style={{marginLeft: '0.5rem', fontWeight: 'bold', color: '#fbbf24'}}>

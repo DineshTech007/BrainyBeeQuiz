@@ -16,25 +16,33 @@ function ParentDashboardContent() {
 
   useEffect(() => {
     if (!profile?.id) return;
-    let url = "http://localhost:8000/api/parent/students";
-    url += `?parent_id=${profile.id}`;
+    let url = `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"}/api/parent/students`;
+    if (profile.email) {
+      url += `?parent_email=${encodeURIComponent(profile.email)}`;
+    }
+
     fetch(url, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.status === "success") {
           setStudents(data.students || []);
+          if (data.students?.length > 0) {
+            setSelectedStudentId(data.students[0].id);
+          }
         }
+        setLoading(false);
       })
       .catch(err => {
         console.error("Failed to fetch students", err);
+        setLoading(false);
       });
-  }, [profile?.id]);
+  }, [profile]);
 
   useEffect(() => {
     if (selectedStudentId) {
       setLoading(true);
       setShowReportCard(false);
-      fetch(`http://localhost:8000/api/parent/student_progress/${selectedStudentId}`, { cache: 'no-store' })
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"}/api/parent/student_progress/${selectedStudentId}`, { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
           if (data.status === "success") {

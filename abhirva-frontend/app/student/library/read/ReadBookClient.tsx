@@ -85,7 +85,8 @@ export default function ReadBook() {
   }
 
   // Fetch the raw PDF from the API
-  const pdfUrl = `http://localhost:8000/api/library/read?grade=${encodeURIComponent(grade)}&language=${encodeURIComponent(language)}&book=${encodeURIComponent(book)}`;
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+  const pdfUrl = `${BACKEND_URL}/api/library/read?grade=${encodeURIComponent(grade)}&language=${encodeURIComponent(language)}&book=${encodeURIComponent(book)}`;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);

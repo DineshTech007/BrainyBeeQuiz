@@ -4,6 +4,8 @@ import Link from "next/link";
 import styles from "./library.module.css";
 import { AuthGuard, useAuth } from "../../../lib/auth-context";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+
 const GRADES = ["Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8"];
 const LANGUAGES = ["English", "Marathi", "Hindi"];
 
@@ -26,18 +28,18 @@ function BookLibrary() {
   useEffect(() => {
     if (!profile?.id) return;
     
-    // Check access
-    fetch(`http://localhost:8000/api/admin/student/${profile.id}/access`, { cache: 'no-store' })
+    fetch(`${BACKEND_URL}/api/admin/student/${profile.id}/access`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
-        if (data.status === "success" && Array.isArray(data.subscriptions)) {
+        if (data.status === "success") {
           const hasLibrary = data.subscriptions.some((s: any) => s.name.toLowerCase().includes("library"));
           setHasAccess(hasLibrary);
         }
       })
-      .catch(console.error);
+      .catch(err => console.error(err));
 
-    fetch(`http://localhost:8000/api/library/books?grade=${encodeURIComponent(selectedGrade)}&language=${encodeURIComponent(selectedLanguage)}`)
+    setLoading(true);
+    fetch(`${BACKEND_URL}/api/library/books?grade=${encodeURIComponent(selectedGrade)}&language=${encodeURIComponent(selectedLanguage)}`)
       .then(res => res.json())
       .then(data => {
         if (data.status === "success") {

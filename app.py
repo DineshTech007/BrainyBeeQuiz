@@ -738,48 +738,60 @@ def display_quiz_questions():
     # Check if this question has already been answered and locked
     already_answered = q_index in st.session_state.answered_questions
     
-    # Display options as radio buttons (none selected by default)
-    selected_option = st.radio(
-        "Choose your answer:",
-        options=current_mcq['options'],
-        key=f"q_option_{q_index}",
-        label_visibility="collapsed",
-        disabled=already_answered,
-        index=None
-    )
-    
-    # Store selection
-    if selected_option:
-        st.session_state.user_answers[q_index] = selected_option
-    
-    # Check Answer button and instant feedback
     if not already_answered:
+        # Display options as radio buttons (none selected by default)
+        selected_option = st.radio(
+            "Choose your answer:",
+            options=current_mcq['options'],
+            key=f"q_option_{q_index}",
+            label_visibility="collapsed",
+            index=None
+        )
+        
+        # Store selection
+        if selected_option:
+            st.session_state.user_answers[q_index] = selected_option
+        
+        # Check Answer button and instant feedback
         if st.button(" Check Answer", key=f"check_{q_index}", use_container_width=True):
             if q_index in st.session_state.user_answers:
                 st.session_state.answered_questions.add(q_index)
                 st.rerun()
             else:
-                st.warning("∩╕ Please select an option first!")
-    
-    # Show feedback if answered
-    if already_answered:
+                st.warning("⚠️ Please select an option first!")
+    else:
         correct_answer = current_mcq['correct_answer']
         user_answer = st.session_state.user_answers.get(q_index, "")
         is_correct = user_answer == correct_answer
         
+        options_html = "<div style='display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; margin-top: 10px;'>"
+        for opt in current_mcq['options']:
+            if opt == correct_answer:
+                bg = "rgba(46, 204, 113, 0.15)"
+                border = "2px solid #2ecc71"
+                icon = "✅"
+            elif opt == user_answer and not is_correct:
+                bg = "rgba(231, 76, 60, 0.15)"
+                border = "2px solid #e74c3c"
+                icon = "❌"
+            else:
+                bg = "rgba(255, 255, 255, 0.05)"
+                border = "2px solid rgba(255,255,255,0.1)"
+                icon = "⚪"
+            options_html += f"<div style='background: {bg}; border: {border}; padding: 12px 15px; border-radius: 10px; color: #fff; font-size: 1.1em;'>{icon} &nbsp;{opt}</div>"
+        options_html += "</div>"
+        
+        st.markdown(options_html, unsafe_allow_html=True)
+        
         if is_correct:
-            st.markdown(f"""
-                <div class='feedback-correct'>
-                     Correct! Great job! 
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"<div class='feedback-correct'>Correct! Great job!</div>", unsafe_allow_html=True)
         else:
+            st.markdown(f"<div class='feedback-wrong'>Oops! That's not right.</div>", unsafe_allow_html=True)
+            
+        if "explanation" in current_mcq:
             st.markdown(f"""
-                <div class='feedback-wrong'>
-                     Oops! That's not right.
-                </div>
-                <div class='correct-answer-reveal'>
-                     The correct answer is: <strong>{correct_answer}</strong>
+                <div style='background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,215,0,0.05) 100%); border: 2px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 1rem 1.5rem; margin: 0.8rem 0; color: #FFD700;'>
+                    <strong>💡 Explanation:</strong> {current_mcq['explanation']}
                 </div>
             """, unsafe_allow_html=True)
     
@@ -1391,6 +1403,13 @@ def display_10th_exam():
                     chapter_name = st.selectbox("Select Chapter:", list(chapters.keys()))
                     selected_pdf_filename = chapters[chapter_name]
                 else:
+                    grammar_topics = ["Mix (All Topics)", "वाक्प्रचार (Phrases)", "समास (Compounds)", "शब्दसंपत्ती (Vocabulary)", "विरामचिन्हे (Punctuation)", "लेखन नियम (Writing Rules)"]
+                    grammar_topic = st.selectbox("Select Grammar Topic:", grammar_topics)
+                    
+                    if grammar_topic == "Mix (All Topics)":
+                        chapter_name = "Grammar"
+                    else:
+                        chapter_name = f"Grammar: {grammar_topic}"
                     selected_pdf_filename = "marathigrammer.pdf"
                 
                 st.markdown("<h3>Quiz Settings</h3>", unsafe_allow_html=True)
@@ -1650,7 +1669,7 @@ def display_10th_exam():
 
             elif selected_subject == "English":
                 st.markdown("<h3>Select English Exam Type</h3>", unsafe_allow_html=True)
-                exam_type = st.radio("Choose Exam Type:", ["Board Pattern Mock (Comprehension + Literature)", "Chapter-wise Literature", "Grammar Practice"], horizontal=False)
+                exam_type = st.radio("Choose Exam Type:", ["Board Pattern Mock (Comprehension + Literature)", "Reading Comprehension Only", "Chapter-wise Literature", "Grammar Practice"], horizontal=False)
                 
                 selected_pdf_filename = None
                 chapter_name = ""
@@ -1678,7 +1697,7 @@ def display_10th_exam():
                 
                 num_passages = 2
                 questions_per_passage = 5
-                if exam_type == "Board Pattern Mock (Comprehension + Literature)":
+                if exam_type in ["Board Pattern Mock (Comprehension + Literature)", "Reading Comprehension Only"]:
                     col_p1, col_p2 = st.columns(2)
                     with col_p1:
                         num_passages = st.number_input("Number of Passages", min_value=1, max_value=5, value=2, key="eng_passages")
@@ -1686,8 +1705,11 @@ def display_10th_exam():
                         questions_per_passage = st.number_input("Questions per Passage", min_value=2, max_value=10, value=5, key="eng_q_per_passage")
                     
                     comp_total = num_passages * questions_per_passage
-                    lit_total_needed = max(0, total_q - comp_total)
-                    st.info(f"📋 **Exam Composition:** {comp_total} Reading Comprehension MCQs ({num_passages} passages × {questions_per_passage} questions) + {lit_total_needed} Literature/Grammar MCQs.")
+                    if exam_type == "Board Pattern Mock (Comprehension + Literature)":
+                        lit_total_needed = max(0, total_q - comp_total)
+                        st.info(f"📋 **Exam Composition:** {comp_total} Reading Comprehension MCQs ({num_passages} passages × {questions_per_passage} questions) + {lit_total_needed} Literature/Grammar MCQs.")
+                    else:
+                        st.info(f"📋 **Exam Composition:** {comp_total} Reading Comprehension MCQs ({num_passages} passages × {questions_per_passage} questions). Total Questions setting is overridden.")
                 
                 # Image uploader for matching photo paper
                 st.markdown("<h3>Photo of Previous Exam Paper (Optional)</h3>", unsafe_allow_html=True)
@@ -1713,40 +1735,45 @@ def display_10th_exam():
                             used_files = []
                             
                             # Handle Board Pattern Mock (Comprehension + Literature)
-                            if exam_type == "Board Pattern Mock (Comprehension + Literature)":
+                            if exam_type in ["Board Pattern Mock (Comprehension + Literature)", "Reading Comprehension Only"]:
                                 from utils import generate_english_comprehension_mcqs
                                 comp_mcqs = generate_english_comprehension_mcqs(
                                     num_passages=num_passages, 
                                     questions_per_passage=questions_per_passage
                                 )
                                 
-                                lit_count = max(0, total_q - len(comp_mcqs))
-                                if lit_count > 0:
-                                    pdf_path = os.path.join(english_dir, "footprints.pdf")
-                                    if os.path.exists(pdf_path):
-                                        text = extract_text_from_pdf(pdf_path, start_page=1, end_page=20)
-                                        if text:
-                                            pdf_text = text[:10000]
-                                            used_files.append("footprints.pdf (Chapters 1-2)")
-                                
-                                level = "10th Grade English Student"
-                                final_topic = "CBSE Class 10 English Board Mock Exam"
-                                
-                                if not difficulty_context:
-                                    difficulty_context = "Subject: English Language & Literature for 10th Grade CBSE. Generate a mix of literature extract questions and core English grammar (tenses, modals, reported speech)."
-                                
-                                remaining_mcqs = generate_full_quiz(
-                                    pdf_text=pdf_text,
-                                    topic=final_topic,
-                                    level=level,
-                                    pdf_count=lit_count // 2,
-                                    prompt_count=lit_count - (lit_count // 2),
-                                    internet_count=0,
-                                    difficulty_context=difficulty_context,
-                                    prompt_level=level,
-                                    prompt2_level=level,
-                                )
-                                mcqs_result = comp_mcqs + remaining_mcqs
+                                if exam_type == "Reading Comprehension Only":
+                                    mcqs_result = comp_mcqs
+                                    used_files = []
+                                    final_topic = "Reading Comprehension Practice"
+                                else:
+                                    lit_count = max(0, total_q - len(comp_mcqs))
+                                    if lit_count > 0:
+                                        pdf_path = os.path.join(english_dir, "footprints.pdf")
+                                        if os.path.exists(pdf_path):
+                                            text = extract_text_from_pdf(pdf_path, start_page=1, end_page=20)
+                                            if text:
+                                                pdf_text = text[:10000]
+                                                used_files.append("footprints.pdf (Chapters 1-2)")
+                                    
+                                    level = "10th Grade English Student"
+                                    final_topic = "CBSE Class 10 English Board Mock Exam"
+                                    
+                                    if not difficulty_context:
+                                        difficulty_context = "Subject: English Language & Literature for 10th Grade CBSE. Generate a mix of literature extract questions and core English grammar (tenses, modals, reported speech)."
+                                    
+                                    remaining_mcqs = generate_full_quiz(
+                                        pdf_text=pdf_text,
+                                        topic=final_topic,
+                                        level=level,
+                                        pdf_count=lit_count // 2,
+                                        prompt_count=lit_count - (lit_count // 2),
+                                        internet_count=0,
+                                        difficulty_context=difficulty_context,
+                                        prompt_level=level,
+                                        prompt2_level=level,
+                                    )
+                                    mcqs_result = comp_mcqs + remaining_mcqs
                                 
                             elif exam_type == "Grammar Practice":
                                 level = "10th Grade English Student"
@@ -2048,8 +2075,8 @@ def main():
     # ┌─┬─ TOP-LEVEL NAVIGATION ─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─┬─
     top_menu = option_menu(
         menu_title=None,
-        options=["🧠 Exam Genius AI", "🌈 English Improvement Games", "🃏 Memory Training Games", "📐 Maths Games"],
-        icons=["journal-bookmark-fill", "stars", "card-heading", "calculator"],
+        options=["🧠 Exam Genius AI", "🌈 English Improvement Games", "🃏 Memory Training Games", "📐 Maths Games", "♟️ Chess Trainer"],
+        icons=["journal-bookmark-fill", "stars", "card-heading", "calculator", "chess-queen"],
         menu_icon="cast",
         default_index=st.session_state.get("top_tab", 0),
         orientation="horizontal",
@@ -2099,23 +2126,29 @@ def main():
         with sub_tab_saved:
             display_saved_tests(exam_type="cdf")
 
-    elif top_menu == " English Improvement Games":
+    elif top_menu == "🌈 English Improvement Games":
         st.session_state.top_tab = 1
         st.markdown("<p style='text-align:center;color:white;opacity:0.9;font-size:1.1em;'>Build up your vocabulary step-by-step with fun spelling and word-meaning games!</p>", unsafe_allow_html=True)
         display_english_improvement()
         
     # ÇÇ PAGE: MEMORY GAMES ÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇ
-    elif top_menu == "â Memory Training Games":
+    elif top_menu == "🃏 Memory Training Games":
         st.session_state.top_tab = 2
         st.markdown("<p style='text-align:center;color:white;opacity:0.9;font-size:1.1em;'>Boost your short-term memory capacity with challenging and interactive deck exercises!</p>", unsafe_allow_html=True)
         display_memory_games()
 
     # ÇÇ PAGE: MATHS GAMES ÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇ
-    elif top_menu == " Maths Games":
-        st.session_state.top_tab = 3 # Assuming this is the next available tab index
+    elif top_menu == "📐 Maths Games":
+        st.session_state.top_tab = 3
         st.markdown("<p style='text-align:center;color:white;opacity:0.9;font-size:1.1em;'>Practice your math skills by popping the balloons with correct answers!</p>", unsafe_allow_html=True)
         from maths_games import display_maths_games
         display_maths_games()
+
+    # ÇÇ PAGE: CHESS TRAINER ÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇÇ
+    elif top_menu == "♟️ Chess Trainer":
+        st.session_state.top_tab = 4
+        from chess_game import display_chess_game
+        display_chess_game()
 
     st.divider()
     components.html("""

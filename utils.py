@@ -209,12 +209,20 @@ def generate_mcqs_from_pdf_text(text: str, topic: str = "", num_questions: int =
     
     all_mcqs = []
     questions_remaining = num_questions
-    batch_size = max(10, num_questions)
+    batch_size = 5
     
     previous_questions_text = ""
+    total_batches = (num_questions + batch_size - 1) // batch_size
+    chunk_size = len(text) // total_batches if total_batches > 0 else len(text)
+    current_chunk_idx = 0
     
     while questions_remaining > 0:
         current_batch = min(batch_size, questions_remaining)
+        
+        start_idx = current_chunk_idx * chunk_size
+        end_idx = start_idx + chunk_size if current_chunk_idx < total_batches - 1 else len(text)
+        text_chunk = text[start_idx:end_idx]
+        current_chunk_idx += 1
         
         # Determine language based on topic
         lang_instruction = "ALL QUESTIONS, OPTIONS, AND ANSWERS MUST BE WRITTEN IN MARATHI (DEVANAGARI SCRIPT)." if "marathi" in topic.lower() else ""
@@ -235,7 +243,7 @@ Important guidelines:
 {f"CRITICAL INSTRUCTION - DO NOT REPEAT ANY OF THESE PREVIOUSLY GENERATED QUESTIONS:\n{previous_questions_text}\n" if previous_questions_text else ""}
 
 Text to create questions from:
-{text}
+{text_chunk}
 
 Additional Difficulty Context (if provided):
 {difficulty_context if difficulty_context else f"Target level is {level}"}
@@ -247,6 +255,7 @@ Generate exactly {current_batch} questions. Return ONLY a valid JSON object with
       "question": "Question text here?",
       "options": ["Option A", "Option B", "Option C", "Option D"],
       "correct_answer": "Option A",
+      "explanation": "A short description of why this option is correct or incorrect",
       "source": "pdf"
     }}
   ]
@@ -413,6 +422,7 @@ Generate exactly {current_batch} questions. Return ONLY a valid JSON object with
       "question": "Question text here?",
       "options": ["Option A", "Option B", "Option C", "Option D"],
       "correct_answer": "Option A",
+      "explanation": "A short description of why this option is correct or incorrect",
       "source": "internet"
     }}
   ]
@@ -720,7 +730,8 @@ Return ONLY a valid JSON array with this exact structure:
   {{
     "question": "Question text here?",
     "options": ["Option A", "Option B", "Option C", "Option D"],
-    "correct_answer": "Correct option text here"
+    "correct_answer": "Correct option text here",
+    "explanation": "A short description of why this option is correct or incorrect"
   }}
 ]
 
@@ -830,6 +841,8 @@ def save_test(test_data: dict) -> str:
             "is_correct": is_correct,
             "source": mcq.get("source", "unknown")
         }
+        if "explanation" in mcq:
+            q_data["explanation"] = mcq["explanation"]
         if "passage" in mcq:
             q_data["passage"] = mcq["passage"]
         if "passage_id" in mcq:
@@ -941,6 +954,7 @@ def generate_english_comprehension_mcqs(num_passages: int = 2, questions_per_pas
                     "question": "Question text based on passage?",
                     "options": ["A", "B", "C", "D"],
                     "correct_answer": "Correct option text",
+                    "explanation": "A short description of why this option is correct or incorrect",
                     "source": "english_comprehension"
                 }}
             ]

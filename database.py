@@ -22,7 +22,7 @@ def init_db():
             created_at TIMESTAMP
         )
     ''')
-    # Create game scores table
+    # Create game_scores table
     c.execute('''
         CREATE TABLE IF NOT EXISTS game_scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,6 +31,16 @@ def init_db():
             score INTEGER,
             played_at TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+    # Create chess_variations table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS chess_variations (
+            id TEXT PRIMARY KEY,
+            name_mr TEXT,
+            name_en TEXT,
+            description_mr TEXT,
+            moves TEXT
         )
     ''')
     conn.commit()
@@ -100,3 +110,31 @@ def get_global_leaderboard(limit=10):
     board = c.fetchall()
     conn.close()
     return board
+
+def insert_chess_variation(var_id, name_mr, name_en, desc_mr, moves_json):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute('''
+        INSERT OR REPLACE INTO chess_variations (id, name_mr, name_en, description_mr, moves)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (var_id, name_mr, name_en, desc_mr, moves_json))
+    conn.commit()
+    conn.close()
+
+import json
+def get_all_chess_variations():
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute('SELECT id, name_mr, name_en, description_mr, moves FROM chess_variations')
+    rows = c.fetchall()
+    conn.close()
+    variations = []
+    for r in rows:
+        variations.append({
+            "id": r[0],
+            "name_mr": r[1],
+            "name_en": r[2],
+            "description_mr": r[3],
+            "moves": json.loads(r[4])
+        })
+    return variations

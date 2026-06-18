@@ -4,7 +4,7 @@
  * Provides helpers to get, set, and clear the session.
  */
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
 
 export interface SessionProfile {
   id: string;

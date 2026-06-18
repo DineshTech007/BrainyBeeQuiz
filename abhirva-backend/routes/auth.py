@@ -22,31 +22,44 @@ class SignupRequest(BaseModel):
     role: str = "STUDENT"  # STUDENT, PARENT, ADMIN
 
 
+import requests
+
+# Use a global requests session to maintain connection pools
+auth_sync_client = requests.Session()
+
 @router.post("/login")
-async def login(request: LoginRequest):
+def login(request: LoginRequest):
     """
     Authenticates a user via Supabase Auth (email + password).
     Returns the Supabase access_token, refresh_token, and the user's profile row.
     """
     try:
-        # Use a Supabase client with the SERVICE_ROLE key to call auth admin
-        # We call signInWithPassword using the project anon-level auth endpoint
-        # The Supabase Python client supports auth.sign_in_with_password
-        auth_client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        import time
+        t_start = time.time()
+        
+        # Use sync requests in a threadpool to avoid asyncio bugs on Windows
+        resp = auth_sync_client.post(
+            f"{SUPABASE_URL}/auth/v1/token?grant_type=password",
+            headers={"apikey": SUPABASE_KEY, "Content-Type": "application/json"},
+            json={"email": request.email, "password": request.password},
+            timeout=10
+        )
+        print(f"DEBUG: sync client.post took {time.time() - t_start:.4f}s")
 
-        auth_response = auth_client.auth.sign_in_with_password({
-            "email": request.email,
-            "password": request.password,
-        })
+        if resp.status_code != 200:
+            error_data = resp.json()
+            if error_data.get("error_code") == "invalid_credentials" or "Invalid login credentials" in error_data.get("error_description", ""):
+                raise HTTPException(status_code=401, detail="Invalid email or password.")
+            raise HTTPException(status_code=401, detail=error_data.get("error_description", "Invalid email or password."))
 
-        if not auth_response.user:
-            raise HTTPException(status_code=401, detail="Invalid email or password.")
-
-        auth_user = auth_response.user
-        session = auth_response.session
+        data = resp.json()
+        auth_user_id = data["user"]["id"]
+        auth_user_email = data["user"]["email"]
+        access_token = data["access_token"]
+        refresh_token = data["refresh_token"]
 
         # Fetch the profile row linked to this auth UID
-        profile_resp = supabase_db.table("profiles").select("*").eq("id", auth_user.id).execute()
+        profile_resp = supabase_db.table("profiles").select("*").eq("id", auth_user_id).execute()
 
         if not profile_resp.data or len(profile_resp.data) == 0:
             raise HTTPException(
@@ -58,12 +71,12 @@ async def login(request: LoginRequest):
 
         return {
             "status": "success",
-            "access_token": session.access_token,
-            "refresh_token": session.refresh_token,
+            "access_token": access_token,
+            "refresh_token": refresh_token,
             "profile": {
                 "id": profile["id"],
-                "full_name": profile.get("full_name") or profile.get("name") or auth_user.email,
-                "email": auth_user.email,
+                "full_name": profile.get("full_name") or profile.get("name") or auth_user_email,
+                "email": auth_user_email,
                 "role": profile.get("role", "STUDENT"),
                 "total_points": profile.get("total_points", 0),
                 "book_points": profile.get("book_points", 0),
@@ -86,10 +99,9 @@ async def signup(request: SignupRequest):
     The profile.id is set to the Auth user's UUID to link them.
     """
     try:
-        auth_client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-        # 1. Create Supabase Auth user
-        auth_response = auth_client.auth.admin.create_user({
+        # Use the global supabase_db (Service Role) to create a user securely
+        # without instantiating a new client
+        auth_response = supabase_db.auth.admin.create_user({
             "email": request.email,
             "password": request.password,
             "email_confirm": True,  # Auto-confirm so user can login immediately

@@ -1,9 +1,12 @@
-import dynamic from "next/dynamic";
+import { Suspense } from "react";
+import QuizClient from "./QuizClient";
 
 export const dynamic = "force-dynamic";
 
-const QuizClient = dynamic(() => import("./QuizClient"), { ssr: false });
-
 export default function Page() {
-  return <QuizClient />;
+  return (
+    <Suspense fallback={null}>
+      <QuizClient />
+    </Suspense>
+  );
 }

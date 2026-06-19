@@ -17,9 +17,10 @@ const PIECE_IMAGES: Record<string, string> = {
 
 interface CustomChessBoardProps {
   fen: string;
+  onPieceDrop?: (sourceSquare: string, targetSquare: string) => boolean;
 }
 
-export default function CustomChessBoard({ fen }: CustomChessBoardProps) {
+export default function CustomChessBoard({ fen, onPieceDrop }: CustomChessBoardProps) {
   // Parse FEN into 8x8 array
   const boardFen = fen.split(' ')[0];
   const rows = boardFen.split('/');
@@ -48,18 +49,36 @@ export default function CustomChessBoard({ fen }: CustomChessBoardProps) {
             // Classic premium chess colors
             const bgColor = isDark ? '#739552' : '#ebecd0';
             
+            const file = String.fromCharCode(97 + cIdx); // 'a'-'h'
+            const rank = 8 - rIdx; // '8'-'1'
+            const sqName = `${file}${rank}`;
+
             return (
               <div 
                 key={`${rIdx}-${cIdx}`}
                 className="flex items-center justify-center w-full h-full select-none"
                 style={{ backgroundColor: bgColor }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const fromSq = e.dataTransfer.getData('text/plain');
+                  if (fromSq && fromSq !== sqName && onPieceDrop) {
+                    onPieceDrop(fromSq, sqName);
+                  }
+                }}
               >
                 {piece && PIECE_IMAGES[piece] && (
                   <img 
                     src={PIECE_IMAGES[piece]} 
                     alt={piece} 
-                    className="w-[80%] h-[80%] object-contain drop-shadow-sm transition-transform duration-100 ease-in-out hover:scale-105"
-                    draggable={false}
+                    className="w-[80%] h-[80%] object-contain drop-shadow-sm transition-transform duration-100 ease-in-out hover:scale-105 cursor-grab active:cursor-grabbing"
+                    draggable={true}
+                    onDragStart={(e) => {
+                      e.dataTransfer.setData('text/plain', sqName);
+                      // Optional: e.dataTransfer.setDragImage(...)
+                    }}
                   />
                 )}
               </div>

@@ -4,33 +4,52 @@ import fitz  # PyMuPDF
 import chess
 import os
 import sys
+import time
 
 # Make sure we can import from config
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config.supabase_client import supabase_db
+from google import genai
+from google.genai import types
 
-DEFAULT_GEMINI_MODEL = "gemini-2.5-pro"
+DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-lite"
+
+# Initialise Gemini client once (reads GEMINI_API_KEY from env)
+_gemini_client = None
+
+def get_gemini_client():
+    global _gemini_client
+    if _gemini_client is None:
+        from dotenv import load_dotenv
+        load_dotenv(override=True)
+        api_key = os.getenv("GEMINI_API_KEY")
+        _gemini_client = genai.Client(api_key=api_key)
+    return _gemini_client
 
 def extract_text_from_pdf(pdf_path: str, start_page: int, end_page: int) -> str:
     """Extract text from a range of pages in a PDF."""
     try:
         doc = fitz.open(pdf_path)
         text = ""
-        # fitz uses 0-indexed pages
         start = max(0, start_page - 1)
         end = min(len(doc), end_page)
         for i in range(start, end):
             text += doc[i].get_text() + "\n"
-        # Sanitize text to prevent silent crashes in C extensions/networking libraries
         text = text.replace('\x00', ' ')
         return text
     except Exception as e:
         print(f"Error reading PDF: {e}")
         return ""
 
+def get_pdf_page_count(pdf_path: str) -> int:
+    try:
+        doc = fitz.open(pdf_path)
+        return len(doc)
+    except:
+        return 0
+
 def generate_2d_board(board: chess.Board):
-    """Converts a python-chess board to a 2D array suitable for react-chessboard."""
-    # python-chess fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    """Converts a python-chess board to a 2D array."""
     fen = board.board_fen()
     rows = fen.split('/')
     board_2d = []
@@ -38,259 +57,256 @@ def generate_2d_board(board: chess.Board):
         board_row = []
         for char in row:
             if char.isdigit():
-                # Empty squares
                 for _ in range(int(char)):
                     board_row.append("")
             else:
-                # Piece (e.g., 'r', 'N', 'p')
-                # Wait, react-chessboard expects 'wP', 'bN', etc. or standard FEN.
-                # Actually, our ChessTutor.jsx expects `wP`, `bP`, etc.
-                # Let's check ChessTutor.jsx: it builds FEN from this array:
-                # "if (piece === "") empty++ else fen += piece"
-                # So if it's 'p', it adds 'p' (which is black pawn in standard FEN).
-                # So we can just use standard FEN characters!
                 board_row.append(char)
         board_2d.append(board_row)
     return board_2d
 
-def translate_to_marathi_and_hindi(text: str) -> dict:
-    """Translates the text to Marathi and Hindi using Gemini."""
-    if not text or text.strip() == "":
-        return {"mr": "", "hi": ""}
-        
-    prompt = f"""
-    Translate the following chess explanation into Marathi and Hindi. 
-    Maintain the context of chess (e.g., pieces, squares, tactics).
-    
-    Text to translate:
-    {text}
-    
-    Return ONLY a valid JSON object:
-    {{
-        "mr": "marathi translation here",
-        "hi": "hindi translation here"
-    }}
-    """
-    
+def call_gemini_api(prompt: str, temperature: float = 0.2) -> str:
+    """Calls the Gemini API via the official SDK and returns the response text."""
     try:
-        import os
-        import json
-        import subprocess
-        import tempfile
-        
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            return {"mr": "Error: No API Key", "hi": "Error: No API Key"}
-            
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{DEFAULT_GEMINI_MODEL}:generateContent?key={api_key}"
-        
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.3,
-                "responseMimeType": "application/json"
-            }
-        }
-        
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8', suffix='.json') as tmp_in:
-            json.dump(payload, tmp_in)
-            tmp_in_name = tmp_in.name
-            
-        tmp_out_name = tmp_in_name + ".out"
-        
-        curl_cmd = [
-            "curl.exe", "-s", "-X", "POST",
-            "-H", "Content-Type: application/json",
-            "-d", f"@{tmp_in_name}",
-            "-o", tmp_out_name,
-            url
-        ]
-        
-        subprocess.run(curl_cmd, check=False)
-        
-        if not os.path.exists(tmp_out_name):
-            return {"mr": "Translation failed", "hi": "Translation failed"}
-            
-        with open(tmp_out_name, "r", encoding="utf-8") as f:
-            res_body = f.read()
-            
-        try:
-            os.remove(tmp_in_name)
-            os.remove(tmp_out_name)
-        except:
-            pass
-            
-        response_json = json.loads(res_body)
-        if "error" in response_json:
-            return {"mr": "Translation failed", "hi": "Translation failed"}
-            
-        content_text = response_json["candidates"][0]["content"]["parts"][0]["text"]
-        return json.loads(content_text.strip())
+        client = get_gemini_client()
+        config = types.GenerateContentConfig(
+            temperature=temperature,
+            max_output_tokens=8192,
+        )
+        response = client.models.generate_content(
+            model=DEFAULT_GEMINI_MODEL,
+            contents=prompt,
+            config=config
+        )
+        return response.text.strip() if response.text else ""
     except Exception as e:
-        print(f"Translation error: {e}")
-        return {"mr": "Translation failed", "hi": "Translation failed"}
+        err_str = str(e)
+        if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+            print(f"Gemini quota error: {err_str[:200]}")
+        else:
+            print(f"Gemini API error: {err_str[:300]}")
+        return ""
 
-def parse_chess_variations_from_text(text: str, opening_name: str):
+def batch_translate(texts: list) -> list:
     """
-    Prompts Gemini to extract chess variations from the raw text.
-    It returns a JSON list of variations.
+    Translates a list of English texts to Marathi AND Hindi in a single API call.
+    Returns a list of dicts: [{"mr": "...", "hi": "..."}, ...]
     """
-
-    prompt = f"""
-    You are an expert chess annotator and grandmaster.
-    I am providing you a chunk of text from a chess book about the {opening_name}.
-    
-    Your task:
-    1. Identify EVERY distinct chess variation discussed in this text. Do not miss any.
-    2. For each variation, provide a clear, descriptive title in English (e.g., "Alapin: Main Line with 2...Nf6").
-    3. CRITICAL: For each variation, provide a detailed `description_en` that explains the overarching motive, strategy, and narrative behind this variation.
-    4. CRITICAL: For each variation, you MUST provide the FULL sequence of moves starting from the very beginning of the chess game (Move 1). If the text is discussing a sub-variation at move 10, you must fill in the first 9 moves of the {opening_name} to reach that position so that a chess engine can validate it from the standard starting board.
-    5. For each move, provide the standard algebraic notation (SAN) and a brief, highly educational coaching explanation in English.
-
-    Text:
-    {text[:100000]}
-
-    Return ONLY a valid JSON array of variations. Each variation must follow this structure exactly:
-    [
-        {{
-            "variation_name_en": "Alapin: Main Line with 2...Nf6",
-            "description_en": "This variation focuses on rapid development and challenging the center immediately, sacrificing pawn structure for dynamic piece play.",
-            "moves": [
-                {{
-                    "notation": "e4",
-                    "coach_text_en": "White plays the King's Pawn to control the center."
-                }},
-                {{
-                    "notation": "c5",
-                    "coach_text_en": "Black responds with the Sicilian Defense."
-                }},
-                {{
-                    "notation": "c3",
-                    "coach_text_en": "White plays the Alapin variation."
-                }}
-            ]
-        }}
-    ]
-    Make sure the sequence of moves is perfectly valid from the initial starting board. If a move is invalid, my parser will crash.
-    """
-    
-    try:
-        import os
-        import json
-        import subprocess
-        import tempfile
-        
-        with open("debug_parser.txt", "a") as f:
-            f.write("DEBUG: Calling generate_content via curl subprocess...\n")
-            
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
-            return []
-            
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{DEFAULT_GEMINI_MODEL}:generateContent?key={api_key}"
-        
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.2,
-                "responseMimeType": "application/json"
-            }
-        }
-        
-        # Write payload to a temp file to avoid command line length limits and encoding issues
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8', suffix='.json') as tmp_in:
-            json.dump(payload, tmp_in)
-            tmp_in_name = tmp_in.name
-            
-        tmp_out_name = tmp_in_name + ".out"
-        
-        # Run curl
-        curl_cmd = [
-            "curl.exe", "-s", "-X", "POST",
-            "-H", "Content-Type: application/json",
-            "-d", f"@{tmp_in_name}",
-            "-o", tmp_out_name,
-            url
-        ]
-        
-        subprocess.run(curl_cmd, check=False)
-        
-        # Read the result
-        if not os.path.exists(tmp_out_name):
-            with open("debug_parser.txt", "a") as f:
-                f.write("DEBUG: curl did not produce output file.\n")
-            return []
-            
-        with open(tmp_out_name, "r", encoding="utf-8") as f:
-            res_body = f.read()
-            
-        # Clean up temp files
-        try:
-            os.remove(tmp_in_name)
-            os.remove(tmp_out_name)
-        except:
-            pass
-            
-        try:
-            response_json = json.loads(res_body)
-        except Exception as e:
-            with open("debug_parser.txt", "a") as f:
-                f.write(f"DEBUG: curl returned invalid JSON: {res_body[:200]}\n")
-            return []
-            
-        if "error" in response_json:
-            with open("debug_parser.txt", "a") as f:
-                f.write(f"DEBUG: API Error: {response_json['error']}\n")
-            return []
-            
-        with open("debug_parser.txt", "a") as f:
-            f.write("DEBUG: curl REST API returned successfully.\n")
-            
-        content_text = response_json["candidates"][0]["content"]["parts"][0]["text"]
-        return json.loads(content_text.strip())
-            
-    except BaseException as e:
-        import traceback
-        with open("parser_error.txt", "w", encoding="utf-8") as f:
-            f.write(traceback.format_exc())
-        print(f"Extraction error: {e}")
+    if not texts:
         return []
 
-def process_and_save_chess_book(pdf_path: str, opening_name: str, start_page: int, end_page: int):
-    """Orchestrates the entire extraction, translation, fen generation, and db insertion."""
-    print(f"Reading {pdf_path} from page {start_page} to {end_page}...")
+    numbered_texts = "\n".join([f"{i+1}. {t}" for i, t in enumerate(texts)])
+
+    prompt = f"""You are a professional chess translator.
+Translate each of the following numbered English chess explanations into Marathi (mr) and Hindi (hi).
+Keep all chess piece names, square names (e4, d5, Nf3, etc.), and technical terms in English as they are.
+Only translate the explanatory prose.
+
+{numbered_texts}
+
+Return a JSON array where each element corresponds to one numbered item:
+[
+  {{"mr": "Marathi translation 1", "hi": "Hindi translation 1"}},
+  {{"mr": "Marathi translation 2", "hi": "Hindi translation 2"}}
+]
+Return ONLY the JSON array, no other text."""
+
+    result = call_gemini_api(prompt, temperature=0.1)
+    if not result:
+        return [{"mr": t, "hi": t} for t in texts]
+
+    try:
+        # Strip markdown code fences if present
+        cleaned = result.strip()
+        if "```json" in cleaned:
+            cleaned = cleaned.split("```json")[1].split("```")[0].strip()
+        elif "```" in cleaned:
+            cleaned = cleaned.split("```")[1].split("```")[0].strip()
+
+        parsed = json.loads(cleaned)
+        if isinstance(parsed, list) and len(parsed) == len(texts):
+            return parsed
+        else:
+            print(f"Batch translate length mismatch: got {len(parsed) if isinstance(parsed, list) else type(parsed)}, expected {len(texts)}")
+            return [{"mr": t, "hi": t} for t in texts]
+    except Exception as e:
+        print(f"Batch translate parse error: {e}")
+        return [{"mr": t, "hi": t} for t in texts]
+
+def parse_chess_variations_from_text(text: str, opening_name: str) -> list:
+    """
+    Prompts Gemini to extract chess variations from a book chunk.
+    Returns a JSON list of variation dicts.
+    """
+    prompt = f"""You are a grandmaster-level chess annotator and professional book editor.
+I am providing raw text extracted from a chess book about the {opening_name}.
+
+Your task is to identify EVERY distinct chess variation or example game discussed in this text and convert it into structured JSON.
+
+RULES:
+1. Each variation must have a unique, descriptive name (e.g., "Italian: Slow Main Line 9.a4", "Alapin 2...Nc6: 7.Bc4 Main Line").
+2. `description_en` must explain the key strategic ideas, plans, and motives in 2-4 sentences.
+3. Moves MUST be in Standard Algebraic Notation (SAN) that python-chess can validate (e.g., "Nf3", "O-O", "exd5", not "N-KB3" or "1.e4").
+4. CRITICAL: Every variation's move list MUST start from move 1 (e4 or d4 etc). Do not start from a mid-game position. Fill in the opening moves to reach the position being discussed.
+5. `coach_text_en` for each move should be a 1-2 sentence explanation of WHY that move is played.
+6. Do NOT include duplicate variations. If the same line appears twice, include it only once with the most complete version.
+7. Validate that moves are legal chess moves before including them.
+
+Text from the book:
+---
+{text[:40000]}
+---
+
+Return ONLY a valid JSON array:
+[
+  {{
+    "variation_name_en": "Italian: Slow Main Line with 9.a4",
+    "description_en": "White methodically expands on the queenside...",
+    "moves": [
+      {{"notation": "e4", "coach_text_en": "White seizes central space."}},
+      {{"notation": "e5", "coach_text_en": "Black mirrors White's central claim."}},
+      {{"notation": "Nf3", "coach_text_en": "White develops and attacks the e5 pawn."}},
+      {{"notation": "Nc6", "coach_text_en": "Black defends the e5 pawn with a natural developing move."}}
+    ]
+  }}
+]
+
+Include ALL variations you find in the text. Quality and completeness are critical."""
+
+    result = call_gemini_api(prompt, temperature=0.15)
+    if not result:
+        return []
+
+    try:
+        # Strip markdown code fences if present
+        cleaned = result.strip()
+        if "```json" in cleaned:
+            cleaned = cleaned.split("```json")[1].split("```")[0].strip()
+        elif "```" in cleaned:
+            cleaned = cleaned.split("```")[1].split("```")[0].strip()
+
+        # Try direct parse first
+        try:
+            parsed = json.loads(cleaned)
+            if isinstance(parsed, list):
+                return parsed
+        except json.JSONDecodeError:
+            pass
+
+        # JSON was truncated — try to salvage complete variation objects
+        # Find all complete {...} objects inside the array
+        salvaged = []
+        depth = 0
+        obj_start = None
+        for i, ch in enumerate(cleaned):
+            if ch == '{':
+                if depth == 0:
+                    obj_start = i
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0 and obj_start is not None:
+                    obj_str = cleaned[obj_start:i+1]
+                    try:
+                        obj = json.loads(obj_str)
+                        if isinstance(obj, dict) and 'variation_name_en' in obj:
+                            salvaged.append(obj)
+                    except:
+                        pass
+                    obj_start = None
+
+        if salvaged:
+            print(f"  Salvaged {len(salvaged)} complete variations from truncated JSON.")
+            return salvaged
+
+        print(f"Variation parse error: could not parse JSON | Preview: {result[:300]}")
+        return []
+    except Exception as e:
+        print(f"Variation parse error: {e} | Preview: {result[:300]}")
+        return []
+
+def get_existing_variation_names(opening_name: str) -> set:
+    """Fetch all existing variation names for this opening to avoid duplicates."""
+    try:
+        res = supabase_db.table("chess_variations").select("variation_name_en").ilike("opening_name", opening_name).execute()
+        return {r["variation_name_en"] for r in (res.data or [])}
+    except:
+        return set()
+
+def process_and_save_chess_book(pdf_path: str, opening_name: str, start_page: int, end_page: int) -> int:
+    """
+    Orchestrates extraction, translation, FEN generation, and DB insertion.
+    Returns the number of variations successfully saved.
+    """
+    print(f"Reading {pdf_path} pages {start_page}-{end_page}...")
     raw_text = extract_text_from_pdf(pdf_path, start_page, end_page)
-    if not raw_text:
-        print("No text extracted.")
-        return False
-        
-    print("Extracting variations with Gemini...")
+    if not raw_text.strip():
+        print("No text extracted from this page range.")
+        return 0
+
+    print(f"Extracted {len(raw_text)} chars. Calling Gemini to extract variations...")
     variations = parse_chess_variations_from_text(raw_text, opening_name)
-    
+
     if not variations:
-        print("No variations found.")
-        return False
-        
-    print(f"Found {len(variations)} variations. Processing moves...")
-    
+        print("No variations found in this chunk.")
+        return 0
+
+    print(f"Found {len(variations)} variations. Checking for duplicates...")
+    existing_names = get_existing_variation_names(opening_name)
+
+    # Filter out duplicates
+    new_variations = []
     for var in variations:
-        var_name_en = var.get("variation_name_en", "Unknown Variation")
+        name = var.get("variation_name_en", "")
+        if name and name not in existing_names:
+            new_variations.append(var)
+            existing_names.add(name)  # prevent duplicates within this batch too
+        else:
+            print(f"  Skipping duplicate: {name}")
+
+    if not new_variations:
+        print("All variations already exist in DB. Skipping.")
+        return 0
+
+    print(f"Processing {len(new_variations)} new variations...")
+
+    # --- BATCH TRANSLATE variation names and descriptions ---
+    var_names_en = [v.get("variation_name_en", "") for v in new_variations]
+    desc_texts_en = [v.get("description_en", "") for v in new_variations]
+
+    print(f"  Batch translating {len(var_names_en)} variation names...")
+    name_translations = batch_translate(var_names_en)
+    time.sleep(2)
+
+    print(f"  Batch translating {len(desc_texts_en)} descriptions...")
+    desc_translations = batch_translate(desc_texts_en)
+    time.sleep(2)
+
+    saved_count = 0
+
+    for i, var in enumerate(new_variations):
+        var_name_en = var.get("variation_name_en", f"Variation {i+1}")
         desc_en = var.get("description_en", "")
-        print(f"Processing variation: {var_name_en}")
-        
-        # Translate variation name
-        var_name_trans = translate_to_marathi_and_hindi(var_name_en)
-        var_name_mr = var_name_trans.get("mr", var_name_en)
-        var_name_hi = var_name_trans.get("hi", var_name_en)
-        
-        # Translate description
-        desc_trans = translate_to_marathi_and_hindi(desc_en)
-        desc_mr = desc_trans.get("mr", desc_en)
-        desc_hi = desc_trans.get("hi", desc_en)
-        
+        raw_moves = var.get("moves", [])
+
+        var_name_mr = name_translations[i].get("mr", var_name_en) if i < len(name_translations) else var_name_en
+        var_name_hi = name_translations[i].get("hi", var_name_en) if i < len(name_translations) else var_name_en
+        desc_mr = desc_translations[i].get("mr", desc_en) if i < len(desc_translations) else desc_en
+        desc_hi = desc_translations[i].get("hi", desc_en) if i < len(desc_translations) else desc_en
+
+        print(f"  Processing moves for: {var_name_en}")
+
+        # --- BATCH TRANSLATE move coach texts ---
+        coach_texts_en = [m.get("coach_text_en", "") for m in raw_moves if m.get("coach_text_en")]
+        all_coach_en_full = [m.get("coach_text_en", "") for m in raw_moves]
+
+        print(f"    Batch translating {len(coach_texts_en)} coach texts...")
+        coach_translations = batch_translate(all_coach_en_full)
+        time.sleep(2)
+
+        # --- PLAY MOVES ON BOARD ---
         board = chess.Board()
         processed_moves = []
-        
+
         # Always insert the start position first
         processed_moves.append({
             "step": 0,
@@ -298,27 +314,35 @@ def process_and_save_chess_book(pdf_path: str, opening_name: str, start_page: in
             "board": generate_2d_board(board),
             "fen": board.fen(),
             "highlight_squares": [],
-            "coach_text_en": "Initial position for this variation.",
-            "coach_text_mr": "या व्हेरियेशनची सुरुवातीची पोझिशन.",
-            "coach_text_hi": "इस वेरियेशन की प्रारंभिक स्थिति।"
+            "coach_text_en": f"Starting position for {var_name_en}.",
+            "coach_text_mr": coach_translations[0].get("mr", "") if coach_translations else "",
+            "coach_text_hi": coach_translations[0].get("hi", "") if coach_translations else "",
+            "tips_en": "",
+            "tips_mr": "",
+            "tips_hi": "",
         })
-        
-        for step, move_data in enumerate(var.get("moves", []), start=1):
-            notation = move_data.get("notation")
-            coach_en = move_data.get("coach_text_en", "")
-            
-            # Play move on board to get state
+
+        valid_moves = True
+        for step, move_data in enumerate(raw_moves, start=1):
+            notation = move_data.get("notation", "").strip()
+            if not notation:
+                continue
+
+            # Clean up notation artifacts
+            notation = re.sub(r'^\d+\.+\s*', '', notation).strip()
+            notation = notation.split()[0]  # take only first token if AI added extras
+
+            coach_en = all_coach_en_full[step-1] if step-1 < len(all_coach_en_full) else ""
+            trans = coach_translations[step-1] if step-1 < len(coach_translations) else {"mr": "", "hi": ""}
+
             try:
                 move = board.push_san(notation)
                 highlight = [chess.square_name(move.from_square), chess.square_name(move.to_square)]
             except ValueError as e:
-                print(f"Invalid move {notation} in variation {var_name_en}: {e}")
-                # We stop processing this variation if a move is invalid
+                print(f"    Invalid move '{notation}' at step {step} in '{var_name_en}': {e}. Stopping this variation here.")
+                valid_moves = False
                 break
-                
-            # Translate coach text
-            coach_trans = translate_to_marathi_and_hindi(coach_en)
-            
+
             processed_moves.append({
                 "step": step,
                 "notation": notation,
@@ -326,14 +350,18 @@ def process_and_save_chess_book(pdf_path: str, opening_name: str, start_page: in
                 "fen": board.fen(),
                 "highlight_squares": highlight,
                 "coach_text_en": coach_en,
-                "coach_text_mr": coach_trans.get("mr", ""),
-                "coach_text_hi": coach_trans.get("hi", "")
+                "coach_text_mr": trans.get("mr", ""),
+                "coach_text_hi": trans.get("hi", ""),
+                "tips_en": "",
+                "tips_mr": "",
+                "tips_hi": "",
             })
-            
-        if len(processed_moves) <= 1:
+
+        # Only save if we have at least the starting position + a few moves
+        if len(processed_moves) < 3:
+            print(f"    Skipping '{var_name_en}' — too few valid moves ({len(processed_moves)-1} moves).")
             continue
-            
-        # Save to Supabase
+
         db_record = {
             "opening_name": opening_name,
             "variation_name_en": var_name_en,
@@ -344,12 +372,12 @@ def process_and_save_chess_book(pdf_path: str, opening_name: str, start_page: in
             "description_hi": desc_hi,
             "moves": processed_moves
         }
-        
+
         try:
             supabase_db.table("chess_variations").insert(db_record).execute()
-            print(f"Saved {var_name_en} to database!")
+            print(f"    [OK] Saved '{var_name_en}' ({len(processed_moves)-1} moves)")
+            saved_count += 1
         except Exception as e:
-            print(f"Error saving to database: {e}")
-            
-    print("Done processing book chunk.")
-    return True
+            print(f"    [ERROR] DB error saving '{var_name_en}': {e}")
+
+    return saved_count

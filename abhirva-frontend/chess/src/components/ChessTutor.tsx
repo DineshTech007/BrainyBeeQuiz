@@ -573,7 +573,38 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
           </button>
         </div>
 
-        {/* Mode Toggles & Top Moves — MOVED TO RIGHT COLUMN */}
+        {/* Coach Card */}
+        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-[2px] rounded-3xl shadow-2xl">
+          <div className="bg-white/95 backdrop-blur-xl p-8 rounded-3xl h-full relative overflow-hidden">
+            <div className="absolute -top-6 -right-6 text-8xl opacity-10 filter blur-sm">🤖</div>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-2xl shadow-inner">
+                🤖
+              </div>
+              <h3 className="font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-purple-800">
+                AI गुरूजी (Coach)
+              </h3>
+            </div>
+            <p className="text-xl text-gray-800 leading-relaxed font-semibold">
+              {isDeviating 
+                ? fixTranslation(deviationCoachText) 
+                : fixTranslation(currentMoveData[`coach_text_${language}`] || currentMoveData.coach_text_en || 'No coach text for this step.')}
+            </p>
+            {isDeviating && deviationEval !== null && (
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-sm font-bold mb-1">
+                  <span className="text-gray-800">♔ White</span>
+                  <span className={`font-mono text-lg ${deviationEval > 0.3 ? 'text-green-600' : deviationEval < -0.3 ? 'text-red-500' : 'text-gray-600'}`}>
+                    {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(2)}
+                  </span>
+                  <span className="text-gray-800">♚ Black</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Mode Toggles & Top Moves — MOVED TO BELOW COACH CARD */}
         <div className="w-full flex flex-col gap-3">
           {/* Toggles */}
           <div className="flex justify-between items-center bg-gray-900 text-white p-3 rounded-2xl shadow-md border border-gray-800">
@@ -624,36 +655,7 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
           )}
         </div>
 
-        {/* Coach Card */}
-        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-[2px] rounded-3xl shadow-2xl">
-          <div className="bg-white/95 backdrop-blur-xl p-8 rounded-3xl h-full relative overflow-hidden">
-            <div className="absolute -top-6 -right-6 text-8xl opacity-10 filter blur-sm">🤖</div>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-2xl shadow-inner">
-                🤖
-              </div>
-              <h3 className="font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-purple-800">
-                AI गुरूजी (Coach)
-              </h3>
-            </div>
-            <p className="text-xl text-gray-800 leading-relaxed font-semibold">
-              {isDeviating 
-                ? fixTranslation(deviationCoachText) 
-                : fixTranslation(currentMoveData[`coach_text_${language}`] || currentMoveData.coach_text_en || 'No coach text for this step.')}
-            </p>
-            {isDeviating && deviationEval !== null && (
-              <div className="mt-4">
-                <div className="flex items-center justify-between text-sm font-bold mb-1">
-                  <span className="text-gray-800">♔ White</span>
-                  <span className={`font-mono text-lg ${deviationEval > 0.3 ? 'text-green-600' : deviationEval < -0.3 ? 'text-red-500' : 'text-gray-600'}`}>
-                    {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(2)}
-                  </span>
-                  <span className="text-gray-800">♚ Black</span>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+
 
         {/* Pro Tip */}
         {(currentMoveData.tips_mr || currentMoveData.tips_en) && (

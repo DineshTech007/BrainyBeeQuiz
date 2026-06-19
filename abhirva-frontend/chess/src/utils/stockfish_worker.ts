@@ -112,9 +112,9 @@ export class StockfishEngine {
         }
       };
 
-      this.worker.addEventListener('message', handler);
-      this.worker.postMessage('position fen ' + fen);
-      this.worker.postMessage('go depth ' + depth);
+      this.worker!.addEventListener('message', handler);
+      this.worker!.postMessage('position fen ' + fen);
+      this.worker!.postMessage('go depth ' + depth);
 
       // Safety timeout
       setTimeout(() => {

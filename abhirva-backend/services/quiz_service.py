@@ -218,26 +218,10 @@ def generate_and_save_quiz(board: str, grade: str, subject: str, chapter: str, n
         error_msg = str(e)
         print(f"[FAIL] generate_and_save_quiz Error: {error_msg}".encode('ascii', 'replace').decode('ascii'))
         
-        # Fallback if API key is exhausted
+        # Check if API key is exhausted
         if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-            print("[INFO] API quota exceeded. Returning mock quiz.")
-            return {
-                "board": board,
-                "grade": grade,
-                "subject": subject,
-                "chapter_or_topic": chapter,
-                "quiz_id": "mock-fallback-id",
-                "success": True,
-                "questions": [
-                    {
-                        "question_text": "[API Exhausted Fallback] What happens when your Gemini API key runs out of credits?",
-                        "options": ["App crashes", "Returns mock data", "Nothing", "I need to add a new key"],
-                        "correct_option": "I need to add a new key",
-                        "solution_steps": "Go to AI Studio to manage billing.",
-                        "explanation_description": "Your API key prepayment credits are depleted."
-                    }
-                ]
-            }
+            print("[INFO] API quota exceeded.")
+            return {"error": "Google Gemini API quota exceeded. Please add billing credits to your Google AI Studio project at https://aistudio.google.com/.", "success": False}
             
         return {"error": error_msg, "success": False}
 
@@ -370,27 +354,10 @@ def generate_and_save_book_quiz(grade: str, book_name: str, context: str, langua
                 
         print(f"[FAIL] generate_and_save_book_quiz Error: {error_msg}".encode('ascii', 'replace').decode('ascii'))
         
-        # Fallback if API key is exhausted
+        # Check if API key is exhausted
         if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-            print("[INFO] API quota exceeded. Returning mock quiz.")
-            return {
-                "board": "Library",
-                "grade": grade,
-                "subject": "Library Book",
-                "chapter_or_topic": book_name,
-                "quiz_id": "mock-fallback-id",
-                "success": True,
-                "questions": [
-                    {
-                        "question_text": f"[API Exhausted Fallback] What happens when your Gemini API key runs out of credits while reading {book_name}?",
-                        "options": ["App crashes", "Returns mock data", "Nothing", "I need to add a new key"],
-                        "correct_option": "I need to add a new key",
-                        "solution_steps": "Go to AI Studio to manage billing.",
-                        "explanation_description": "Your API key prepayment credits are depleted.",
-                        "marks": 1
-                    }
-                ]
-            }
+            print("[INFO] API quota exceeded.")
+            return {"error": "Google Gemini API quota exceeded. Please add billing credits to your Google AI Studio project at https://aistudio.google.com/.", "success": False}
             
         return {"error": error_msg, "success": False}
 

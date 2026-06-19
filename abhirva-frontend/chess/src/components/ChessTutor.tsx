@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CustomChessBoard from './CustomChessBoard';
 import audioEngine from '../utils/audio_engine';
-import { engine } from '../utils/stockfish_worker';
+import { engine, EngineAnalysis } from '../utils/stockfish_worker';
 
 import { Chess } from 'chess.js';
 
@@ -91,6 +91,7 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [deviationCoachText, setDeviationCoachText] = useState('');
   const [deviationEval, setDeviationEval] = useState<number | null>(null);
+  const [topMoves, setTopMoves] = useState<{ move: string; eval: number; mate: number | null }[]>([]);
 
   const [isExploreMode, setIsExploreMode] = useState(false);
   const [playEngineMode, setPlayEngineMode] = useState(false);
@@ -170,6 +171,7 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
     setIsEvaluating(false);
     setDeviationCoachText('');
     setDeviationEval(null);
+    setTopMoves([]);
     engine.stop();
   };
 
@@ -190,11 +192,21 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
 
   const triggerEngineReply = (fenToEval: string) => {
     setDeviationCoachText('Stockfish is thinking...');
-    engine.getBestMove(fenToEval, 10).then(bestMoveStr => {
-      if (!bestMoveStr) return;
+    engine.analyzePosition(fenToEval, 10).then((analysis: EngineAnalysis) => {
+      setDeviationEval(analysis.eval);
+      setTopMoves(analysis.topMoves);
+      
+      if (!analysis.bestMove) {
+        setDeviationCoachText('Game over or no legal moves.');
+        return;
+      }
       const chess = new Chess(fenToEval === 'start' ? 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' : fenToEval);
       try {
-        const move = chess.move(bestMoveStr);
+        // Stockfish returns UCI format (e2e4), convert to {from, to}
+        const from = analysis.bestMove.substring(0, 2);
+        const to = analysis.bestMove.substring(2, 4);
+        const promo = analysis.bestMove.length > 4 ? analysis.bestMove[4] : undefined;
+        const move = chess.move({ from, to, promotion: promo });
         if (move) {
           const newFen = chess.fen();
           setDeviationFen(newFen);
@@ -202,8 +214,12 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
           audioEngine.speak(`I play ${move.san}`, audioSpeed);
         }
       } catch (e) {
+        setDeviationCoachText(`Engine suggests ${analysis.bestMove} but could not apply it.`);
         console.error("Engine move error", e);
       }
+    }).catch((err: any) => {
+      console.error('Engine analysis failed:', err);
+      setDeviationCoachText('Engine analysis failed. Try again.');
     });
   };
 
@@ -277,8 +293,10 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
         setDeviationEval(null);
         setDeviationCoachText('Stockfish is evaluating your move...');
         
-        engine.evaluatePosition(newFen, 12).then((score) => {
+        engine.analyzePosition(newFen, 12).then((analysis: EngineAnalysis) => {
+          const score = analysis.eval;
           setDeviationEval(score);
+          setTopMoves(analysis.topMoves);
           
           // Call backend for Gemini coaching
           fetch('/api/chess/dynamic-coach', {
@@ -302,10 +320,13 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
               setDeviationCoachText('Stockfish evaluates this position at ' + score.toFixed(2));
             }
           })
-          .catch(err => {
+          .catch((err: any) => {
             setIsEvaluating(false);
             setDeviationCoachText('Stockfish evaluates this position at ' + score.toFixed(2));
           });
+        }).catch((err: any) => {
+          setIsEvaluating(false);
+          setDeviationCoachText('Engine analysis failed. Try again.');
         });
         
         return true;
@@ -498,8 +519,43 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
                 : (currentMoveData[`coach_text_${language}`] || currentMoveData.coach_text_en || 'No coach text for this step.')}
             </p>
             {isDeviating && deviationEval !== null && (
-              <div className="mt-4 inline-block px-4 py-1 bg-gray-900 text-white font-mono text-sm rounded-full">
-                Stockfish Eval: {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(2)}
+              <div className="mt-4 space-y-3">
+                {/* Eval Bar */}
+                <div className="w-full">
+                  <div className="flex items-center justify-between text-sm font-bold mb-1">
+                    <span className="text-gray-800">♔ White</span>
+                    <span className={`font-mono text-lg ${deviationEval > 0.3 ? 'text-green-600' : deviationEval < -0.3 ? 'text-red-500' : 'text-gray-600'}`}>
+                      {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(2)}
+                    </span>
+                    <span className="text-gray-800">♚ Black</span>
+                  </div>
+                  <div className="w-full h-5 bg-gray-800 rounded-full overflow-hidden shadow-inner">
+                    <div 
+                      className="h-full bg-white rounded-full transition-all duration-500 ease-out"
+                      style={{ width: `${Math.max(5, Math.min(95, 50 + deviationEval * 10))}%` }}
+                    />
+                  </div>
+                </div>
+
+                {/* Top Moves */}
+                {topMoves.length > 0 && (
+                  <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Engine Top Moves</h4>
+                    <div className="space-y-1">
+                      {topMoves.map((tm: any, i: number) => (
+                        <div key={i} className="flex items-center gap-2 text-sm">
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-green-500 text-white' : i === 1 ? 'bg-yellow-400 text-gray-900' : 'bg-gray-300 text-gray-700'}`}>
+                            {i + 1}
+                          </span>
+                          <span className="font-mono font-bold text-gray-900">{tm.move}</span>
+                          <span className={`font-mono text-xs ${tm.eval > 0 ? 'text-green-600' : tm.eval < 0 ? 'text-red-500' : 'text-gray-500'}`}>
+                            {tm.mate !== null ? `M${Math.abs(tm.mate)}` : (tm.eval > 0 ? '+' : '') + tm.eval.toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

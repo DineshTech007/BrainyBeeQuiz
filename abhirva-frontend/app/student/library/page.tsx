@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "./library.module.css";
 import { AuthGuard, useAuth } from "../../../lib/auth-context";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-backend.onrender.com" : "http://127.0.0.1:8000";
 
 const GRADES = ["Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8"];
 const LANGUAGES = ["English", "Marathi", "Hindi"];

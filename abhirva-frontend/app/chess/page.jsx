@@ -7,7 +7,7 @@ import { AuthGuard, useAuth } from '../../lib/auth-context';
 import { useState, useEffect } from 'react';
 async function getAvailableOpenings() {
   try {
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+    const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-backend.onrender.com" : "http://127.0.0.1:8000";
     const res = await fetch(`${BACKEND_URL}/api/chess/openings`, {
       cache: 'no-store'
     });
@@ -42,7 +42,7 @@ function ChessCoursesPage() {
     if (!profile?.id) return;
     
     // Check access
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+    const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-backend.onrender.com" : "http://127.0.0.1:8000";
     fetch(`${BACKEND_URL}/api/admin/student/${profile.id}/access`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {

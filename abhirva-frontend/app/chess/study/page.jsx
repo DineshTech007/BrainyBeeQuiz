@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAuth } from "../../../lib/auth-context";
 import CustomChessBoard from "../../../chess/src/components/CustomChessBoard";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-backend.onrender.com" : "http://127.0.0.1:8000";
 
 export default function ChessStudyPage() {
   const { profile } = useAuth();

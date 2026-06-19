@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "../../quiz/quiz.module.css";
 import { useAuth, AuthGuard } from "../../../../lib/auth-context";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-backend.onrender.com" : "http://127.0.0.1:8000";
 
 function QuizContent() {
   const searchParams = useSearchParams();

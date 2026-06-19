@@ -9,23 +9,16 @@ function QuizSetupContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const subject = searchParams.get("subject") || "Mathematics";
-  const isOlympiadTest = subject === "IMO Test" || subject === "NSO Test" || subject === "SOF Test" || subject === "IEO Test";
+  const isOlympiadTest = subject === "IMO Test" || subject === "SOF Test" || subject === "IEO Test";
 
   const [examType, setExamType] = useState("Chapter-wise");
   const [sstSubSubject, setSstSubSubject] = useState("");
   const [chapter, setChapter] = useState("");
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [options, setOptions] = useState<string[]>([]);
-  const [grade, setGrade] = useState("Grade 1");
   const [imoMode, setImoMode] = useState("Topic-wise");
   const [numQuestions, setNumQuestions] = useState(10);
   const { profile } = useAuth();
-
-  useEffect(() => {
-    if (profile?.grade) {
-      setGrade(profile.grade);
-    }
-  }, [profile]);
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -80,7 +73,7 @@ function QuizSetupContent() {
       url += `&sub_subject=${encodeURIComponent(sstSubSubject)}`;
     }
     if (isOlympiadTest) {
-      url += `&grade=${encodeURIComponent(grade)}&num_questions=${numQuestions}`;
+      url += `&grade=${encodeURIComponent(profile?.grade || "Grade 3")}&num_questions=${numQuestions}`;
     }
     router.push(url);
   };

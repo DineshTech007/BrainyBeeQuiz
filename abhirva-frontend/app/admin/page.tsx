@@ -175,10 +175,9 @@ function AdminPortalContent() {
         packageId = `10th Board ${grantSubject} Booster`;
       }
     }
-    else if (grantCategory === "IMO Test") packageId = `IMO ${grantGrade}`;
-    else if (grantCategory === "NSO Test") packageId = `NSO ${grantGrade}`;
-    else if (grantCategory === "SOF Test") packageId = `SOF ${grantGrade}`;
-    else if (grantCategory === "IEO Test") packageId = `IEO ${grantGrade}`;
+    else if (grantCategory === "IMO Test") packageId = `IMO Test`;
+    else if (grantCategory === "SOF Test") packageId = `SOF Test`;
+    else if (grantCategory === "IEO Test") packageId = `IEO Test`;
     else if (grantCategory === "Book Library") packageId = "Book Library";
     else if (grantCategory === "Chess") packageId = "Chess Tutor";
 
@@ -431,7 +430,6 @@ function AdminPortalContent() {
                 >
                   <option value="10th Class">10th Class</option>
                   <option value="IMO Test">IMO Test</option>
-                  <option value="NSO Test">NSO Test</option>
                   <option value="SOF Test">SOF Test</option>
                   <option value="IEO Test">IEO Test</option>
                   <option value="Book Library">Book Library</option>
@@ -441,12 +439,6 @@ function AdminPortalContent() {
                 {grantCategory === "10th Class" && (
                   <select value={grantSubject} onChange={(e) => setGrantSubject(e.target.value)} style={{ padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc", color: "black" }}>
                     {["10th Class Access (All Subjects)", "Maths", "Marathi", "Computers", "Science", "SST", "English"].map(s => (<option key={s} value={s}>{s}</option>))}
-                  </select>
-                )}
-
-                 {(grantCategory === "IMO Test" || grantCategory === "NSO Test" || grantCategory === "SOF Test" || grantCategory === "IEO Test") && (
-                  <select value={grantGrade} onChange={(e) => setGrantGrade(e.target.value)} style={{ padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc", color: "black" }}>
-                    {[...Array(10)].map((_, i) => (<option key={i} value={`Grade ${i + 1}`}>Grade {i + 1}</option>))}
                   </select>
                 )}
 

@@ -46,11 +46,46 @@ async def get_topics(subject: str = None, category: str = "10th Class", sst_sub_
     try:
         if category == "IMO Test" or subject == "IMO Test":
             # Return hardcoded IMO categories
-            return {"status": "success", "topics": ["Logical Reasoning", "Mathematical Reasoning", "Everyday Mathematics", "Achievers Section"]}
+            return {"status": "success", "topics": [
+                "Number Sense",
+                "Computation Operations",
+                "Fractions",
+                "Money",
+                "Length, Weight, Capacity, Time and Temperature",
+                "Geometry",
+                "Data Handling",
+                "Logical Reasoning"
+            ]}
         elif category in ["NSO Test", "SOF Test"] or subject in ["NSO Test", "SOF Test"]:
-            return {"status": "success", "topics": ["Logical Reasoning", "Science", "Achievers Section"]}
+            return {"status": "success", "topics": [
+                "Plants and Animals",
+                "Birds",
+                "Food",
+                "Housing, Clothing and Occupation",
+                "Transport, Communication and Safety Rules",
+                "Human Body",
+                "Earth and Universe",
+                "Matter and Materials",
+                "Light, Sound and Force",
+                "Our Environment",
+                "Logical Reasoning"
+            ]}
         elif category == "IEO Test" or subject == "IEO Test":
-            return {"status": "success", "topics": ["Word and Structure Knowledge", "Reading", "Spoken and Written Expression", "Achievers Section"]}
+            return {"status": "success", "topics": [
+                "Word Power",
+                "Synonyms and Antonyms",
+                "Gender and Relations",
+                "Singular-Plural and One Word Substitution",
+                "Idioms and Proverbs",
+                "Nouns and Pronouns",
+                "Adjectives and Conjunctions",
+                "Verbs and Adverbs",
+                "Articles and Prepositions",
+                "Tenses",
+                "Questions and Question Tags",
+                "Comprehension",
+                "Spoken and Written Expression"
+            ]}
         
         if not subject:
             return {"status": "success", "topics": []}
@@ -296,6 +331,8 @@ async def revoke_package(request: GrantRequest):
                 "message": f"Student does not have an active subscription for '{resolved_name}'."
             }
 
+        subscription_id = existing.data[0]["id"]
+
         # --- Step 3: Try DELETE first ---
         try:
             supabase_db.table("subscriptions").delete().eq("id", subscription_id).execute()
@@ -419,7 +456,10 @@ async def delete_student(profile_id: str):
             print("Auth delete error:", e)
             
         # 3. Delete Profile
-        supabase_db.table("profiles").delete().eq("id", profile_id).execute()
+        try:
+            supabase_db.table("profiles").delete().eq("id", profile_id).execute()
+        except Exception as e:
+            print("Profile delete error (may be handled by cascade):", e)
         
         conns = load_connections()
         changed = False

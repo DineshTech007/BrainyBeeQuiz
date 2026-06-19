@@ -57,7 +57,8 @@ function QuizContent() {
         grade: grade,
         language: language,
         subject: subject === "SST" ? searchParams.get("sub_subject") || subject : subject,
-        chapter: chapter.replace(`${examType}: `, "")
+        chapter: chapter.replace(`${examType}: `, ""),
+        num_questions: searchParams.get("num_questions") ? Number(searchParams.get("num_questions")) : null
       })
     })
     .then(async (res) => {

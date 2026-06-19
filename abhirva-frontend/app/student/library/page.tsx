@@ -9,6 +9,16 @@ const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-bac
 const GRADES = ["Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8"];
 const LANGUAGES = ["English", "Marathi", "Hindi"];
 
+export function cleanBookTitle(fileName: string): string {
+  let title = fileName.replace(/\.pdf$/i, "");
+  title = title.replace(/^\d+[-_\s]*/, "");
+  title = title.replace(/[-_]/g, " ");
+  return title
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 export default function BookLibraryWrapper() {
   return (
     <AuthGuard requiredRole="STUDENT">
@@ -106,7 +116,7 @@ function BookLibrary() {
               className={styles.bookCard}
             >
               <div className={styles.bookIcon}>📖</div>
-              <div className={styles.bookTitle}>{book.replace(".pdf", "")}</div>
+              <div className={styles.bookTitle}>{cleanBookTitle(book)}</div>
             </Link>
           ))
         )}

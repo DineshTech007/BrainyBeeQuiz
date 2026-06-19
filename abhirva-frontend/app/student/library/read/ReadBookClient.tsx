@@ -42,6 +42,16 @@ const BookCover = React.forwardRef<HTMLDivElement, any>((props, ref) => {
 });
 BookCover.displayName = 'BookCover';
 
+function cleanBookTitle(fileName: string): string {
+  let title = fileName.replace(/\.pdf$/i, "");
+  title = title.replace(/^\d+[-_\s]*/, "");
+  title = title.replace(/[-_]/g, " ");
+  return title
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 export default function ReadBook() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -142,7 +152,7 @@ export default function ReadBook() {
     <div className={styles.readContainer}>
       <div className={styles.realisticBackground}></div>
       <header className={`${styles.header} ${isFullscreen ? styles.hidden : ""}`}>
-        <h1 className={styles.title}>{book.replace(".pdf", "")}</h1>
+        <h1 className={styles.title}>{cleanBookTitle(book)}</h1>
         <div className={styles.actions}>
           <button className={styles.backBtn} onClick={toggleFullScreen}>
             {isFullscreen ? "⛶ Exit Full Screen" : "⛶ Full Screen"}
@@ -204,7 +214,7 @@ export default function ReadBook() {
               >
                 {/* Cover */}
                 <BookCover>
-                  <h2>{book.replace(".pdf", "")}</h2>
+                  <h2>{cleanBookTitle(book)}</h2>
                   <p>{grade} • {language}</p>
                   <div className={styles.coverInstruction}>Swipe or Click to open</div>
                 </BookCover>

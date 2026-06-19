@@ -7,6 +7,16 @@ import { useAuth, AuthGuard } from "../../../lib/auth-context";
 
 const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-backend.onrender.com" : "http://127.0.0.1:8000";
 
+function cleanBookTitle(fileName: string): string {
+  let title = fileName.replace(/\.pdf$/i, "");
+  title = title.replace(/^\d+[-_\s]*/, "");
+  title = title.replace(/[-_]/g, " ");
+  return title
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 function QuizContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -215,7 +225,21 @@ function QuizContent() {
   return (
     <div className={styles.quizContainer}>
       <header className={styles.header}>
-        <h2>{subject} - {quizData.chapter || "Topic"}</h2>
+        {board === "Library" ? (
+          <h2>
+            Story Name:{" "}
+            <span style={{ 
+              background: "linear-gradient(90deg, #ff4e50, #f9d423, #00c6ff, #0072ff)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontWeight: 900
+            }}>
+              {cleanBookTitle(chapter)}
+            </span>
+          </h2>
+        ) : (
+          <h2>{subject} - {quizData.chapter || "Topic"}</h2>
+        )}
         <div>Question {currentIdx + 1} of {quizData.questions.length}</div>
       </header>
 

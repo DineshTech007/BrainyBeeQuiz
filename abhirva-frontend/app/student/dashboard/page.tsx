@@ -74,7 +74,7 @@ function StudentDashboardContent() {
   const hasLibraryAccess = hasAccess("book library") || hasAccess("library");
   const hasChessAccess = hasAccess("chess");
   const has10thClassAccess = profile?.grade === "Grade 10" || hasAccess("10th Board") || hasAccess("10th Class") || hasAccess("10th Grade");
-  const hasIMOTestAccess = subscriptions.length === 0 || hasAccess("IMO");
+  const hasIMOTestAccess = hasAccess("IMO");
 
   const visibleSubjects = SUBJECTS.filter(sub => {
     if (sub.name === "IMO Test") {
@@ -95,7 +95,11 @@ function StudentDashboardContent() {
             Welcome back,{" "}
             <span className="gradient-text">{studentName}</span>!
           </h1>
-          <p>10th Board Prep — Ready to ace your next exam? 🎯</p>
+          <p>
+            {profile?.grade === "Grade 10"
+              ? "10th Board Prep — Ready to ace your next exam? 🎯"
+              : `${profile?.grade || "Student"} Learning Hub — Let's learn and have fun! 🚀`}
+          </p>
         </div>
 
         <div className={styles.pointsBadge} style={{display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', background: 'transparent', boxShadow: 'none'}}>

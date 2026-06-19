@@ -361,7 +361,7 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
               onChange={(e) => setSelectedVariationIdx(Number(e.target.value))}
               className="w-full p-4 border-2 border-indigo-300 rounded-xl bg-white text-lg font-semibold text-indigo-900 shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-200 transition-all cursor-pointer"
             >
-              {(isExploreMode && isDeviating ? matchingVariationIndices : variations.map((_, i) => i)).map((idx) => {
+              {(isExploreMode && isDeviating ? matchingVariationIndices : variations.map((_: any, i: number) => i)).map((idx) => {
                 const v = variations[idx];
                 return (
                   <option key={v.id || idx} value={idx}>

@@ -39,11 +39,24 @@ def login(request: LoginRequest):
         import time
         t_start = time.time()
         
+        login_email = request.email.strip()
+        
+        # If the user provides a username (no '@' symbol), try to look up their email
+        if "@" not in login_email:
+            profile_resp = supabase_db.table("profiles").select("id").ilike("full_name", login_email).execute()
+            if profile_resp.data and len(profile_resp.data) > 0:
+                profile_id = profile_resp.data[0]["id"]
+                try:
+                    user_resp = supabase_db.auth.admin.get_user_by_id(profile_id)
+                    login_email = user_resp.user.email
+                except Exception as e:
+                    print("Error finding user email from profile id:", e)
+        
         # Use sync httpx in a threadpool to avoid asyncio bugs on Windows
         resp = auth_sync_client.post(
             f"{SUPABASE_URL}/auth/v1/token?grant_type=password",
             headers={"apikey": SUPABASE_KEY, "Content-Type": "application/json"},
-            json={"email": request.email, "password": request.password},
+            json={"email": login_email, "password": request.password},
             timeout=10
         )
         print(f"DEBUG: sync client.post took {time.time() - t_start:.4f}s")
@@ -127,7 +140,7 @@ async def signup(request: SignupRequest):
             "free_tests_taken": 0,
             "total_points": 0,
             "book_points": 0,
-            "grade": request.grade if role == "STUDENT" else None,
+            # "grade": request.grade if role == "STUDENT" else None,
         }
 
         profile_resp = supabase_db.table("profiles").insert(profile_data).execute()

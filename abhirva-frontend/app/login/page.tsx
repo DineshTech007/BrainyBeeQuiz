@@ -103,15 +103,15 @@ export default function Login() {
 
         <form className={styles.form} onSubmit={handleLogin}>
           <div className={styles.inputGroup}>
-            <label>Email Address</label>
+            <label>Email or Username</label>
             <input
-              type="email"
+              type="text"
               className={styles.input}
-              placeholder="your@email.com"
+              placeholder="Email or Username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoComplete="email"
+              autoComplete="username"
               disabled={loading}
             />
           </div>

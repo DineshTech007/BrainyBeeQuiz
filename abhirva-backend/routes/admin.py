@@ -3,6 +3,14 @@ from pydantic import BaseModel
 from config.supabase_client import supabase_db
 from services.quiz_service import generate_and_save_quiz, generate_and_save_past_paper
 import os
+from supabase import create_client
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+admin_db_client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY) if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY else supabase_db
 
 router = APIRouter()
 
@@ -335,12 +343,12 @@ async def revoke_package(request: GrantRequest):
 
         # --- Step 3: Try DELETE first ---
         try:
-            supabase_db.table("subscriptions").delete().eq("id", subscription_id).execute()
+            admin_db_client.table("subscriptions").delete().eq("id", subscription_id).execute()
             print(f"Admin {request.admin_id} deleted subscription {subscription_id}")
         except Exception as e:
             print("Delete failed, trying update to REVOKED:", e)
             # Safety net: UPDATE status to REVOKED instead
-            update_response = supabase_db.table("subscriptions").update(
+            update_response = admin_db_client.table("subscriptions").update(
                 {"status": "REVOKED"}
             ).eq("id", subscription_id).execute()
 
@@ -435,17 +443,19 @@ async def delete_student(profile_id: str):
         
         # 1. Clean up referencing tables to prevent foreign key errors
         try:
-            supabase_db.table("subscriptions").delete().eq("profile_id", profile_id).execute()
+            res = admin_db_client.table("subscriptions").delete().eq("profile_id", profile_id).execute()
+            if not res.data:
+                print("No subscriptions found to delete, or RLS blocked it.")
         except Exception as e:
             print("Error deleting subscriptions:", e)
 
         try:
-            supabase_db.table("test_attempts").delete().eq("profile_id", profile_id).execute()
+            admin_db_client.table("test_attempts").delete().eq("profile_id", profile_id).execute()
         except Exception as e:
             print("Error deleting test_attempts:", e)
 
         try:
-            supabase_db.table("library_test_attempts").delete().eq("profile_id", profile_id).execute()
+            admin_db_client.table("library_test_attempts").delete().eq("profile_id", profile_id).execute()
         except Exception as e:
             print("Error deleting library_test_attempts:", e)
 
@@ -457,7 +467,9 @@ async def delete_student(profile_id: str):
             
         # 3. Delete Profile
         try:
-            supabase_db.table("profiles").delete().eq("id", profile_id).execute()
+            res = admin_db_client.table("profiles").delete().eq("id", profile_id).execute()
+            if not res.data:
+                print("Profile delete returned empty data (may not exist or RLS blocked it)")
         except Exception as e:
             print("Profile delete error (may be handled by cascade):", e)
         

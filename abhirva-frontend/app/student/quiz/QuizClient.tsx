@@ -91,11 +91,11 @@ function QuizContent() {
                   (question.options_list || ["Option A", "Option B", "Option C", "Option D"]);
                   
     if (question.question_type === "INTEGER") {
-      if (textAnswer.trim() === question.correct_option?.trim()) {
+      if (textAnswer.trim() === String(question.correct_option || "").trim()) {
         newScore += 1;
       }
     } else {
-      if (selectedOption !== null && options[selectedOption] === question.correct_option) {
+      if (selectedOption !== null && String(options[selectedOption]) === String(question.correct_option)) {
         newScore += 1;
       }
     }
@@ -209,8 +209,8 @@ function QuizContent() {
                   (question.options_list || ["Option A", "Option B", "Option C", "Option D"]);
 
   const isCorrect = question.question_type === "INTEGER"
-    ? textAnswer.trim() === question.correct_option?.trim()
-    : selectedOption !== null && options[selectedOption] === question.correct_option;
+    ? textAnswer.trim() === String(question.correct_option || "").trim()
+    : selectedOption !== null && String(options[selectedOption]) === String(question.correct_option);
 
   return (
     <div className={styles.quizContainer}>

@@ -175,6 +175,23 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
     engine.stop();
   };
 
+  // Move history stack for takeback
+  const [moveHistory, setMoveHistory] = useState<string[]>([]);
+
+  const handleTakeBack = () => {
+    if (moveHistory.length === 0) return;
+    const prevFen = moveHistory[moveHistory.length - 1];
+    setMoveHistory(prev => prev.slice(0, -1));
+    setDeviationFen(prevFen);
+    setDeviationCoachText('Move taken back.');
+    setDeviationEval(null);
+    setTopMoves([]);
+    if (moveHistory.length <= 1) {
+      setIsDeviating(false);
+      setDeviationFen('');
+    }
+  };
+
   const toggleExploreMode = () => {
     setIsExploreMode(!isExploreMode);
     if (!isExploreMode) {
@@ -280,6 +297,8 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
         
         // Enter or continue deviation / exploration
         const newFen = chess.fen();
+        const prevFen = isDeviating ? deviationFen : currentFen;
+        setMoveHistory(prev => [...prev, prevFen]);
         setIsDeviating(true);
         setDeviationFen(newFen);
         
@@ -352,69 +371,123 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
       {/* ---- Left Column: Board & Controls ---- */}
       <div className="w-full lg:w-[55%] flex flex-col items-center">
 
-        {/* Variation Selector & Explorer */}
-        <div className="mb-6 w-full flex flex-col gap-3">
-          <div className="flex justify-between items-center bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
-            <label className="flex items-center gap-2 cursor-pointer font-bold text-indigo-900">
-              <input type="checkbox" className="w-5 h-5 text-indigo-600 rounded" checked={isExploreMode} onChange={toggleExploreMode} />
-              🔍 Explore Mode (Free Play & Search)
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer font-bold text-rose-700">
-              <input type="checkbox" className="w-5 h-5 text-rose-600 rounded" checked={playEngineMode} onChange={toggleEngineMode} />
-              🤖 Play Stockfish
-            </label>
-          </div>
-          
-          {isExploreMode && isDeviating && matchingVariationIndices.length === 0 && (
-            <div className="p-2 text-sm font-semibold text-rose-600 bg-rose-50 rounded-lg border border-rose-200">
-              No book variations found for this position.
-            </div>
-          )}
-
-          <div>
-            <label htmlFor="variation-select" className="block text-sm font-bold text-gray-700 mb-2">
-              Select Chess Variation (व्हेरिएशन निवडा): 
-              {isExploreMode && isDeviating && ` (${matchingVariationIndices.length} matches found)`}
-            </label>
-            <select
-              id="variation-select"
-              value={selectedVariationIdx}
-              onChange={(e) => setSelectedVariationIdx(Number(e.target.value))}
-              className="w-full p-4 border-2 border-indigo-300 rounded-xl bg-white text-lg font-semibold text-indigo-900 shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-200 transition-all cursor-pointer"
-            >
-              {(isExploreMode && isDeviating ? matchingVariationIndices : variations.map((_: any, i: number) => i)).map((idx: number) => {
-                const v = variations[idx];
-                return (
-                  <option key={v.id || idx} value={idx}>
-                    {v[`name_${language}`] || v.name_en || `Variation ${idx + 1}`} ({v.moves?.length - 1 || 0} moves)
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+        {/* Variation Selector */}
+        <div className="mb-4 w-full max-w-[600px]">
+          <label htmlFor="variation-select" className="block text-sm font-bold text-gray-700 mb-2">
+            Select Chess Variation (व्हेरिएशन निवडा): 
+            {isExploreMode && isDeviating && ` (${matchingVariationIndices.length} matches found)`}
+          </label>
+          <select
+            id="variation-select"
+            value={selectedVariationIdx}
+            onChange={(e) => setSelectedVariationIdx(Number(e.target.value))}
+            className="w-full p-3 border-2 border-indigo-300 rounded-xl bg-white text-base font-semibold text-indigo-900 shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-200 transition-all cursor-pointer"
+          >
+            {(isExploreMode && isDeviating ? matchingVariationIndices : variations.map((_: any, i: number) => i)).map((idx: number) => {
+              const v = variations[idx];
+              return (
+                <option key={v.id || idx} value={idx}>
+                  {v[`name_${language}`] || v.name_en || `Variation ${idx + 1}`} ({v.moves?.length - 1 || 0} moves)
+                </option>
+              );
+            })}
+          </select>
         </div>
 
-        <h2 className="text-3xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-purple-800 drop-shadow-sm">
+        <h2 className="text-2xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-800 to-purple-800 drop-shadow-sm">
           {currentVariation?.[`name_${language}`] || currentVariation?.name_en}
         </h2>
 
         {/* Description */}
         {currentVariation?.[`description_${language}`] && (
-          <div className="mb-6 w-full max-w-[550px] bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-600 p-4 rounded-r-2xl shadow-sm">
-            <p className="text-gray-700 italic text-base leading-relaxed">
+          <div className="mb-4 w-full max-w-[600px] bg-gradient-to-r from-indigo-50 to-purple-50 border-l-4 border-indigo-600 p-3 rounded-r-2xl shadow-sm">
+            <p className="text-gray-700 italic text-sm leading-relaxed">
               &ldquo;{currentVariation[`description_${language}`]}&rdquo;
             </p>
           </div>
         )}
 
-        {/* Chess Board — Premium Glassmorphism UI */}
-        <div className="w-full max-w-[550px] shadow-[0_20px_50px_rgba(79,_70,_229,_0.3)] rounded-2xl overflow-hidden border-8 border-indigo-900/30 backdrop-blur-xl bg-white/10 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none z-10" />
-          {isMounted && (
-            <CustomChessBoard 
-              fen={isDeviating ? deviationFen : currentFen} 
-              onPieceDrop={handlePieceDrop}
+        {/* Board + Vertical Eval Bar */}
+        <div className="w-full max-w-[600px] flex gap-2 items-stretch">
+          
+          {/* Vertical Eval Bar (left of board) */}
+          <div className="w-6 flex flex-col rounded-lg overflow-hidden shadow-inner bg-gray-800 relative" style={{ minHeight: '100%' }}>
+            <div 
+              className="w-full bg-white transition-all duration-500 ease-out"
+              style={{ 
+                height: `${deviationEval !== null ? Math.max(5, Math.min(95, 50 + deviationEval * 10)) : 50}%` 
+              }}
             />
+            <div className="w-full bg-gray-800 flex-1" />
+            {deviationEval !== null && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-[8px] font-bold writing-vertical" style={{ writingMode: 'vertical-lr', textOrientation: 'mixed', color: deviationEval > 0 ? '#1a1a1a' : '#ffffff' }}>
+                  {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(1)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Chess Board */}
+          <div className="flex-1 shadow-[0_20px_50px_rgba(79,_70,_229,_0.3)] rounded-2xl overflow-hidden border-4 border-indigo-900/30 backdrop-blur-xl bg-white/10 relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none z-10" />
+            {isMounted && (
+              <CustomChessBoard 
+                fen={isDeviating ? deviationFen : currentFen} 
+                onPieceDrop={handlePieceDrop}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Mode Toggles & Top Moves — RIGHT BELOW the board */}
+        <div className="w-full max-w-[600px] mt-3 flex flex-col gap-2">
+          {/* Toggles */}
+          <div className="flex justify-between items-center bg-gray-900 text-white p-2 rounded-xl shadow">
+            <label className="flex items-center gap-2 cursor-pointer font-semibold text-sm">
+              <input type="checkbox" className="w-4 h-4 rounded accent-indigo-400" checked={isExploreMode} onChange={toggleExploreMode} />
+              🔍 Explore
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer font-semibold text-sm">
+              <input type="checkbox" className="w-4 h-4 rounded accent-rose-400" checked={playEngineMode} onChange={toggleEngineMode} />
+              🤖 Play Stockfish
+            </label>
+            {isDeviating && (
+              <button
+                onClick={handleTakeBack}
+                disabled={moveHistory.length === 0}
+                className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg font-bold text-sm disabled:opacity-40 transition-all"
+              >
+                ↩ Take Back
+              </button>
+            )}
+          </div>
+
+          {/* Position search feedback */}
+          {isExploreMode && isDeviating && matchingVariationIndices.length === 0 && (
+            <div className="p-2 text-xs font-semibold text-rose-400 bg-rose-950/50 rounded-lg border border-rose-800">
+              No book variations match this position.
+            </div>
+          )}
+
+          {/* Top 3 Moves */}
+          {isDeviating && topMoves.length > 0 && (
+            <div className="bg-gray-900 rounded-xl p-3 border border-gray-700">
+              <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Engine Top Moves</h4>
+              <div className="flex gap-2">
+                {topMoves.map((tm: any, i: number) => (
+                  <div key={i} className="flex-1 bg-gray-800 rounded-lg p-2 flex flex-col items-center gap-1">
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black ${i === 0 ? 'bg-emerald-500 text-white' : i === 1 ? 'bg-amber-400 text-gray-900' : 'bg-gray-600 text-gray-300'}`}>
+                      {i + 1}
+                    </span>
+                    <span className="font-mono font-bold text-white text-sm">{tm.move}</span>
+                    <span className={`font-mono text-xs ${tm.eval > 0 ? 'text-emerald-400' : tm.eval < 0 ? 'text-rose-400' : 'text-gray-400'}`}>
+                      {tm.mate !== null ? `M${Math.abs(tm.mate)}` : (tm.eval > 0 ? '+' : '') + tm.eval.toFixed(2)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
@@ -423,16 +496,10 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
           <span>Move {currentStep + 1}/{moves.length}</span>
           <span>|</span>
           <span style={{ fontFamily: 'monospace' }}>{currentMoveData.notation || '—'}</span>
-          <span>|</span>
-          <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#9ca3af', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            FEN: {currentFen === 'start' ? 'start (no position data)' : currentFen.substring(0, 30) + '...'}
-          </span>
         </div>
 
-
-
         {/* Controls */}
-        <div className="w-full max-w-[550px] mt-6 flex flex-col gap-4">
+        <div className="w-full max-w-[600px] mt-4 flex flex-col gap-4">
           <div className="flex justify-between items-center bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-gray-100">
             {isDeviating ? (
               <button
@@ -519,43 +586,14 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
                 : (currentMoveData[`coach_text_${language}`] || currentMoveData.coach_text_en || 'No coach text for this step.')}
             </p>
             {isDeviating && deviationEval !== null && (
-              <div className="mt-4 space-y-3">
-                {/* Eval Bar */}
-                <div className="w-full">
-                  <div className="flex items-center justify-between text-sm font-bold mb-1">
-                    <span className="text-gray-800">♔ White</span>
-                    <span className={`font-mono text-lg ${deviationEval > 0.3 ? 'text-green-600' : deviationEval < -0.3 ? 'text-red-500' : 'text-gray-600'}`}>
-                      {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(2)}
-                    </span>
-                    <span className="text-gray-800">♚ Black</span>
-                  </div>
-                  <div className="w-full h-5 bg-gray-800 rounded-full overflow-hidden shadow-inner">
-                    <div 
-                      className="h-full bg-white rounded-full transition-all duration-500 ease-out"
-                      style={{ width: `${Math.max(5, Math.min(95, 50 + deviationEval * 10))}%` }}
-                    />
-                  </div>
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-sm font-bold mb-1">
+                  <span className="text-gray-800">♔ White</span>
+                  <span className={`font-mono text-lg ${deviationEval > 0.3 ? 'text-green-600' : deviationEval < -0.3 ? 'text-red-500' : 'text-gray-600'}`}>
+                    {deviationEval > 0 ? '+' : ''}{deviationEval.toFixed(2)}
+                  </span>
+                  <span className="text-gray-800">♚ Black</span>
                 </div>
-
-                {/* Top Moves */}
-                {topMoves.length > 0 && (
-                  <div className="bg-gray-50 rounded-xl p-3 border border-gray-200">
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Engine Top Moves</h4>
-                    <div className="space-y-1">
-                      {topMoves.map((tm: any, i: number) => (
-                        <div key={i} className="flex items-center gap-2 text-sm">
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${i === 0 ? 'bg-green-500 text-white' : i === 1 ? 'bg-yellow-400 text-gray-900' : 'bg-gray-300 text-gray-700'}`}>
-                            {i + 1}
-                          </span>
-                          <span className="font-mono font-bold text-gray-900">{tm.move}</span>
-                          <span className={`font-mono text-xs ${tm.eval > 0 ? 'text-green-600' : tm.eval < 0 ? 'text-red-500' : 'text-gray-500'}`}>
-                            {tm.mate !== null ? `M${Math.abs(tm.mate)}` : (tm.eval > 0 ? '+' : '') + tm.eval.toFixed(2)}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>

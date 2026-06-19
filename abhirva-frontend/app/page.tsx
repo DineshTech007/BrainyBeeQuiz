@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { useAuth } from "../lib/auth-context";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
 
 export default function Home() {
   const { profile, isLoading: authLoading } = useAuth();

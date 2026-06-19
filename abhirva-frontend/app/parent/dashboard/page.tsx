@@ -16,7 +16,7 @@ function ParentDashboardContent() {
 
   useEffect(() => {
     if (!profile?.id) return;
-    let url = `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"}/api/parent/students`;
+    let url = `${process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com"}/api/parent/students`;
     if (profile.email) {
       url += `?parent_email=${encodeURIComponent(profile.email)}`;
     }
@@ -42,7 +42,7 @@ function ParentDashboardContent() {
     if (selectedStudentId) {
       setLoading(true);
       setShowReportCard(false);
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"}/api/parent/student_progress/${selectedStudentId}`, { cache: 'no-store' })
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com"}/api/parent/student_progress/${selectedStudentId}`, { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
           if (data.status === "success") {

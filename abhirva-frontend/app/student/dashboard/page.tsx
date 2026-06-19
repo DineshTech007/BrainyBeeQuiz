@@ -15,7 +15,7 @@ const SUBJECTS = [
   { name: "IMO Test", emoji: "🏆" },
 ];
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
 
 // ---------------------------------------------------------------------------
 // Locked Feature Overlay Card

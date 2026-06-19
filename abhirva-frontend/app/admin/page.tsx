@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./admin.module.css";
 import { AuthGuard, useAuth } from "../../lib/auth-context";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
 
 // ---------------------------------------------------------------------------
 // Admin Portal Content (protected by AuthGuard ADMIN role)

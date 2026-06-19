@@ -27,7 +27,7 @@ function QuizSetupContent() {
       
       setLoadingOptions(true);
       try {
-        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
         let url = `${BACKEND_URL}/api/admin/topics?subject=${encodeURIComponent(subject)}`;
         if (subject === "SST" && sstSubSubject) {
           url += `&sst_sub_subject=${encodeURIComponent(sstSubSubject)}`;

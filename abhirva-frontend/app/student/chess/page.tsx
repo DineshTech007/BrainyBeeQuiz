@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import ChessTutor from '@/chess/src/components/ChessTutor';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
 
 interface Variation {
   id: string;

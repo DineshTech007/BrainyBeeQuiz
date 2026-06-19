@@ -85,7 +85,7 @@ export default function ReadBook() {
   }
 
   // Fetch the raw PDF from the API
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
   const pdfUrl = `${BACKEND_URL}/api/library/read?grade=${encodeURIComponent(grade)}&language=${encodeURIComponent(language)}&book=${encodeURIComponent(book)}`;
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {

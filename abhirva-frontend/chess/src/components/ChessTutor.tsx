@@ -200,11 +200,40 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
   };
 
   const toggleEngineMode = () => {
-    setPlayEngineMode(!playEngineMode);
-    if (!playEngineMode && isDeviating) {
-      // Prompt engine to make a move immediately if we are already in deviation position
-      triggerEngineReply(deviationFen);
+    const newMode = !playEngineMode;
+    setPlayEngineMode(newMode);
+    if (newMode) {
+      if (!isDeviating) {
+        setIsDeviating(true);
+        setDeviationFen(currentFen);
+        triggerEngineReply(currentFen);
+      } else {
+        triggerEngineReply(deviationFen);
+      }
     }
+  };
+
+  const expandNotationForSpeech = (san: string) => {
+    if (!san) return "";
+    let text = san;
+    if (text.includes("O-O-O") || text.includes("0-0-0")) return "Long castling";
+    if (text.includes("O-O") || text.includes("0-0")) return "Short castling";
+    
+    text = text.replace(/^N/, 'Knight ');
+    text = text.replace(/^B/, 'Bishop ');
+    text = text.replace(/^R/, 'Rook ');
+    text = text.replace(/^Q/, 'Queen ');
+    text = text.replace(/^K/, 'King ');
+    
+    text = text.replace(/x/g, ' takes ');
+    text = text.replace(/\+/g, ' check');
+    text = text.replace(/#/g, ' checkmate');
+    text = text.replace(/=Q/g, ' promotes to Queen');
+    text = text.replace(/=R/g, ' promotes to Rook');
+    text = text.replace(/=B/g, ' promotes to Bishop');
+    text = text.replace(/=N/g, ' promotes to Knight');
+    
+    return text.replace(/\s+/g, ' ').trim();
   };
 
   const triggerEngineReply = (fenToEval: string) => {
@@ -254,7 +283,7 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
           const newFen = chess.fen();
           setDeviationFen(newFen);
           setDeviationCoachText(`Stockfish played ${move.san}. Your turn!`);
-          audioEngine.speak(`I play ${move.san}`, audioSpeed);
+          audioEngine.speak(`I play ${expandNotationForSpeech(move.san)}`, audioSpeed);
         }
       } catch (e) {
         setDeviationCoachText(`Engine suggests ${analysis.bestMove} but could not apply it.`);
@@ -614,7 +643,7 @@ export default function ChessTutor({ syllabusData }: ChessTutorProps) {
             </label>
             <label className="flex items-center gap-2 cursor-pointer font-semibold text-sm">
               <input type="checkbox" className="w-4 h-4 rounded accent-rose-400" checked={playEngineMode} onChange={toggleEngineMode} />
-              🤖 Play Stockfish
+              🤖 Stockfish
             </label>
             {isDeviating && (
               <button

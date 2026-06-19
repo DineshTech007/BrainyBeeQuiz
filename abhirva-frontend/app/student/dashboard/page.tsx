@@ -73,6 +73,16 @@ function StudentDashboardContent() {
 
   const hasLibraryAccess = hasAccess("book library") || hasAccess("library");
   const hasChessAccess = hasAccess("chess");
+  const has10thClassAccess = profile?.grade === "Grade 10" || hasAccess("10th Board") || hasAccess("10th Class") || hasAccess("10th Grade");
+  const hasIMOTestAccess = subscriptions.length === 0 || hasAccess("IMO");
+
+  const visibleSubjects = SUBJECTS.filter(sub => {
+    if (sub.name === "IMO Test") {
+      return hasIMOTestAccess;
+    } else {
+      return has10thClassAccess;
+    }
+  });
 
   return (
     <div className={styles.dashboardContainer}>
@@ -113,34 +123,36 @@ function StudentDashboardContent() {
 
       <div className={styles.grid}>
         {/* ============================================================ */}
-        {/* ZONE 1: Assigned Quizzes (Always Visible — free tier) */}
+        {/* ZONE 1: Assigned Quizzes (Only visible if student has 10th Class/IMO access) */}
         {/* ============================================================ */}
-        <div className="glass-panel section" style={{ gridColumn: "1 / -1" }}>
-          <h2 className={styles.sectionTitle}>📚 My Assigned Quizzes & Subjects</h2>
-          <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem", fontSize: "0.9rem" }}>
-            Select a subject to take a quiz. Free tier includes 2 trial quizzes per subject.
-          </p>
+        {visibleSubjects.length > 0 && (
+          <div className="glass-panel section" style={{ gridColumn: "1 / -1" }}>
+            <h2 className={styles.sectionTitle}>📚 My Assigned Quizzes & Subjects</h2>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem", fontSize: "0.9rem" }}>
+              Select a subject to take a quiz. Free tier includes 2 trial quizzes per subject.
+            </p>
 
-          <div className={styles.subjectsGrid}>
-            {SUBJECTS.map((sub, idx) => (
-              <div key={idx} className={styles.subjectCard}>
-                <div>
-                  <div className={styles.subjectEmoji}>{sub.emoji}</div>
-                  <h3>{sub.name}</h3>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
-                    Board Prep {hasAccess(sub.name) ? "🌟 Premium" : "Free Tier"}
-                  </p>
+            <div className={styles.subjectsGrid}>
+              {visibleSubjects.map((sub, idx) => (
+                <div key={idx} className={styles.subjectCard}>
+                  <div>
+                    <div className={styles.subjectEmoji}>{sub.emoji}</div>
+                    <h3>{sub.name}</h3>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginTop: "4px" }}>
+                      Board Prep {hasAccess(sub.name) || hasAccess("10th Board") || hasAccess("10th Class") ? "🌟 Premium" : "Free Tier"}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/student/quiz/setup?subject=${sub.name}`}
+                    className={styles.startBtn}
+                  >
+                    Take Quiz →
+                  </Link>
                 </div>
-                <Link
-                  href={`/student/quiz/setup?subject=${sub.name}`}
-                  className={styles.startBtn}
-                >
-                  Take Quiz →
-                </Link>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ============================================================ */}
         {/* ZONE 2: Book Library */}
@@ -183,16 +195,18 @@ function StudentDashboardContent() {
         </div>
 
         {/* ============================================================ */}
-        {/* ZONE 4: Past Papers */}
+        {/* ZONE 4: Past Papers (Only visible if student has 10th Class access) */}
         {/* ============================================================ */}
-        <div className="glass-panel section">
-          <h2 className={styles.sectionTitle}>📜 Past Board Exams</h2>
-          <div style={{ padding: "1rem", background: "rgba(255,255,255,0.05)", borderRadius: "12px", borderLeft: "4px solid var(--primary-color)" }}>
-            <h3>Simulate Real Board Exams</h3>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}>Take actual past year papers to prepare for the real thing.</p>
-            <Link href="/student/past-papers" className={styles.startBtn} style={{display: 'inline-block'}}>Browse Past Papers →</Link>
+        {has10thClassAccess && (
+          <div className="glass-panel section">
+            <h2 className={styles.sectionTitle}>📜 Past Board Exams</h2>
+            <div style={{ padding: "1rem", background: "rgba(255,255,255,0.05)", borderRadius: "12px", borderLeft: "4px solid var(--primary-color)" }}>
+              <h3>Simulate Real Board Exams</h3>
+              <p style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}>Take actual past year board exam papers to prepare for the real thing.</p>
+              <Link href="/student/past-papers" className={styles.startBtn} style={{display: 'inline-block'}}>Browse Past Papers →</Link>
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
     </div>

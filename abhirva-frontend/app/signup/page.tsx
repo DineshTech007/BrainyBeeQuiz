@@ -8,6 +8,7 @@ import { signupUser, loginWithCredentials, saveSession } from "../../lib/session
 export default function Signup() {
   const router = useRouter();
   const [role, setRole] = useState("Student");
+  const [grade, setGrade] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,6 +34,7 @@ export default function Signup() {
     const pwError = validatePassword(password);
     if (pwError) { setError(pwError); return; }
     if (password !== confirmPassword) { setError("Passwords do not match."); return; }
+    if (role === "Student" && !grade) { setError("Please select a grade."); return; }
 
     setLoading(true);
 
@@ -43,6 +45,7 @@ export default function Signup() {
         password,
         full_name: name.trim(),
         role: role.toUpperCase(),
+        ...(role === "Student" ? { grade } : {}),
       });
 
       setSuccess("Account created! Logging you in...");
@@ -127,7 +130,10 @@ export default function Signup() {
             <select
               className={styles.input}
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              onChange={(e) => {
+                setRole(e.target.value);
+                if (e.target.value !== "Student") setGrade("");
+              }}
               style={{ color: "black" }}
               disabled={loading}
             >
@@ -135,6 +141,33 @@ export default function Signup() {
               <option value="Parent">Parent</option>
             </select>
           </div>
+
+          {role === "Student" && (
+            <div className={styles.inputGroup}>
+              <label>Grade / Class</label>
+              <select
+                className={styles.input}
+                value={grade}
+                onChange={(e) => setGrade(e.target.value)}
+                style={{ color: "black" }}
+                disabled={loading}
+                required
+              >
+                <option value="">-- Select Grade --</option>
+                <option value="Kindergarten">Kindergarten</option>
+                <option value="Grade 1">Grade 1</option>
+                <option value="Grade 2">Grade 2</option>
+                <option value="Grade 3">Grade 3</option>
+                <option value="Grade 4">Grade 4</option>
+                <option value="Grade 5">Grade 5</option>
+                <option value="Grade 6">Grade 6</option>
+                <option value="Grade 7">Grade 7</option>
+                <option value="Grade 8">Grade 8</option>
+                <option value="Grade 9">Grade 9</option>
+                <option value="Grade 10">Grade 10</option>
+              </select>
+            </div>
+          )}
 
           <div className={styles.inputGroup}>
             <label>Full Name</label>
@@ -240,7 +273,7 @@ export default function Signup() {
           <button
             type="submit"
             className={styles.submitBtn}
-            disabled={loading || !name || !email || !password || !confirmPassword}
+            disabled={loading || !name || !email || !password || !confirmPassword || (role === "Student" && !grade)}
           >
             {loading ? (
               <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>

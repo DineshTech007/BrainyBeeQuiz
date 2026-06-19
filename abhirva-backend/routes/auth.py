@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from config.supabase_client import supabase_db
 from supabase import create_client
 import os
+from typing import Optional
 
 router = APIRouter()
 
@@ -20,6 +21,7 @@ class SignupRequest(BaseModel):
     password: str
     full_name: str
     role: str = "STUDENT"  # STUDENT, PARENT, ADMIN
+    grade: Optional[str] = None
 
 
 import httpx
@@ -81,6 +83,7 @@ def login(request: LoginRequest):
                 "total_points": profile.get("total_points", 0),
                 "book_points": profile.get("book_points", 0),
                 "free_tests_taken": profile.get("free_tests_taken", 0),
+                "grade": profile.get("grade"),
             }
         }
     except HTTPException:
@@ -124,6 +127,7 @@ async def signup(request: SignupRequest):
             "free_tests_taken": 0,
             "total_points": 0,
             "book_points": 0,
+            "grade": request.grade if role == "STUDENT" else None,
         }
 
         profile_resp = supabase_db.table("profiles").insert(profile_data).execute()
@@ -143,6 +147,7 @@ async def signup(request: SignupRequest):
             "full_name": request.full_name,
             "email": request.email,
             "role": role,
+            "grade": request.grade if role == "STUDENT" else None,
         }
 
     except HTTPException:

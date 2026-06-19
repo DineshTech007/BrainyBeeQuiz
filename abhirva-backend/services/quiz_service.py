@@ -242,12 +242,16 @@ def generate_and_save_book_quiz(grade: str, book_name: str, context: str, langua
         - Book Name: {book_name}
         - Language: {language}
 
-        Here is a sample of the book text for context:
+        Here is the complete story/book text for context:
         \"\"\"{context}\"\"\"
 
-        Generate exactly {num_questions} questions. They should assess understanding of the text, characters, or general knowledge if the context is insufficient.
-        Ensure the correct_option string is an exact match to one of the strings in the options array.
-        Provide step-by-step solutions and a detailed explanation for why the answer is correct. All questions, options, and explanations must be written in {language}.
+        Generate exactly {num_questions} questions. 
+        IMPORTANT requirements for the questions:
+        - The questions MUST assess the understanding of the entire story from beginning to end (not just the first few pages).
+        - At least one question MUST ask about the overall moral, theme, or lesson of the story.
+        - Ensure the correct_option string is an exact match to one of the strings in the options array.
+        - Provide step-by-step solutions and a detailed explanation for why the answer is correct. 
+        - All questions, options, explanations, and solutions must be written in {language}.
         """
 
         system_instruction = f"You are an expert educational reading comprehension content creator. Return ONLY valid JSON in the requested format."

@@ -23,7 +23,7 @@ function AdminPortalContent() {
   const [connectionStudentId, setConnectionStudentId] = useState<string>("");
 
   const [grantCategory, setGrantCategory] = useState("10th Class");
-  const [grantSubject, setGrantSubject] = useState("Maths");
+  const [grantSubject, setGrantSubject] = useState("10th Class Access (All Subjects)");
   const [grantGrade, setGrantGrade] = useState("Grade 10");
   const [genCategory, setGenCategory] = useState("10th Class");
   const [genGrade, setGenGrade] = useState("Grade 1");
@@ -150,7 +150,13 @@ function AdminPortalContent() {
 
   const handleGrantAccess = async (id: string) => {
     let packageId = "";
-    if (grantCategory === "10th Class") packageId = `10th Board ${grantSubject} Booster`;
+    if (grantCategory === "10th Class") {
+      if (grantSubject === "10th Class Access (All Subjects)") {
+        packageId = "10th Class Access";
+      } else {
+        packageId = `10th Board ${grantSubject} Booster`;
+      }
+    }
     else if (grantCategory === "IMO Test") packageId = `IMO ${grantGrade}`;
     else if (grantCategory === "Book Library") packageId = "Book Library";
     else if (grantCategory === "Chess") packageId = "Chess Tutor";
@@ -351,7 +357,7 @@ function AdminPortalContent() {
               <option value="">-- Select a Student --</option>
               {students.map(student => (
                 <option key={student.id} value={student.id}>
-                  {student.full_name || student.name || student.id.substring(0, 8)}
+                  {student.full_name || student.name || student.id.substring(0, 8)}{student.grade ? ` (${student.grade})` : ""}
                 </option>
               ))}
             </select>
@@ -406,7 +412,7 @@ function AdminPortalContent() {
 
                 {grantCategory === "10th Class" && (
                   <select value={grantSubject} onChange={(e) => setGrantSubject(e.target.value)} style={{ padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc", color: "black" }}>
-                    {["Maths", "Marathi", "Computers", "Science", "SST", "English"].map(s => (<option key={s} value={s}>{s}</option>))}
+                    {["10th Class Access (All Subjects)", "Maths", "Marathi", "Computers", "Science", "SST", "English"].map(s => (<option key={s} value={s}>{s}</option>))}
                   </select>
                 )}
 

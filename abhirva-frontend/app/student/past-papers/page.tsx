@@ -12,11 +12,28 @@ export default function PastPapersList() {
   const router = useRouter();
   const [papers, setPapers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [subscriptions, setSubscriptions] = useState<string[]>([]);
+  const [subLoading, setSubLoading] = useState(true);
   const [selectedSubject, setSelectedSubject] = useState<string>("All");
   const [selectedYear, setSelectedYear] = useState<string>("All");
 
   useEffect(() => {
-    if (!profile) return;
+    if (!profile?.id) return;
+
+    // Fetch active subscriptions
+    fetch(`${BACKEND_URL}/api/admin/student/${profile.id}/access`, { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success" && Array.isArray(data.subscriptions)) {
+          setSubscriptions(data.subscriptions.map((s: any) => s.name || ""));
+        }
+        setSubLoading(false);
+      })
+      .catch(err => {
+        console.error("Subscription fetch error:", err);
+        setSubLoading(false);
+      });
+
     fetch(`${BACKEND_URL}/api/student/past_papers`)
       .then(res => res.json())
       .then(data => {
@@ -29,7 +46,26 @@ export default function PastPapersList() {
         console.error(err);
         setLoading(false);
       });
-  }, [profile]);
+  }, [profile?.id]);
+
+  const hasAccess = (keyword: string): boolean => {
+    return subscriptions.some(name => name.toLowerCase().includes(keyword.toLowerCase()));
+  };
+
+  const has10thClassAccess = profile?.grade === "Grade 10" || hasAccess("10th Board") || hasAccess("10th Class") || hasAccess("10th Grade");
+
+  if (!has10thClassAccess && !subLoading) {
+    return (
+      <div className={styles.dashboardContainer} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', textAlign: 'center'}}>
+        <div style={{fontSize: '5rem', marginBottom: '1rem'}}>🔒</div>
+        <h1 style={{fontSize: '2.5rem', marginBottom: '1rem', color: 'white'}}>Access Denied</h1>
+        <p style={{fontSize: '1.2rem', marginBottom: '2rem', color: 'var(--text-secondary)'}}>You need 10th Class access to use this feature. Please ask your parent to unlock it.</p>
+        <Link href="/student/dashboard" style={{padding: '0.8rem 1.5rem', background: 'var(--primary-color)', color: 'white', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold'}}>
+          Back to Dashboard
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.dashboardContainer} style={{ minHeight: '100vh' }}>

@@ -14,6 +14,7 @@ export interface SessionProfile {
   total_points?: number;
   book_points?: number;
   free_tests_taken?: number;
+  grade?: string;
 }
 
 export interface Session {
@@ -100,7 +101,8 @@ export async function signupUser(params: {
   password: string;
   full_name: string;
   role: string;
-}): Promise<{ profile_id: string; email: string; full_name: string; role: string }> {
+  grade?: string;
+}): Promise<{ profile_id: string; email: string; full_name: string; role: string; grade?: string }> {
   const res = await fetch(`${BACKEND_URL}/api/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

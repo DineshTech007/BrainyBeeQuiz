@@ -10,6 +10,7 @@ class SignupRequest(BaseModel):
     full_name: str
     email: Optional[str] = None
     role: Optional[str] = "STUDENT"
+    grade: Optional[str] = None
 
 @router.post("/signup")
 async def signup(request: SignupRequest):
@@ -21,7 +22,8 @@ async def signup(request: SignupRequest):
             "full_name": request.full_name,
             "role": request.role.upper(),
             "free_tests_taken": 0,
-            "total_points": 0
+            "total_points": 0,
+            "grade": request.grade if request.role.upper() == "STUDENT" else None
         }).execute()
         
         if not response.data:

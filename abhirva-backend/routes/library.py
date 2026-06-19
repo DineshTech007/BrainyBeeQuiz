@@ -83,7 +83,7 @@ async def generate_book_quiz(request: GenerateBookQuizRequest):
                 response = await client.get(public_url)
                 if response.status_code == 200:
                     reader = PyPDF2.PdfReader(io.BytesIO(response.content))
-                    num_pages = min(5, len(reader.pages))
+                    num_pages = len(reader.pages)
                     for i in range(num_pages):
                         text = reader.pages[i].extract_text()
                         if text:

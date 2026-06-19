@@ -90,7 +90,7 @@ function ParentDashboardContent() {
                 <option value="">-- Select a Student --</option>
                 {students.map(student => (
                   <option key={student.id} value={student.id}>
-                    {student.full_name || student.name || student.email || student.id.substring(0, 8)}
+                    {student.full_name || student.name || student.email || student.id.substring(0, 8)}{student.grade ? ` (${student.grade})` : ""}
                   </option>
                 ))}
               </select>

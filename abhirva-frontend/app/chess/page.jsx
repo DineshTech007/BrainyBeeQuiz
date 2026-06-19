@@ -7,7 +7,8 @@ import { AuthGuard, useAuth } from '../../lib/auth-context';
 import { useState, useEffect } from 'react';
 async function getAvailableOpenings() {
   try {
-    const res = await fetch('http://localhost:8000/api/chess/openings', {
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+    const res = await fetch(`${BACKEND_URL}/api/chess/openings`, {
       cache: 'no-store'
     });
     
@@ -41,7 +42,8 @@ function ChessCoursesPage() {
     if (!profile?.id) return;
     
     // Check access
-    fetch(`http://localhost:8000/api/admin/student/${profile.id}/access`, { cache: 'no-store' })
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+    fetch(`${BACKEND_URL}/api/admin/student/${profile.id}/access`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.status === "success" && Array.isArray(data.subscriptions)) {
@@ -52,7 +54,8 @@ function ChessCoursesPage() {
       .catch(console.error);
 
     // Fetch openings
-    fetch('http://localhost:8000/api/chess/openings', { cache: 'no-store' })
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+    fetch(`${BACKEND_URL}/api/chess/openings`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.openings) setOpenings(data.openings);

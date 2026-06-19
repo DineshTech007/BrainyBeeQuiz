@@ -4,7 +4,8 @@ import ChessTutor from '../../../chess/src/components/ChessTutor';
 async function getOpeningData(opening) {
   // Try to fetch from backend
   try {
-    const res = await fetch(`http://localhost:8000/api/chess/openings/${opening}`, {
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
+    const res = await fetch(`${BACKEND_URL}/api/chess/openings/${opening}`, {
       cache: 'no-store'
     });
     

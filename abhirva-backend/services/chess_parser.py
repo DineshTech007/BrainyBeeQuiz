@@ -98,8 +98,12 @@ def batch_translate(texts: list) -> list:
 
     prompt = f"""You are a professional chess translator.
 Translate each of the following numbered English chess explanations into Marathi (mr) and Hindi (hi).
-Keep all chess piece names, square names (e4, d5, Nf3, etc.), and technical terms in English as they are.
-Only translate the explanatory prose.
+IMPORTANT: Keep the following words ALWAYS in English, do NOT translate them:
+- "White" and "Black" (the player/side names)
+- All chess piece names (King, Queen, Rook, Bishop, Knight, Pawn)
+- All square names (e4, d5, Nf3, etc.)
+- All chess technical terms (castling, check, checkmate, pin, fork, etc.)
+Only translate the general explanatory prose around these terms.
 
 {numbered_texts}
 

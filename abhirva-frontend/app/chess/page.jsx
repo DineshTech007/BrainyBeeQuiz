@@ -54,7 +54,6 @@ function ChessCoursesPage() {
       .catch(console.error);
 
     // Fetch openings
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://abhirva-backend.onrender.com";
     fetch(`${BACKEND_URL}/api/chess/openings`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {

@@ -8,10 +8,21 @@ const BACKEND_URL = process.env.NODE_ENV === "production" ? "https://abhirva-bac
 // ---------------------------------------------------------------------------
 // Admin Portal Content (protected by AuthGuard ADMIN role)
 // ---------------------------------------------------------------------------
+function cleanBookTitle(fileName: string): string {
+  let title = fileName.replace(/\.pdf$/i, "");
+  title = title.replace(/^\d+[-_\s]*/, "");
+  title = title.replace(/[-_]/g, " ");
+  return title
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 function AdminPortalContent() {
   const { profile } = useAuth();
   const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [booksWithQuizzes, setBooksWithQuizzes] = useState<string[]>([]);
 
   const [selectedStudentId, setSelectedStudentId] = useState<string>("");
   const [studentSubscriptions, setStudentSubscriptions] = useState<any[]>([]);
@@ -95,6 +106,13 @@ function AdminPortalContent() {
         if (data.status === "success") {
           const newTopics = genCategory === "Book Library" ? data.books : data.topics;
           setTopics(newTopics || []);
+          
+          if (genCategory === "Book Library" && data.books_with_quizzes) {
+            setBooksWithQuizzes(data.books_with_quizzes);
+          } else {
+            setBooksWithQuizzes([]);
+          }
+          
           if (newTopics?.length > 0) setGenTopic(newTopics[0]);
           else setGenTopic("");
         }
@@ -330,7 +348,11 @@ function AdminPortalContent() {
             <select value={genTopic} onChange={(e) => setGenTopic(e.target.value)} style={{ padding: "0.5rem", borderRadius: "4px", border: "1px solid #ccc", flex: "1 1 200px", color: "black" }} disabled={loadingTopics || topics.length === 0}>
               {loadingTopics ? <option value="">Loading topics...</option>
                 : topics.length === 0 ? <option value="">No topics found</option>
-                : topics.map((t, i) => (<option key={i} value={t}>{t}</option>))}
+                : topics.map((t, i) => (
+                    <option key={i} value={t}>
+                      {genCategory === "Book Library" ? `${cleanBookTitle(t)} ${booksWithQuizzes.includes(t) ? " (✅ Live)" : " (❌ Empty)"}` : t}
+                    </option>
+                  ))}
             </select>
           )}
 

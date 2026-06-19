@@ -292,17 +292,12 @@ async def revoke_package(request: GrantRequest):
                 "message": f"Student does not have an active subscription for '{resolved_name}'."
             }
 
-        subscription_id = existing.data[0]["id"]
-
         # --- Step 3: Try DELETE first ---
-        delete_response = supabase_db.table("subscriptions").delete().eq(
-            "id", subscription_id
-        ).execute()
-
-        # Check if delete actually removed a row
-        deleted_count = len(delete_response.data) if delete_response.data else 0
-
-        if deleted_count == 0:
+        try:
+            supabase_db.table("subscriptions").delete().eq("id", subscription_id).execute()
+            print(f"Admin {request.admin_id} deleted subscription {subscription_id}")
+        except Exception as e:
+            print("Delete failed, trying update to REVOKED:", e)
             # Safety net: UPDATE status to REVOKED instead
             update_response = supabase_db.table("subscriptions").update(
                 {"status": "REVOKED"}
@@ -317,8 +312,7 @@ async def revoke_package(request: GrantRequest):
         print(f"Admin {request.admin_id} revoked '{resolved_name}' (pkg: {actual_package_id}) from profile {request.target_profile_id}")
         return {
             "status": "success",
-            "message": f"Successfully revoked '{resolved_name}' from student.",
-            "action": "deleted" if deleted_count > 0 else "marked_revoked"
+            "message": f"Successfully revoked '{resolved_name}' from student."
         }
 
     except HTTPException:
@@ -398,11 +392,29 @@ async def delete_student(profile_id: str):
         SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
         auth_client = create_client(SUPABASE_URL, SUPABASE_KEY)
         
+        # 1. Clean up referencing tables to prevent foreign key errors
+        try:
+            supabase_db.table("subscriptions").delete().eq("profile_id", profile_id).execute()
+        except Exception as e:
+            print("Error deleting subscriptions:", e)
+
+        try:
+            supabase_db.table("test_attempts").delete().eq("profile_id", profile_id).execute()
+        except Exception as e:
+            print("Error deleting test_attempts:", e)
+
+        try:
+            supabase_db.table("library_test_attempts").delete().eq("profile_id", profile_id).execute()
+        except Exception as e:
+            print("Error deleting library_test_attempts:", e)
+
+        # 2. Delete Auth user
         try:
             auth_client.auth.admin.delete_user(profile_id)
         except Exception as e:
             print("Auth delete error:", e)
             
+        # 3. Delete Profile
         supabase_db.table("profiles").delete().eq("id", profile_id).execute()
         
         conns = load_connections()

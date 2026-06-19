@@ -14,13 +14,19 @@ BASE_LIBRARY_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
 @router.get("/books")
 async def get_books(grade: str, language: str = "English"):
     """
-    Returns list of books for a given grade and language from Supabase Storage.
+    Returns list of books for a given grade and language from Supabase Storage,
+    along with indicators for which books already have quizzes generated.
     """
     try:
         folder_path = f"{grade}/{language}"
         res = supabase_db.storage.from_("library_books").list(folder_path)
         books = [f["name"] for f in res if isinstance(f, dict) and f.get("name", "").endswith(".pdf")]
-        return {"status": "success", "books": books}
+        
+        # Fetch existing quizzes from DB to see which books have questions
+        existing_quizzes_resp = supabase_db.table("library_quizzes").select("book_title").eq("grade", grade).eq("language", language).execute()
+        books_with_quizzes = [q["book_title"] for q in existing_quizzes_resp.data] if existing_quizzes_resp.data else []
+        
+        return {"status": "success", "books": books, "books_with_quizzes": books_with_quizzes}
     except Exception as e:
         print(f"Error fetching books from storage: {e}")
         return {"status": "success", "books": []}

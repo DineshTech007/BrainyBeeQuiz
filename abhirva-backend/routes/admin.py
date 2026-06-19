@@ -105,17 +105,18 @@ async def get_topics(subject: str = None, category: str = "10th Class", sst_sub_
                         topics.append(f"{pdf.replace('.pdf', '')} - {chap['title']}{page_info}")
             return {"status": "success", "topics": topics}
             
-        # Dynamically read from 10thBooks folder
-        # Path assumes backend is running in abhirva-backend and 10thBooks is in the parent directory
-        base_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "10thBooks")
-        subject_dir = os.path.join(base_dir, subject)
-        
+        # Dynamically read from 10thBooks folder in Supabase Storage
         topics = []
-        if os.path.exists(subject_dir):
-            for filename in os.listdir(subject_dir):
-                if filename.endswith(".pdf") or filename.endswith(".docx"):
-                    name_without_ext = os.path.splitext(filename)[0]
-                    topics.append(name_without_ext)
+        try:
+            res = supabase_db.storage.from_("tenth_books").list(subject)
+            for f in res:
+                if isinstance(f, dict):
+                    filename = f.get("name", "")
+                    if filename.endswith(".pdf") or filename.endswith(".docx"):
+                        name_without_ext = os.path.splitext(filename)[0]
+                        topics.append(name_without_ext)
+        except Exception as e:
+            print(f"Failed to list topics from storage: {e}")
                     
         # Fallback if no files found
         if not topics:

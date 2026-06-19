@@ -433,19 +433,32 @@ def get_past_paper_from_db(past_paper_id: str) -> dict:
 import os
 def find_past_paper_pdf(subject: str, year: str) -> str:
     """
-    Scans the 10thBooks/{subject} folder for a PDF filename containing the year.
-    Returns the absolute path if found, otherwise None.
+    Scans the tenth_books/{subject} folder in Supabase for a PDF containing the year.
+    Downloads it to a temp file and returns the local path.
     """
-    base_dir = r"f:\AbhirvaLearning\10thBooks"
-    subject_dir = os.path.join(base_dir, subject)
-    if not os.path.exists(subject_dir):
+    try:
+        res = supabase_db.storage.from_("tenth_books").list(subject)
+        for f in res:
+            if isinstance(f, dict):
+                filename = f.get("name", "")
+                if filename.lower().endswith('.pdf') and year in filename:
+                    bucket_path = f"{subject}/{filename}"
+                    public_url = supabase_db.storage.from_("tenth_books").get_public_url(bucket_path)
+                    
+                    import httpx
+                    import tempfile
+                    
+                    response = httpx.get(public_url)
+                    if response.status_code == 200:
+                        temp_fd, temp_path = tempfile.mkstemp(suffix=".pdf", prefix=f"past_paper_{year}_")
+                        os.close(temp_fd)
+                        with open(temp_path, "wb") as tmp_file:
+                            tmp_file.write(response.content)
+                        return temp_path
         return None
-        
-    for file in os.listdir(subject_dir):
-        if file.lower().endswith('.pdf') and year in file:
-            return os.path.join(subject_dir, file)
-            
-    return None
+    except Exception as e:
+        print(f"Error finding past paper pdf from storage: {e}")
+        return None
 
 def generate_and_save_past_paper(board: str, grade: str, subject: str, year: str, num_questions: int = 10, exact_pdf_path: str = None) -> dict:
     """
@@ -536,7 +549,12 @@ def generate_and_save_past_paper(board: str, grade: str, subject: str, year: str
             try:
                 gemini_client.files.delete(name=uploaded_file.name)
             except Exception as e:
-                print(f"[WARN] Failed to delete temporary file {uploaded_file.name}: {e}")
+                print(f"[WARN] Failed to delete temporary file from Gemini {uploaded_file.name}: {e}")
+            try:
+                if exact_pdf_path is None and os.path.exists(pdf_path):
+                    os.remove(pdf_path) # Clean up the downloaded temp file
+            except Exception as e:
+                print(f"[WARN] Failed to delete local temp file {pdf_path}: {e}")
 
         generated_text = ai_response.text
         if not generated_text:

@@ -4,6 +4,8 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from services.quiz_service import generate_and_save_book_quiz, get_quiz_from_db, get_book_quiz_from_db
 from config.supabase_client import supabase_db
+from fastapi.responses import StreamingResponse
+import httpx
 
 router = APIRouter()
 
@@ -12,29 +14,41 @@ BASE_LIBRARY_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
 @router.get("/books")
 async def get_books(grade: str, language: str = "English"):
     """
-    Returns list of books for a given grade and language.
+    Returns list of books for a given grade and language from Supabase Storage.
     """
-    grade_dir = os.path.join(BASE_LIBRARY_DIR, grade, language)
-    if not os.path.exists(grade_dir):
+    try:
+        folder_path = f"{grade}/{language}"
+        res = supabase_db.storage.from_("library_books").list(folder_path)
+        books = [f["name"] for f in res if isinstance(f, dict) and f.get("name", "").endswith(".pdf")]
+        return {"status": "success", "books": books}
+    except Exception as e:
+        print(f"Error fetching books from storage: {e}")
         return {"status": "success", "books": []}
-        
-    books = []
-    for filename in os.listdir(grade_dir):
-        if filename.endswith(".pdf"):
-            books.append(filename)
-            
-    return {"status": "success", "books": books}
 
 @router.get("/read")
 async def read_book(grade: str, book: str, language: str = "English"):
     """
-    Streams the PDF book.
+    Streams the PDF book from Supabase Storage.
     """
-    book_path = os.path.join(BASE_LIBRARY_DIR, grade, language, book)
-    if not os.path.exists(book_path):
-        raise HTTPException(status_code=404, detail="Book not found")
+    try:
+        bucket_path = f"{grade}/{language}/{book}"
+        public_url = supabase_db.storage.from_("library_books").get_public_url(bucket_path)
         
-    return FileResponse(book_path, media_type="application/pdf", headers={"Content-Disposition": "inline; filename=" + book})
+        async def generate():
+            async with httpx.AsyncClient() as client:
+                async with client.stream("GET", public_url) as r:
+                    if r.status_code != 200:
+                        raise Exception("Book not found in storage")
+                    async for chunk in r.aiter_bytes():
+                        yield chunk
+                        
+        return StreamingResponse(
+            generate(), 
+            media_type="application/pdf", 
+            headers={"Content-Disposition": f"inline; filename={book}"}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 class GenerateBookQuizRequest(BaseModel):
     grade: str
@@ -44,9 +58,8 @@ class GenerateBookQuizRequest(BaseModel):
 
 @router.post("/quiz/generate")
 async def generate_book_quiz(request: GenerateBookQuizRequest):
-    book_path = os.path.join(BASE_LIBRARY_DIR, request.grade, request.language, request.book)
-    if not os.path.exists(book_path):
-        raise HTTPException(status_code=404, detail="Book not found")
+    bucket_path = f"{request.grade}/{request.language}/{request.book}"
+    public_url = supabase_db.storage.from_("library_books").get_public_url(bucket_path)
         
     try:
         # Check if quiz already exists
@@ -63,17 +76,22 @@ async def generate_book_quiz(request: GenerateBookQuizRequest):
         context_text = ""
         try:
             import PyPDF2
-            with open(book_path, 'rb') as f:
-                reader = PyPDF2.PdfReader(f)
-                num_pages = min(5, len(reader.pages))
-                for i in range(num_pages):
-                    text = reader.pages[i].extract_text()
-                    if text:
-                        context_text += text + "\n"
+            import io
+            
+            # Fetch PDF into memory
+            async with httpx.AsyncClient() as client:
+                response = await client.get(public_url)
+                if response.status_code == 200:
+                    reader = PyPDF2.PdfReader(io.BytesIO(response.content))
+                    num_pages = min(5, len(reader.pages))
+                    for i in range(num_pages):
+                        text = reader.pages[i].extract_text()
+                        if text:
+                            context_text += text + "\n"
         except ImportError:
             print("PyPDF2 not installed, passing only book title to Gemini")
         except Exception as e:
-            print("Failed to read PDF:", e)
+            print("Failed to read PDF from storage:", e)
             
         new_quiz = generate_and_save_book_quiz(
             grade=request.grade,
